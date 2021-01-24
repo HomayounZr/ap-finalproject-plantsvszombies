@@ -1,8 +1,8 @@
 package helpers.threads;
 
 import appStart.GameManagement;
-import model.Plant;
-import model.Zombie;
+import models.Plant;
+import models.Zombie;
 
 public class ZombieLogicalThread implements Runnable {
 

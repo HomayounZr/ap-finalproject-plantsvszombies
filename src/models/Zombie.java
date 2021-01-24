@@ -1,7 +1,7 @@
 package models;
 
-import Helpers.Threads.ThreadPool;
-import Helpers.Threads.ZombieLogicalThread;
+import helpers.threads.ZombieLogicalThread;
+import helpers.threads.ThreadPool;
 
 /**
  * this class represents a zombie

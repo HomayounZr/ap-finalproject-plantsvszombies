@@ -1,7 +1,7 @@
 package models;
 
 import appStart.Configurations;
-import model.enums.PlantType;
+import models.enums.PlantType;
 
 import java.lang.module.Configuration;
 

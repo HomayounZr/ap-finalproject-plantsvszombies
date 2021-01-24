@@ -1,7 +1,7 @@
 package models;
 
-import Helpers.Threads.BulletLogicalThread;
-import Helpers.Threads.ThreadPool;
+import helpers.threads.BulletLogicalThread;
+import helpers.threads.ThreadPool;
 
 public class Bullet {
 

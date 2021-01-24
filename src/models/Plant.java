@@ -1,8 +1,8 @@
 package models;
 
 
-import Helpers.Threads.PlantThread;
-import Helpers.Threads.ThreadPool;
+import helpers.threads.PlantThread;
+import helpers.threads.ThreadPool;
 
 public abstract class Plant {
 
