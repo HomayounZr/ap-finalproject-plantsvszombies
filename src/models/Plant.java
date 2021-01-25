@@ -4,6 +4,9 @@ package models;
 import helpers.threads.PlantThread;
 import helpers.threads.ThreadPool;
 
+
+import java.util.ArrayList;
+
 public abstract class Plant {
 
     private Coordinate coordinate;
@@ -12,6 +15,7 @@ public abstract class Plant {
     private int health;
     private int actionInterval;
     private boolean isAlive;
+    public ArrayList<Bullet> bullet;
 
     public Plant(String imageUri,Coordinate coordinate,int health,int actionInterval){
         this.imageUri = imageUri;
@@ -19,6 +23,7 @@ public abstract class Plant {
         this.health = health;
         this.actionInterval = actionInterval;
         this.isAlive = true;
+        bullet = new ArrayList<Bullet>();
 
         PlantThread newThread = new PlantThread(this);
         ThreadPool.execute(newThread);
