@@ -1,19 +1,26 @@
 package views;
 
+import appStart.GameManagement;
+import models.BoardItem;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
 public class RankingsPage {
 
     private JFrame mainFrame;
     private JPanel mainPanel;
 
+    private ArrayList<BoardItem> items;
+
     public RankingsPage(){
         mainFrame = new JFrame("Rankings");
-        mainFrame.setSize(400,400);
+        mainFrame.setSize(550,400);
         mainFrame.setLocationRelativeTo(null);
         mainFrame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -37,6 +44,9 @@ public class RankingsPage {
         southPanel.add(buttonRefresh);
         southPanel.add(buttonClose);
 
+        refreshData();
+        getTable();
+
         mainPanel.add(southPanel,BorderLayout.SOUTH);
 
         mainFrame.setContentPane(mainPanel);
@@ -52,10 +62,48 @@ public class RankingsPage {
             super.mousePressed(e);
             JButton source = (JButton) e.getSource();
             if(source.getText().equals("Refresh Data")){
-                System.out.println("Refreshing...");
+//                System.out.println("Refreshing...");
+                refreshData();
+                getTable();
             } else {
                 mainFrame.dispose();
             }
         }
     }
+
+    private void refreshData(){
+        items = GameManagement.userController.getScoreBoard();
+//        for(BoardItem item: items){
+//            System.out.println(item.getUsername());
+//        }
+    }
+
+    public void getTable(){
+//        JPanel centerPanel = new JPanel();
+
+        String columns[] = {"Username","Score","Easy Wins","Easy Loses","Hard Wins","Hard Loses"};
+        DefaultTableModel tableModel = new DefaultTableModel(columns,0);
+        for(BoardItem item: items){
+            Object[] rowData = {
+                    item.getUsername(),
+                    item.getTotalScore(),
+                    item.getWins_easy(),
+                    item.getLoses_easy(),
+                    item.getWins_hard(),
+                    item.getLoses_hard()
+            };
+            tableModel.addRow(rowData);
+        }
+
+        JTable table = new JTable(tableModel){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        JScrollPane scrollPane = new JScrollPane(table);
+//        centerPanel.add(scrollPane);
+        mainPanel.add(scrollPane,BorderLayout.CENTER);
+    }
+
 }

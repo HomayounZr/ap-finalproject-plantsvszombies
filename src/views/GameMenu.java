@@ -1,6 +1,7 @@
 package views;
 
 import appStart.GameManagement;
+import helpers.threads.ThreadPool;
 import models.User;
 import myComponents.ImagePanel;
 
@@ -25,22 +26,22 @@ public class GameMenu {
         mainPanel = new ImagePanel("./images/background.jpg",600);
 
         // check that if user exists
-//        User user = GameManagement.userController.getUser();
-//        if(user == null){
-//            // ask for a new username
-//            boolean result = false;
-//            do {
-//                String username = askUsername();
-////                System.out.println(username);
-//                result = GameManagement.userController.newUser(username);
-//            } while(!result);
-//            JOptionPane.showMessageDialog(
-//                    null,
-//                    "Username changed",
-//                    "Saved",
-//                    JOptionPane.INFORMATION_MESSAGE
-//            );
-//        }
+        User user = GameManagement.userController.getUser();
+        if(user == null){
+            // ask for a new username
+            boolean result = false;
+            do {
+                String username = askUsername();
+//                System.out.println(username);
+                result = GameManagement.userController.newUser(username);
+            } while(!result);
+            JOptionPane.showMessageDialog(
+                    null,
+                    "Username changed",
+                    "Saved",
+                    JOptionPane.INFORMATION_MESSAGE
+            );
+        }
 
         mainPanel.add(addButtons());
 
@@ -105,23 +106,30 @@ public class GameMenu {
                     rankings.show();
                 } else if (sourceText.equals("New Game")) {
 
-//                    EventQueue.invokeLater(new Runnable() {
-//                        @Override
-//                        public void run() {
-//                            bufferstrategy.GameFrame frame = new bufferstrategy.GameFrame("Simple Ball !");
-//                            frame.setLocationRelativeTo(null); // put frame at center of screen
-//                            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-//                            frame.setVisible(true);
-//                            frame.initBufferStrategy();
-//                            // Create and execute the game-loop
-//                            GameLoop game = new GameLoop(frame);
-//                            game.init();
-//                            ThreadPool.execute(game);
-//                        }
-//                    });
+                    // Initialize the global thread-pool
+//                    ThreadPool.init();
 
-                    GameFrame gameFrame = new GameFrame();
-                    gameFrame.show();
+                    // Show the game menu ...
+
+                    // After the player clicks 'PLAY' ...
+                    EventQueue.invokeLater(new Runnable() {
+                        @Override
+                        public void run() {
+                            GameFrame frame = new GameFrame("Simple Ball !");
+                            frame.setLocationRelativeTo(null); // put frame at center of screen
+                            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                            frame.setVisible(true);
+                            frame.initBufferStrategy();
+                            // Create and execute the game-loop
+                            GameLoop game = new GameLoop(frame);
+                            game.init();
+                            ThreadPool.execute(game);
+                            // and the game starts ...
+                        }
+                    });
+
+//                    GameFrame gameFrame = new GameFrame();
+//                    gameFrame.show();
                 } else {
 
                 }

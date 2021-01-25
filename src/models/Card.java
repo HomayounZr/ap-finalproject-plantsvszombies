@@ -92,4 +92,8 @@ public class Card {
     public PlantType getPlantType() {
         return plantType;
     }
+
+    public boolean getIsEnable(){
+        return isEnable;
+    }
 }

@@ -53,12 +53,12 @@ public class UserFileHelper {
         if(file.exists())
             file.delete();
 
-        ObjectOutputStream outputStream = null;
-        try{
+//        ObjectOutputStream outputStream = null;
+        try(ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file));){
 
-            Files.createFile(Paths.get(path));
-            file = new File(path);
-            outputStream = new ObjectOutputStream(new FileOutputStream(file));
+//            Files.createFile(Paths.get(path));
+//            file = new File(path);
+
 
             outputStream.writeObject(user);
 

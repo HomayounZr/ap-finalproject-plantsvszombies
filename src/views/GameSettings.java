@@ -1,5 +1,7 @@
 package views;
 
+import appStart.Configurations;
+
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -72,17 +74,19 @@ public class GameSettings {
     private class ComboModeItemListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-                try{
-                    JComboBox source = (JComboBox)e.getSource();
-//                    System.out.println(source.getSelectedItem());
-                    if(source.getSelectedItem().equals("Easy")){
-                        isEasy = true;
-                    } else {
-                        isEasy = false;
-                    }
-                } catch (ClassCastException ex){
-
+            try{
+                JComboBox source = (JComboBox)e.getSource();
+//              System.out.println(source.getSelectedItem());
+                if(source.getSelectedItem().equals("Easy")){
+                    Configurations.changeToEasy();
+                    isEasy = true;
+                } else {
+                    Configurations.changeToHard();
+                    isEasy = false;
                 }
+            } catch (ClassCastException ex){
+
+            }
         }
     }
 }
