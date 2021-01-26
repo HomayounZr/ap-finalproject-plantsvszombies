@@ -14,8 +14,8 @@ public class Bullet {
         this.coordinate = coordinate;
         this.imageUri = imageUri;
 
-        BulletLogicalThread newThread = new BulletLogicalThread(this);
-        ThreadPool.execute(newThread);
+//        BulletLogicalThread newThread = new BulletLogicalThread(this);
+//        ThreadPool.execute(newThread);
     }
 
     /**

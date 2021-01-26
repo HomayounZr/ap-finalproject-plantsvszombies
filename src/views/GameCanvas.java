@@ -29,7 +29,7 @@ public class GameCanvas extends JPanel {
 	
 	private BufferedImage bufferedScreen;
 	private Graphics2D bufferedGraphics;
-	
+
 	public GameCanvas() {
 		super(new BorderLayout());
 		setPreferredSize(new Dimension(GAME_WIDTH, GAME_HEIGHT));
@@ -81,6 +81,12 @@ public class GameCanvas extends JPanel {
 		//  on the offscreen image (using 'bufferedGraphics') ...
 		//
 
+//		if(currentCenterPanel != null){
+//			this.remove(currentCenterPanel);
+//			this.remove(currentWestPanel);
+//			this.remove(currentNorthPanel);
+//		}
+
 		createCardsPanel(state,state.getCards());
 
 		addLawnMowers(state,state.getLawnMowers());
@@ -102,6 +108,7 @@ public class GameCanvas extends JPanel {
 		@Override
 		public void run() {
 			repaint();
+			revalidate();
 			// Tell the system to do the drawing NOW;
 			// otherwise it can take a few extra ms and will feel jerky!
 			Toolkit.getDefaultToolkit().sync();
@@ -122,7 +129,7 @@ public class GameCanvas extends JPanel {
 		cardsPanel.setPreferredSize(new Dimension(64*5,102));
 		cardsPanel.setBorder(new EmptyBorder(0,30,0,0));
 //        cardsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
-		cardsPanel.setBackground(new Color(255,255,255,1));
+		cardsPanel.setBackground(new Color(255,255,255,0));
 		cardsPanel.setAlignmentY(FlowLayout.LEADING);
 
 		JLabel labelSuns = new JLabel("0");
@@ -160,7 +167,7 @@ public class GameCanvas extends JPanel {
 	private void addLawnMowers(GameState state,ArrayList<LawnMower> lawnMowers){
 		JPanel westPanel = new JPanel(new GridLayout(5,1));
 		westPanel.setPreferredSize(new Dimension(77,600));
-		westPanel.setBackground(new Color(255,255,255,1));
+		westPanel.setBackground(new Color(255,255,255,0));
 
 		int i = 0;
 		for(LawnMower lawnMower: lawnMowers){
@@ -192,9 +199,8 @@ public class GameCanvas extends JPanel {
 		gbc.weighty = (double)1 / 5;
 		JPanel centerPanel = new JPanel(centerLayout);
 		centerPanel.setPreferredSize(new Dimension(846,600));
-		centerPanel.setBackground(new Color(255,255,255,1));
+		centerPanel.setBackground(new Color(255,255,255,0));
 
-		Plant plant = new SunFlowerPlant(new Coordinate(0,0));
 		for(int i = 0;i < 5;i++){
 			for(int j = 0;j < 9;j++){
 				try{

@@ -16,7 +16,6 @@ public class GameState {
 	
 	private KeyHandler keyHandler;
 	private MouseHandler mouseHandler;
-//	private CardMouseListener cardMouseListener;
 
 	private ArrayList<Card> cards;
 	private ArrayList<LawnMower> lawnMowers;
@@ -146,18 +145,37 @@ public class GameState {
 			} else {
 				gridX = 8;
 			}
+//
+//			JOptionPane.showMessageDialog(
+//					null,
+//					"" + gridX + " " + gridY + " selected...",
+//					"" + x + " " + y,
+//					JOptionPane.INFORMATION_MESSAGE
+//			);
 
-			JOptionPane.showMessageDialog(
-					null,
-					"" + gridX + " " + gridY + " selected...",
-					"" + x + " " + y,
-					JOptionPane.INFORMATION_MESSAGE
-			);
+			Plant newPlant = null;
+			switch (selectedCard.getPlantType()){
+				case SUNFLOWER:
+					newPlant = new SunFlowerPlant(new Coordinate(gridX,gridY));
+					break;
+				case PEASHOOTER:
+					newPlant = new PeaShooterPlant(new Coordinate(gridX,gridY));
+					break;
+				case SNOWPEASHOOTER:
+					newPlant = new SnowPeaShooterPlant(new Coordinate(gridX,gridY));
+					break;
+				case GIANTWALLNUT:
+					newPlant = new WallNutPlant(new Coordinate(gridX,gridY));
+					break;
+				case CHERRYBOMB:
+					newPlant = new CherryBombPlant(new Coordinate(gridX,gridY));
+					break;
+				default:
+					break;
+			}
+			selectedCard.useCard();
 
-			plants.add(new WallNutPlant(new Coordinate(gridX,gridY)));
-			cards.get(3).useCard();
-			update();
-
+			plants.add(newPlant);
 		}
 
 		@Override
@@ -201,5 +219,7 @@ public class GameState {
 		}
 		return null;
 	}
+
+
 }
 

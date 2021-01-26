@@ -23,8 +23,8 @@ public abstract class Zombie {
         this.coordinate = coordinate;
         this.imageUri = imageUri;
 
-        ZombieLogicalThread newThread = new ZombieLogicalThread(this);
-        ThreadPool.execute(newThread);
+//        ZombieLogicalThread newThread = new ZombieLogicalThread(this);
+//        ThreadPool.execute(newThread);
     }
 
     public Coordinate getCoordinate() {

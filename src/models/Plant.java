@@ -32,8 +32,8 @@ public abstract class Plant {
         }
         this.image = _image;
 
-        PlantThread newThread = new PlantThread(this);
-        ThreadPool.execute(newThread);
+//        PlantThread newThread = new PlantThread(this);
+//        ThreadPool.execute(newThread);
     }
 
     public BufferedImage getImage() {
