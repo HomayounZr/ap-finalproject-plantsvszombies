@@ -107,7 +107,7 @@ public class GameMenu {
                 } else if (sourceText.equals("New Game")) {
 
                     // Initialize the global thread-pool
-//                    ThreadPool.init();
+                    ThreadPool.init();
 
                     // Show the game menu ...
 
@@ -115,20 +115,24 @@ public class GameMenu {
                     EventQueue.invokeLater(new Runnable() {
                         @Override
                         public void run() {
-                            GameFrame frame = new GameFrame("Simple Ball !");
+                            JFrame frame = new JFrame("PvZ: Current Game...");
+                            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                            frame.setResizable(false);
+                            // Create game canvas
+                            GameCanvas canvas = new GameCanvas();
+                            frame.setContentPane(canvas);
+                            frame.pack();
                             frame.setLocationRelativeTo(null); // put frame at center of screen
-                            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                             frame.setVisible(true);
-                            frame.initBufferStrategy();
                             // Create and execute the game-loop
-                            GameLoop game = new GameLoop(frame);
+                            GameLoop game = new GameLoop(canvas);
                             game.init();
                             ThreadPool.execute(game);
                             // and the game starts ...
                         }
                     });
 
-//                    GameFrame gameFrame = new GameFrame();
+//                    MyGameFrame gameFrame = new MyGameFrame();
 //                    gameFrame.show();
                 } else {
 

@@ -1,21 +1,34 @@
 package models;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
+
 public class LawnMower {
 
-    private String imageUrl;
+    private String imageUri;
     private int row;
+    private BufferedImage image;
 
     public LawnMower(int row){
-        imageUrl = "./images/Gifs/lawn_mower.gif";
+        imageUri = "./images/Gifs/lawn_mower.gif";
         this.row = row;
+
+        BufferedImage _image = null;
+        try{
+            _image = ImageIO.read(new File(this.imageUri));
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+        this.image = _image;
     }
 
     public void activate(){
-        imageUrl = "./images/Gifs/lawnmowerActivated.gif";
+        imageUri = "./images/Gifs/lawnmowerActivated.gif";
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getImageUri() {
+        return imageUri;
     }
 
     public int getRow() {

@@ -4,18 +4,19 @@ package models;
 import helpers.threads.PlantThread;
 import helpers.threads.ThreadPool;
 
-
-import java.util.ArrayList;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
 public abstract class Plant {
 
     private Coordinate coordinate;
     private String imageUri;
+    private BufferedImage image;
     // sun: 50, pea: 70, snowpea: 100, wall-nut: 150, cherrybomb: 70;
     private int health;
     private int actionInterval;
     private boolean isAlive;
-    public ArrayList<Bullet> bullet;
 
     public Plant(String imageUri,Coordinate coordinate,int health,int actionInterval){
         this.imageUri = imageUri;
@@ -23,10 +24,20 @@ public abstract class Plant {
         this.health = health;
         this.actionInterval = actionInterval;
         this.isAlive = true;
-        bullet = new ArrayList<Bullet>();
+        BufferedImage _image = null;
+        try{
+            _image = ImageIO.read(new File(this.imageUri));
+        } catch (Exception ex){
+
+        }
+        this.image = _image;
 
         PlantThread newThread = new PlantThread(this);
         ThreadPool.execute(newThread);
+    }
+
+    public BufferedImage getImage() {
+        return image;
     }
 
     public Coordinate getCoordinate() {

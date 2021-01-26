@@ -1,251 +1,205 @@
+/*** In The Name of Allah ***/
 package views;
 
 import models.*;
+import models.enums.PlantType;
 
-import javax.swing.plaf.basic.BasicTreeUI;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import javax.swing.*;
+import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 
+/**
+ * This class holds the state of game and all of its elements.
+ * This class also handles user inputs, which affect the game state.
+ */
 public class GameState {
+	
+	private KeyHandler keyHandler;
+	private MouseHandler mouseHandler;
+//	private CardMouseListener cardMouseListener;
 
-    private Coordinate coordinate;
-    // Fix A Number For The Initial Amount of Suns
-    private int totalSun;
-    private Plant[][] plants;
-    //For Checking the Presence of Zombies in Row , Good Help For Shooting Bullets
-    private boolean[] zombieInRow;
-    private ArrayList<Zombie> zombieList;
-    public static boolean gameOver = false;
-    private Iterator<Plant> plantIterator;
-    private int gameType;
-    //0 for the Easy
-    //1 for the Hard
-    private int waveCounter;
-    // Might Need A Frame Counter
-    private int frameCounter = 0;
-    //Defining a MouseHandler Based of Template, No KeyHandlers Might Be Needed
-    private MouseHandler mouseHandler;
+	private ArrayList<Card> cards;
+	private ArrayList<LawnMower> lawnMowers;
+	private Card selectedCard;
+	private ArrayList<Plant> plants;
 
-    public GameState(){
-        totalSun = 100;
-        plants = new Plant[5][9];
-        zombieInRow = new boolean[5];
-        for (int i = 0; i < 5; i++) {
-            zombieInRow[i] = false;
-        }
-        mouseHandler = new MouseHandler();
-        //Don't get What The Problem Is
+	public GameState() {
+		//
+		// Initialize the game state and all elements ...
+		//
 
-    }
+		cards = new ArrayList<>();
+		cards.add(new Card(PlantType.SUNFLOWER));
+		cards.add(new Card(PlantType.PEASHOOTER));
+		cards.add(new Card(PlantType.SNOWPEASHOOTER));
+		cards.add(new Card(PlantType.GIANTWALLNUT));
+		cards.add(new Card(PlantType.CHERRYBOMB));
 
-    /**
-     * The Whole Game Runs On this , First Implement other Methods like Gameover , Hit , Attack and ...
-     */
-    public void update(){
-        while (!gameOver){
+		lawnMowers = new ArrayList<>();
+		for(int i = 0;i < 5;i++){
+			lawnMowers.add(new LawnMower(i));
+		}
 
-        }
+		plants = new ArrayList<>();
+		plants.add(new PeaShooterPlant(new Coordinate(2,1)));
 
-    }
+		// initializing handlers
+		keyHandler = new KeyHandler();
+		mouseHandler = new MouseHandler();
+	}
+	
+	/**
+	 * The method which updates the game state.
+	 */
+	public void update() {
+		//
+		// Update the state of all game elements 
+		//  based on user input and elapsed time ...
+		//
+	}
 
-    /**
-     * A Method For Checking Game Ending Situations
-     * If The Zombies Reach To End of The Map , U Lose
-     */
-    public void gameOver() {
-        for (Zombie z : zombieList) {
-            if (z.getCoordinate().getAxis_x() == 0) {
-                gameOver = true;
-            }
-        }
-    }
+	public KeyListener getKeyListener() {
+		return keyHandler;
+	}
+	public MouseListener getMouseListener() {
+		return mouseHandler;
+	}
+	public MouseMotionListener getMouseMotionListener() {
+		return mouseHandler;
+	}
 
-    /**
-     * A Method For Returning The Amount of Suns That Players Have
-     * @return Total Sun
-     */
-    public int getTotalSun() {
-        return totalSun;
-    }
-    /**
-     * A Method to Know What Kinds Of Zombies Have Entered the Map
-     *
-     * @return ArrayList OF Zombies
-     */
-    public ArrayList<Zombie> getZombieList()
-    {
-        return zombieList;
-    }
+	/**
+	 * The keyboard handler.
+	 */
+	class KeyHandler implements KeyListener {
 
-    /**
-     * A Method For Knowing What Location of The Map Are Occupied
-     * @return Plants
-     */
+		@Override
+		public void keyTyped(KeyEvent e) {
+		}
 
-    public Plant[][] getPlants() {
-        return plants;
-    }
+		@Override
+		public void keyPressed(KeyEvent e) {
+			switch (e.getKeyCode()){
+				case KeyEvent.VK_ESCAPE:
+					// show pause menu
+					break;
+				default:
+					break;
+			}
+		}
 
+		@Override
+		public void keyReleased(KeyEvent e) {
+		}
 
-    /**
-     * The Next 2 Methods Are For the Attacking Effects on Zombies And Plants
-     * First The Zombie
-     */
-    public void zombieLoseHP(Zombie zombie , Bullet bullet){
-        if(bullet.getCoordinate() == zombie.getCoordinate()){
-            //Added A SetHealth Method in Zombie Class
-            // The 50 is a Prompt
-            zombie.setHealth(zombie.getHealth() - 50);
-        }
-        //Find A Way to Delete The Bullet After The Hit
-    }
+	}
 
-    /**
-     * A Method For Loss of Hp in Plants
-     */
-    public void plantLoseHp(Zombie zombie, Plant plant) {
-        if(zombie.getCoordinate() == plant.getCoordinate()){
-            //In This Place U Should Stop The Zombie From Moving
-            if(zombie instanceof BucketHeadZombie){
-                plant.decreaseHealth(50);
-            }
-            if(zombie instanceof ConeHeadZombie){
-                plant.decreaseHealth(75);
-            }
-            if(zombie instanceof NormalZombie){
-                plant.decreaseHealth(25);
-            }
-        }
-    }
+	/**
+	 * The mouse handler.
+	 */
+	class MouseHandler implements MouseListener, MouseMotionListener {
 
-    /**
-     * The Next 3 Method Are For Clearing the Map Of Elements
-     * Preferably Used in The Start of a New Game
-     *
-     *
-     * A Method for Clearing the Map Off of Zombies
-     */
+		@Override
+		public void mouseClicked(MouseEvent e) {
+		}
 
-    public void removeAllZombies() {
-        Iterator<Zombie> zombieIterator = zombieList.iterator();
-        while (zombieIterator.hasNext()) {
-            Zombie zombie = zombieIterator.next();
-            zombieIterator.remove();
-        }
-    }
+		@Override
+		public void mousePressed(MouseEvent e) {
+			// find grids
+			int gridX = 0;
+			int gridY = 0;
+//			int x = e.getX() - 77;
+//			int y = e.getY() - 102;
+			int x = e.getX();
+			int y = e.getY();
 
-    /**
-     * A Method for Clearing the Map Off of Plants
-     */
+			// finding y
+			if(y < 120){
+				gridY = 0;
+			} else if(y < 240){
+				gridY = 1;
+			} else if(y < 360){
+				gridY = 2;
+			} else if(y < 480){
+				gridY = 3;
+			} else {
+				gridY = 4;
+			}
 
-    public void removeAllPlants() {
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 9; j++) {
-                if (plants[i][j] != null) {
-                    plants[i][j] = null;
-                }
-            }
-        }
-    }
+			// finding x
+			if(x < 94){
+				gridX = 0;
+			} else if(x < 188){
+				gridX = 1;
+			} else if(x < 282){
+				gridX = 2;
+			} else if(x < 376){
+				gridX = 3;
+			} else if(x < 470){
+				gridX = 4;
+			} else if(x < 564){
+				gridX = 5;
+			} else if(x < 658){
+				gridX = 6;
+			} else if(x < 752){
+				gridX = 7;
+			} else {
+				gridX = 8;
+			}
 
-    /**
-     * A Method for Clearing the Map Off of Bullets
-     */
-    public void removeAllBullet() {
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 9; j++) {
-                if (plants[i][j] != null) {
-                    if (plants[i][j] instanceof PeaShooterPlant) {
-                        Iterator<Bullet> bulletIterator;
-                        //Adding an Extra Field In Plant Class IIIIIMMMMPPPP
-                        //So Tough To UnderStand , Try For A Better Approach
-                        bulletIterator = plants[i][j].bullet.iterator();
-                        while (bulletIterator.hasNext()) {
-                            Bullet bullet = bulletIterator.next();
-                            bulletIterator.remove();
-                        }
-                    }
-                }
-            }
-        }
-    }
-    public MouseListener getMouseListener() {
-        return mouseHandler;
-    }
+			JOptionPane.showMessageDialog(
+					null,
+					"" + gridX + " " + gridY + " selected...",
+					"" + x + " " + y,
+					JOptionPane.INFORMATION_MESSAGE
+			);
 
-    public MouseMotionListener getMouseMotionListener() {
-        return mouseHandler;
-    }
+			plants.add(new WallNutPlant(new Coordinate(gridX,gridY)));
+			cards.get(3).useCard();
+			update();
 
+		}
 
+		@Override
+		public void mouseReleased(MouseEvent e) {
+		}
 
-    /**
-     * This Event Only Happens When We Want To Deploy a Plant in the Map
-     * We Need one these For Gathering the Random Suns In The Map
-     *
-     *
-     * THE NUMBERS ARE FAKE , JUST TO SHOW THE 5 CARDS TO CHOSE AND THE RANGE BETWEEN THEM
-     * SHOULD FIND THE RIGHT NUMBERS
-     *
-     */
-    //Only a MouseHandler Needed , No KeyHandlers
-    class MouseHandler implements MouseListener, MouseMotionListener {
+		@Override
+		public void mouseEntered(MouseEvent e) {
+		}
 
+		@Override
+		public void mouseExited(MouseEvent e) {
+		}
 
-        @Override
-        public void mouseClicked(MouseEvent e) {
-            int selectedCard = -1;
-            int locationX= coordinate.getAxis_x();
-            int locationY = coordinate.getAxis_y();
-            if (locationY < 35 && locationY > 10) {
-                if (locationX < 15 && locationX > 10 ) {
-                    selectedCard = 0;
-                }
-                if (locationX < 21 && locationX > 16 && totalSun >= 100) {
-                        selectedCard = 1;
-                }
-                if (locationX < 27 && locationX > 22 && totalSun >= 50) {
-                    selectedCard= 2;
-                }
-                if ( locationX < 33 && locationX > 28 && totalSun >= 175) {
-                    selectedCard = 3;
-                }
-                if (locationX < 39 && locationX > 34 && totalSun >= 150) {
-                    selectedCard = 4;
-                }
-            }
-            if (locationX < 76.5 && locationX > 40 && locationY< 59.5 && locationY > 13 && selectedCard != -1) {
-                //The Above Parameters Should Be In the 9X5 of The Map
-                //Plant Hast Been Planted
-            }
-        }
+		@Override
+		public void mouseDragged(MouseEvent e) {
+		}
 
-        @Override
-        public void mousePressed(MouseEvent e) {
-        }
+		@Override
+		public void mouseMoved(MouseEvent e) {
+		}
+	}
 
-        @Override
-        public void mouseReleased(MouseEvent e) {
-        }
+	public ArrayList<Card> getCards() {
+		return cards;
+	}
 
-        @Override
-        public void mouseEntered(MouseEvent e) {
-        }
+	public ArrayList<LawnMower> getLawnMowers() {
+		return lawnMowers;
+	}
 
-        @Override
-        public void mouseExited(MouseEvent e) {
-        }
+	public void changeSelectedCard(Card card){
+		this.selectedCard = card;
+		System.out.println(card.getName() + " is " + (card.getIsEnable() ? "available" : "reloading"));
+	}
 
-        @Override
-        public void mouseDragged(MouseEvent e) {
-        }
-
-        @Override
-        public void mouseMoved(MouseEvent e) {
-        }
-    }
-
+	public Plant checkPlantExist(int x,int y){
+		for(Plant plant: plants){
+			if(plant.getCoordinate().equals(new Coordinate(x,y)))
+				return plant;
+		}
+		return null;
+	}
 }
+

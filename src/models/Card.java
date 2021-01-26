@@ -3,7 +3,12 @@ package models;
 import appStart.Configurations;
 import models.enums.PlantType;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.lang.module.Configuration;
+import java.nio.Buffer;
 
 public class Card {
 
@@ -13,6 +18,7 @@ public class Card {
     private int sunsNeed;
     private PlantType plantType;
     private boolean isEnable;
+    private BufferedImage image;
 
     public Card(PlantType type){
         this.plantType = type;
@@ -63,6 +69,13 @@ public class Card {
         this.imageUri = imageUri;
         this.reloadTime = reloadTime;
         this.sunsNeed = suns;
+        BufferedImage _image = null;
+        try{
+            _image = ImageIO.read(new File(this.getImageUri()));
+        } catch (Exception ex){
+
+        }
+        this.image = _image;
     }
 
     public int getSunsNeed() {
@@ -95,5 +108,9 @@ public class Card {
 
     public boolean getIsEnable(){
         return isEnable;
+    }
+
+    public BufferedImage getImage() {
+        return image;
     }
 }
