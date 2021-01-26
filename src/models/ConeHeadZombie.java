@@ -13,7 +13,17 @@ public class ConeHeadZombie extends Zombie {
                 Configurations.zombieConeHeadSpeed
         );
     }
-
+    /**
+     * This Method Is for the Action of Losing the Cone
+     * for the Zombie When Its HP is lower than A Specified Number
+     * @param zombie
+     * @param imageUri
+     */
+    public void loseCone(ConeHeadZombie zombie, String imageUri){
+        if(zombie.getHealth()<100){
+            zombie.setImageUri(imageUri);
+        }
+    }
     @Override
     public void attack() {
 

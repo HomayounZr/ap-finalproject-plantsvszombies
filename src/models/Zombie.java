@@ -43,6 +43,10 @@ public abstract class Zombie {
         return imageUri;
     }
 
+    public void setImageUri(String imageUri){
+        this.imageUri = imageUri;
+    }
+
     public int getHealth() {
         return health;
     }

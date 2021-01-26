@@ -17,9 +17,12 @@ public class SunFlowerPlant extends Plant {
         super.changeImageToDying("./images/Gifs/sun_flower_dying.gif");
     }
 
-    @Override
-    public void doAction(){
-        // code to generate suns
+    public void doAction(SunFlowerPlant sunFlowerPlant){
+        Sun sun = new Sun(sunFlowerPlant.getCoordinate());
     }
 
+    @Override
+    public void doAction() {
+
+    }
 }

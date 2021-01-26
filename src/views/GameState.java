@@ -14,6 +14,7 @@ public class GameState {
     private Coordinate coordinate;
     // Fix A Number For The Initial Amount of Suns
     private int totalSun;
+    private LawnMower[] lawnMowers;
     private Plant[][] plants;
     //For Checking the Presence of Zombies in Row , Good Help For Shooting Bullets
     private boolean[] zombieInRow;
@@ -88,7 +89,9 @@ public class GameState {
     public Plant[][] getPlants() {
         return plants;
     }
-
+    public LawnMower[] getLawnMowers(){
+        return lawnMowers;
+    }
 
     /**
      * The Next 2 Methods Are For the Attacking Effects on Zombies And Plants
