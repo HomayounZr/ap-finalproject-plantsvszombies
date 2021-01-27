@@ -1,20 +1,21 @@
 package models;
 
 import appStart.Configurations;
+import helpers.BufferedImages;
 
 public class SunFlowerPlant extends Plant {
 
     public SunFlowerPlant(Coordinate coordinate){
         super(
-                "./images/Gifs/sun_flower.gif",
                 coordinate,
                 50,
-                Configurations.sunLoadPlant
+                Configurations.sunLoadPlant,
+                BufferedImages.plant_sunflower
         );
     }
 
     public void changeImageToDying(){
-        super.changeImageToDying("./images/Gifs/sun_flower_dying.gif");
+        super.changeImageToDying(BufferedImages.plant_sunflower_dying);
     }
 
     @Override

@@ -1,18 +1,20 @@
 package models;
 
+import helpers.BufferedImages;
+
 public class SnowPeaShooterPlant extends Plant {
 
     public SnowPeaShooterPlant(Coordinate coordinate){
         super(
-                "./images/Gifs/freezepeashooter.gif",
                 coordinate,
                 100,
-                1
+                1,
+                BufferedImages.plant_snowpeashooter
         );
     }
 
     public void changeImageToDying(){
-        super.changeImageToDying("./images/Gifs/freezepeashooter.gif");
+        super.changeImageToDying(BufferedImages.plant_snowpeashooter_dying);
     }
 
     @Override

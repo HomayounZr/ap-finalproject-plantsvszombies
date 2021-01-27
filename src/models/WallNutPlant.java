@@ -1,18 +1,20 @@
 package models;
 
+import helpers.BufferedImages;
+
 public class WallNutPlant extends Plant {
 
     public WallNutPlant(Coordinate coordinate){
         super(
-                "./images/Gifs/walnut_full_life.gif",
                 coordinate,
                 150,
-                1
+                1,
+                BufferedImages.plant_giantwallnut
         );
     }
 
     public void changeImageToDying(){
-        super.changeImageToDying("./images/Gifs/wallnut_half_life.gif");
+        super.changeImageToDying(BufferedImages.plant_giantwallnut_dying);
     }
 
     @Override

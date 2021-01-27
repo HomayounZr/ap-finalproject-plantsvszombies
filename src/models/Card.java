@@ -1,6 +1,8 @@
 package models;
 
 import appStart.Configurations;
+import helpers.BufferedImages;
+import helpers.threads.ThreadPool;
 import models.enums.PlantType;
 
 import javax.imageio.ImageIO;
@@ -13,7 +15,7 @@ import java.nio.Buffer;
 public class Card {
 
     private String name;
-    private String imageUri;
+//    private String imageUri;
     private double reloadTime;
     private int sunsNeed;
     private PlantType plantType;
@@ -34,31 +36,31 @@ public class Card {
         switch (type){
             case SUNFLOWER:
                 name = "Sun flower";
-                imageUri = "./images/Cards/card_sunflower.png";
+                image = BufferedImages.card_sunflower;
                 reloadTime = Configurations.reloadSunFlower;
                 suns = 50;
                 break;
             case PEASHOOTER:
                 name = "Pea Shooter";
-                imageUri = "./images/Cards/card_peashooter.png";
+                image = BufferedImages.card_peashooter;
                 reloadTime = Configurations.reloadPeaShooter;
                 suns = 100;
                 break;
             case SNOWPEASHOOTER:
                 name = "Snow Pea Shooter";
-                imageUri = "./images/Cards/card_freezepeashooter.png";
+                image = BufferedImages.card_snowpeashooter;
                 reloadTime = Configurations.reloadSnowPeaShooter;
                 suns = 175;
                 break;
             case GIANTWALLNUT:
                 name = "Giant Wall Nut";
-                imageUri = "./images/Cards/card_wallnut.png";
+                image = BufferedImages.card_giantwallnut;
                 reloadTime = Configurations.reloadWallNut;
                 suns = 50;
                 break;
             case CHERRYBOMB:
                 name = "Cherry Bomb";
-                imageUri = "./images/Cards/card_cherrybomb.png";
+                image = BufferedImages.card_cherrybomb;
                 reloadTime = Configurations.reloadCherryBomb;
                 suns = 150;
                 break;
@@ -66,16 +68,8 @@ public class Card {
                 break;
         }
         this.name = name;
-        this.imageUri = imageUri;
         this.reloadTime = reloadTime;
         this.sunsNeed = suns;
-        BufferedImage _image = null;
-        try{
-            _image = ImageIO.read(new File(this.getImageUri()));
-        } catch (Exception ex){
-
-        }
-        this.image = _image;
     }
 
     public int getSunsNeed() {
@@ -86,16 +80,13 @@ public class Card {
         return reloadTime;
     }
 
-    public String getImageUri() {
-        return imageUri;
-    }
-
     public String getName() {
         return name;
     }
 
     public void useCard(){
         this.isEnable = false;
+        ThreadPool.execute(new CardReloadThread(this));
     }
 
     public void enableCard(){
@@ -112,5 +103,22 @@ public class Card {
 
     public BufferedImage getImage() {
         return image;
+    }
+}
+
+class CardReloadThread implements Runnable{
+    private Card card;
+    public CardReloadThread(Card card){
+        this.card = card;
+    }
+
+    @Override
+    public void run() {
+        try{
+            Thread.sleep((int)(card.getReloadTime() * 1000));
+            card.enableCard();
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
     }
 }

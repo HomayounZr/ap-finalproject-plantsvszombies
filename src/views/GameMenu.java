@@ -1,6 +1,7 @@
 package views;
 
 import appStart.GameManagement;
+import helpers.BufferedImages;
 import helpers.threads.ThreadPool;
 import models.User;
 import myComponents.ImagePanel;
@@ -106,10 +107,10 @@ public class GameMenu {
                     rankings.show();
                 } else if (sourceText.equals("New Game")) {
 
+                    // initializing buffered images
+                    BufferedImages.init();
                     // Initialize the global thread-pool
                     ThreadPool.init();
-
-                    // Show the game menu ...
 
                     // After the player clicks 'PLAY' ...
                     EventQueue.invokeLater(new Runnable() {

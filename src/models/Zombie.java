@@ -1,5 +1,6 @@
 package models;
 
+import helpers.BufferedImages;
 import helpers.threads.ZombieGuiThread;
 import helpers.threads.ZombieLogicalThread;
 import helpers.threads.ThreadPool;
@@ -19,7 +20,7 @@ public abstract class Zombie {
     private double speed;
     private int damage;
     private Coordinate coordinate;
-    private String imageUri;
+//    private String imageUri;
     // new
     private BufferedImage image;
 
@@ -27,19 +28,13 @@ public abstract class Zombie {
     private int x;
     private int y;
 
-    public Zombie(String imageUri,Coordinate coordinate,int health, int damage, double speed){
+    public Zombie(BufferedImage image,Coordinate coordinate,int health, int damage, double speed){
         this.health = health;
         this.damage = damage;
         this.speed = speed;
         this.coordinate = coordinate;
-        this.imageUri = imageUri;
+        this.image = image;
 
-        BufferedImage _image = null;
-        try{
-            _image = ImageIO.read(new File("./images/Gifs/zombie_normal.gif"));
-        } catch (Exception ex){
-        }
-        this.image = _image;
 //        ZombieLogicalThread newThread = new ZombieLogicalThread(this);
 //        ThreadPool.execute(newThread);
 
@@ -63,15 +58,14 @@ public abstract class Zombie {
         return speed;
     }
 
-    public String getImageUri() {
-        return imageUri;
-    }
-
     public int getHealth() {
         return health;
     }
+
     public void setHealth(int health){
         this.health = health;
+        if(health <= 200)
+            image = BufferedImages.zombie_normal;
     }
 
     public int getDamage() {

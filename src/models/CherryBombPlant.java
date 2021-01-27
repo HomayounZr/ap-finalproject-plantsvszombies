@@ -1,18 +1,20 @@
 package models;
 
+import helpers.BufferedImages;
+
 public class CherryBombPlant extends Plant {
 
     public CherryBombPlant(Coordinate coordinate){
         super(
-                "./images/Gifs/beetroot.gif", // didn't have cherry bomb gif
                 coordinate,
                 70,
-                1
+                1,
+                BufferedImages.plant_cherrybomb
         );
     }
 
     public void changeImageToDying(){
-        super.changeImageToDying("./images/Gifs/beetroot_dying.gif");
+        super.changeImageToDying(BufferedImages.plant_cherrybomb_dying);
     }
 
     @Override

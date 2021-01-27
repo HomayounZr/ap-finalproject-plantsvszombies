@@ -1,36 +1,23 @@
 package models;
 
-
-import helpers.threads.PlantThread;
-import helpers.threads.ThreadPool;
-
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.File;
 
 public abstract class Plant {
 
     private Coordinate coordinate;
-    private String imageUri;
+//    private String imageUri;
     private BufferedImage image;
     // sun: 50, pea: 70, snowpea: 100, wall-nut: 150, cherrybomb: 70;
     private int health;
     private int actionInterval;
     private boolean isAlive;
 
-    public Plant(String imageUri,Coordinate coordinate,int health,int actionInterval){
-        this.imageUri = imageUri;
+    public Plant(Coordinate coordinate,int health,int actionInterval,BufferedImage image){
         this.coordinate = coordinate;
         this.health = health;
         this.actionInterval = actionInterval;
         this.isAlive = true;
-        BufferedImage _image = null;
-        try{
-            _image = ImageIO.read(new File(this.imageUri));
-        } catch (Exception ex){
-
-        }
-        this.image = _image;
+        this.image = image;
 
 //        PlantThread newThread = new PlantThread(this);
 //        ThreadPool.execute(newThread);
@@ -42,10 +29,6 @@ public abstract class Plant {
 
     public Coordinate getCoordinate() {
         return coordinate;
-    }
-
-    public String getImageUri() {
-        return imageUri;
     }
 
     public int getActionInterval() {
@@ -65,8 +48,8 @@ public abstract class Plant {
     }
 
     // when the plant was dying
-    public void changeImageToDying(String imageUri) {
-        this.imageUri = imageUri;
+    public void changeImageToDying(BufferedImage image) {
+        this.image = image;
     }
 
     // doing what it should does after some time

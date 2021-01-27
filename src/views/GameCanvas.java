@@ -109,8 +109,8 @@ public class GameCanvas extends JPanel {
 	private final Runnable doRepaint = new Runnable() {
 		@Override
 		public void run() {
-			repaint();
 			revalidate();
+			repaint();
 			// Tell the system to do the drawing NOW;
 			// otherwise it can take a few extra ms and will feel jerky!
 			Toolkit.getDefaultToolkit().sync();
@@ -134,7 +134,7 @@ public class GameCanvas extends JPanel {
 		cardsPanel.setBackground(new Color(255,255,255,0));
 		cardsPanel.setAlignmentY(FlowLayout.LEADING);
 
-		JLabel labelSuns = new JLabel("0");
+		JLabel labelSuns = new JLabel("" + state.getPlayerSuns());
 		labelSuns.setFont(new Font(null,Font.BOLD,20));
 		labelSuns.setPreferredSize(new Dimension(64,102));
 		labelSuns.setBorder(new EmptyBorder(60,0,0,0));

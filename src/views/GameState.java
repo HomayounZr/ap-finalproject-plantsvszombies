@@ -2,6 +2,7 @@
 package views;
 
 import helpers.ZombieGenerator;
+import helpers.threads.SkySunGenerator;
 import helpers.threads.ThreadPool;
 import models.*;
 import models.enums.PlantType;
@@ -22,10 +23,13 @@ public class GameState {
 	private ArrayList<Card> cards;
 	private ArrayList<LawnMower> lawnMowers;
 	private Card selectedCard;
-	private ArrayList<Plant> plants;
+	private Plant[][] plants;
 	private ArrayList<Zombie> zombies;
+	private ArrayList<Sun> suns;
+	private int playerSuns;
 
 	private ZombieGenerator zombieGenerator;
+	private SkySunGenerator skySunGenerator;
 
 	public GameState() {
 		//
@@ -44,11 +48,15 @@ public class GameState {
 			lawnMowers.add(new LawnMower(i));
 		}
 
-		plants = new ArrayList<>();
+//		plants = new ArrayList<>();
+		plants = new Plant[9][5];
+
+		playerSuns = 1000;
+		skySunGenerator = new SkySunGenerator(suns);
 
 		zombies = new ArrayList<>();
-		zombieGenerator = new ZombieGenerator(zombies,5,1);
-		ThreadPool.execute(zombieGenerator);
+//		zombieGenerator = new ZombieGenerator(zombies,5,1);
+//		ThreadPool.execute(zombieGenerator);
 
 		// initializing handlers
 		keyHandler = new KeyHandler();
@@ -112,6 +120,10 @@ public class GameState {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
+
+			if(selectedCard == null)
+				return;
+
 			// find grids
 			int gridX = 0;
 			int gridY = 0;
@@ -174,11 +186,11 @@ public class GameState {
 				default:
 					break;
 			}
+			playerSuns -= selectedCard.getSunsNeed();
 			selectedCard.useCard();
 			selectedCard = null;
 
-			plants = new ArrayList<>();
-			plants.add(newPlant);
+			plants[gridX][gridY] = newPlant;
 		}
 
 		@Override
@@ -215,18 +227,20 @@ public class GameState {
 	}
 
 	public void changeSelectedCard(Card card){
-		this.selectedCard = card;
+		if(card.getIsEnable())
+			if(playerSuns >= card.getSunsNeed())
+				this.selectedCard = card;
+
 		System.out.println(card.getName() + " is " + (card.getIsEnable() ? "available" : "reloading"));
 	}
 
-	public Plant checkPlantExist(int x,int y){
-		for(Plant plant: plants){
-			if(plant.getCoordinate().equals(new Coordinate(x,y)))
-				return plant;
-		}
-		return null;
+	public int getPlayerSuns() {
+		return playerSuns;
 	}
 
+	public Plant checkPlantExist(int x, int y){
+		return plants[x][y];
+	}
 
 }
 

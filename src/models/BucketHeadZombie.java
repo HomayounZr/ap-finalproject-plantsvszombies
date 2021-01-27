@@ -1,12 +1,13 @@
 package models;
 
 import appStart.Configurations;
+import helpers.BufferedImages;
 
 public class BucketHeadZombie extends Zombie {
 
     public BucketHeadZombie(Coordinate coordinate){
         super(
-                "./images/Gifs/bucketheadzombie.gif",
+                BufferedImages.zombie_buckethead,
                 coordinate,
                 200,
                 Configurations.zombieNormalDamage,
