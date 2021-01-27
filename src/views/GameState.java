@@ -47,9 +47,48 @@ public class GameState {
      */
     public void update(){
         while (!gameOver){
+            gameOver();
+            if (frameCounter == 0) {
+                waveCounter++;
+                System.out.println("Wave :" + waveCounter );
+            }
+            //Zombie Location
+            int x;
+            int y;
+            //Plant Location
+            int plantLocX, plantLocY;
+            frameCounter++;
+            stop();
 
         }
 
+    }
+
+    /**
+     * Zombie Collision Handled
+     */
+    public void stop() {
+
+        for (Zombie z : zombieList) {
+            boolean stoppedByAnother;
+            if (z.stoppedByAnother) {
+                z.zombieMove = true;
+                z.stoppedByAnother = false;
+            }
+        }
+
+        for (Zombie x : zombieList) {
+            for (Zombie y : zombieList) {
+                if (!x.zombieMove && y.zombieMove && x.getCoordinate().getAxis_y() + 40 == y.getCoordinate().getAxis_x() && x.getCoordinate().getAxis_x() == y.getCoordinate().getAxis_y()) {
+                    y.zombieMove = false;
+                    y.stoppedByAnother = true;
+                }
+                if (x.counter > 0 && x.getCoordinate().getAxis_y() + 40 == y.getCoordinate().getAxis_x() && x.getCoordinate().getAxis_x() == y.getCoordinate().getAxis_y()) {
+                    y.zombieMove = false;
+                    y.stoppedByAnother = true;
+                }
+            }
+        }
     }
 
     /**

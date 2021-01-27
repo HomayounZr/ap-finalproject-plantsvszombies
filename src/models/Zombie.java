@@ -15,6 +15,9 @@ public abstract class Zombie {
     private int damage;
     private Coordinate coordinate;
     private String imageUri;
+    public boolean zombieMove = true;
+    public boolean stoppedByAnother = false;
+    public int counter;
 
     public Zombie(String imageUri,Coordinate coordinate,int health, int damage, double speed){
         this.health = health;
