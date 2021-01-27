@@ -87,6 +87,8 @@ public class GameCanvas extends JPanel {
 //			this.remove(currentNorthPanel);
 //		}
 
+//		removeAll();
+
 		createCardsPanel(state,state.getCards());
 
 		addLawnMowers(state,state.getLawnMowers());
@@ -193,32 +195,44 @@ public class GameCanvas extends JPanel {
 	}
 
 	private void addCenterPanel(GameState state){
+		JLayeredPane layeredPane = new JLayeredPane();
+		layeredPane.setBounds(77,102,846,600);
+//		layeredPane.setSize(846,600);
+//		layeredPane.setPreferredSize(new Dimension(846,600));
+//
+
 		GridBagLayout centerLayout = new GridBagLayout();
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.weightx = (double)1 / 9;
 		gbc.weighty = (double)1 / 5;
 		JPanel centerPanel = new JPanel(centerLayout);
-		centerPanel.setPreferredSize(new Dimension(846,600));
-		centerPanel.setBackground(new Color(255,255,255,0));
+		centerPanel.setBounds(0,0,846,600);
+//		centerPanel.setPreferredSize(new Dimension(846,600));
+		centerPanel.setBackground(new Color(0,0,0,0));
+		centerPanel.setOpaque(true);
+//		centerPanel.setOpaque(true);
 
 		for(int i = 0;i < 5;i++){
 			for(int j = 0;j < 9;j++){
 				try{
 
-					JLabel label;
 					Plant cellPlant = state.checkPlantExist(j,i);
-					if(cellPlant == null){
-						label = new JLabel();
-					} else {
+					if(cellPlant != null){
 						ImageIcon icon = new ImageIcon(cellPlant.getImage());
-						label = new JLabel(icon);
+						JLabel label = new JLabel(icon);
+						gbc.gridx = j;
+						gbc.gridy = i;
+						label.setPreferredSize(new Dimension(94,120));
+						centerLayout.setConstraints(label,gbc);
+						centerPanel.add(label);
+					} else {
+						JLabel label = new JLabel();
+						gbc.gridx = j;
+						gbc.gridy = i;
+						label.setPreferredSize(new Dimension(94,120));
+						centerLayout.setConstraints(label,gbc);
+						centerPanel.add(label);
 					}
-
-					gbc.gridx = j;
-					gbc.gridy = i;
-					label.setPreferredSize(new Dimension(94,120));
-					centerLayout.setConstraints(label,gbc);
-					centerPanel.add(label);
 
 				} catch (Exception ex){
 					ex.printStackTrace();
@@ -227,7 +241,33 @@ public class GameCanvas extends JPanel {
 		}
 
 		centerPanel.addMouseListener(state.getMouseListener());
+//		layeredPane.add(centerPanel,JLayeredPane.POPUP_LAYER);
 
-		this.add(centerPanel,BorderLayout.CENTER);
+//		FlowLayout layout = new FlowLayout();
+//		layout.setAlignment(FlowLayout.RIGHT);
+		JPanel panel = new JPanel(null);
+//		panel.setPreferredSize(new Dimension(846,600));
+		panel.setBounds(0,0,846,600);
+		panel.setBackground(new Color(255,255,255,0));
+		for(Zombie zombie: state.getZombies()){
+			try{
+
+				ImageIcon icon = new ImageIcon(zombie.getImage());
+				JLabel label = new JLabel(icon);
+				label.setBackground(Color.BLUE);
+				label.setBounds(zombie.getX(),zombie.getY(),150,150);
+				panel.add(label);
+//				ThreadPool.execute(new MoveThread(label));
+
+			} catch(Exception ex){
+				ex.printStackTrace();
+			}
+		}
+		panel.setOpaque(false);
+
+		layeredPane.add(centerPanel,Integer.valueOf(1));
+		layeredPane.add(panel,Integer.valueOf(2));
+
+		this.add(layeredPane,BorderLayout.CENTER);
 	}
 }

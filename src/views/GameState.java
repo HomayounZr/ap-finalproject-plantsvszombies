@@ -1,6 +1,8 @@
 /*** In The Name of Allah ***/
 package views;
 
+import helpers.ZombieGenerator;
+import helpers.threads.ThreadPool;
 import models.*;
 import models.enums.PlantType;
 
@@ -21,6 +23,9 @@ public class GameState {
 	private ArrayList<LawnMower> lawnMowers;
 	private Card selectedCard;
 	private ArrayList<Plant> plants;
+	private ArrayList<Zombie> zombies;
+
+	private ZombieGenerator zombieGenerator;
 
 	public GameState() {
 		//
@@ -40,7 +45,10 @@ public class GameState {
 		}
 
 		plants = new ArrayList<>();
-		plants.add(new PeaShooterPlant(new Coordinate(2,1)));
+
+		zombies = new ArrayList<>();
+		zombieGenerator = new ZombieGenerator(zombies,5,1);
+		ThreadPool.execute(zombieGenerator);
 
 		// initializing handlers
 		keyHandler = new KeyHandler();
@@ -145,13 +153,6 @@ public class GameState {
 			} else {
 				gridX = 8;
 			}
-//
-//			JOptionPane.showMessageDialog(
-//					null,
-//					"" + gridX + " " + gridY + " selected...",
-//					"" + x + " " + y,
-//					JOptionPane.INFORMATION_MESSAGE
-//			);
 
 			Plant newPlant = null;
 			switch (selectedCard.getPlantType()){
@@ -174,7 +175,9 @@ public class GameState {
 					break;
 			}
 			selectedCard.useCard();
+			selectedCard = null;
 
+			plants = new ArrayList<>();
 			plants.add(newPlant);
 		}
 
@@ -205,6 +208,10 @@ public class GameState {
 
 	public ArrayList<LawnMower> getLawnMowers() {
 		return lawnMowers;
+	}
+
+	public ArrayList<Zombie> getZombies() {
+		return zombies;
 	}
 
 	public void changeSelectedCard(Card card){

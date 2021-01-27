@@ -1,7 +1,12 @@
 package models;
 
+import helpers.threads.ZombieGuiThread;
 import helpers.threads.ZombieLogicalThread;
 import helpers.threads.ThreadPool;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
 /**
  * this class represents a zombie
@@ -15,6 +20,12 @@ public abstract class Zombie {
     private int damage;
     private Coordinate coordinate;
     private String imageUri;
+    // new
+    private BufferedImage image;
+
+    // adding x and y for easier rendering in GameCanvas
+    private int x;
+    private int y;
 
     public Zombie(String imageUri,Coordinate coordinate,int health, int damage, double speed){
         this.health = health;
@@ -23,8 +34,21 @@ public abstract class Zombie {
         this.coordinate = coordinate;
         this.imageUri = imageUri;
 
+        BufferedImage _image = null;
+        try{
+            _image = ImageIO.read(new File("./images/Gifs/zombie_normal.gif"));
+        } catch (Exception ex){
+        }
+        this.image = _image;
 //        ZombieLogicalThread newThread = new ZombieLogicalThread(this);
 //        ThreadPool.execute(newThread);
+
+        ZombieGuiThread guiThread = new ZombieGuiThread(this);
+        ThreadPool.execute(guiThread);
+    }
+
+    public BufferedImage getImage() {
+        return image;
     }
 
     public Coordinate getCoordinate() {
@@ -60,4 +84,19 @@ public abstract class Zombie {
         setCoordinate(new Coordinate(coordinate.getAxis_x() - 1,coordinate.getAxis_y()));
     }
 
+    public int getX() {
+        return x;
+    }
+
+    public void setX(int x) {
+        this.x = x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public void setY(int y) {
+        this.y = y;
+    }
 }
