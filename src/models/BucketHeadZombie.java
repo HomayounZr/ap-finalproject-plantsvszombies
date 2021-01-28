@@ -2,6 +2,7 @@ package models;
 
 import appStart.Configurations;
 import helpers.BufferedImages;
+import helpers.ImageIcons;
 
 public class BucketHeadZombie extends Zombie {
 
@@ -11,7 +12,9 @@ public class BucketHeadZombie extends Zombie {
                 coordinate,
                 200,
                 Configurations.zombieNormalDamage,
-                Configurations.zombieNormalSpeed);
+                Configurations.zombieNormalSpeed,
+                ImageIcons.zombie_buckethead
+        );
     }
 
     @Override

@@ -5,9 +5,15 @@ import models.Plant;
 public class PlantThread implements Runnable {
 
     private Plant plant;
+    private boolean alive;
 
     public PlantThread(Plant plant){
         this.plant = plant;
+        this.alive = true;
+    }
+
+    public void stopThread(){
+        this.alive = false;
     }
 
     @Override
@@ -15,9 +21,9 @@ public class PlantThread implements Runnable {
 
         try{
 
-            while(plant.getIsAlive()){
-                Thread.sleep(plant.getActionInterval());
+            while(alive){
                 plant.doAction();
+                Thread.sleep(plant.getActionInterval() * 1000);
             }
 
         } catch (InterruptedException ex){

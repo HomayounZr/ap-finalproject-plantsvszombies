@@ -2,6 +2,7 @@ package models;
 
 import appStart.Configurations;
 import helpers.BufferedImages;
+import helpers.ImageIcons;
 import helpers.threads.ThreadPool;
 import models.enums.PlantType;
 
@@ -21,6 +22,7 @@ public class Card {
     private PlantType plantType;
     private boolean isEnable;
     private BufferedImage image;
+    private ImageIcon imageIcon;
 
     public Card(PlantType type){
         this.plantType = type;
@@ -37,30 +39,35 @@ public class Card {
             case SUNFLOWER:
                 name = "Sun flower";
                 image = BufferedImages.card_sunflower;
+                imageIcon = ImageIcons.card_sunflower;
                 reloadTime = Configurations.reloadSunFlower;
                 suns = 50;
                 break;
             case PEASHOOTER:
                 name = "Pea Shooter";
                 image = BufferedImages.card_peashooter;
+                imageIcon = ImageIcons.card_peashooter;
                 reloadTime = Configurations.reloadPeaShooter;
                 suns = 100;
                 break;
             case SNOWPEASHOOTER:
                 name = "Snow Pea Shooter";
                 image = BufferedImages.card_snowpeashooter;
+                imageIcon = ImageIcons.card_snowpeashooter;
                 reloadTime = Configurations.reloadSnowPeaShooter;
                 suns = 175;
                 break;
             case GIANTWALLNUT:
                 name = "Giant Wall Nut";
                 image = BufferedImages.card_giantwallnut;
+                imageIcon = ImageIcons.card_giantwallnut;
                 reloadTime = Configurations.reloadWallNut;
                 suns = 50;
                 break;
             case CHERRYBOMB:
                 name = "Cherry Bomb";
                 image = BufferedImages.card_cherrybomb;
+                imageIcon = ImageIcons.card_cherrybomb;
                 reloadTime = Configurations.reloadCherryBomb;
                 suns = 150;
                 break;
@@ -70,6 +77,10 @@ public class Card {
         this.name = name;
         this.reloadTime = reloadTime;
         this.sunsNeed = suns;
+    }
+
+    public ImageIcon getImageIcon() {
+        return imageIcon;
     }
 
     public int getSunsNeed() {

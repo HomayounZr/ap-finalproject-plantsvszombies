@@ -2,6 +2,7 @@ package models;
 
 import appStart.Configurations;
 import helpers.BufferedImages;
+import helpers.ImageIcons;
 
 public class ConeHeadZombie extends Zombie {
 
@@ -11,7 +12,8 @@ public class ConeHeadZombie extends Zombie {
                 coordinate,
                 200,
                 Configurations.zombieConeHeadDamage,
-                Configurations.zombieConeHeadSpeed
+                Configurations.zombieConeHeadSpeed,
+                ImageIcons.zombie_conehead
         );
     }
 

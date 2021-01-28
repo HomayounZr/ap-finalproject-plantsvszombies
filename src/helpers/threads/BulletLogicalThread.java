@@ -24,28 +24,31 @@ public class BulletLogicalThread implements Runnable {
             Iterator<Bullet> bulletIt;
             while(true){
 
-                bulletIt = bullets.iterator();
-                while(bulletIt.hasNext()){
-                    Bullet bullet = bulletIt.next();
-                    // check if hit zombie erase bullet
-                    Zombie zombie = checkHitZombie(bullet);
-                    if(zombie != null){
+                synchronized (bullets){
+                    bulletIt = bullets.iterator();
+                    while(bulletIt.hasNext()){
+                        Bullet bullet = bulletIt.next();
+                        bullet.moveOneStateRight();
 
-                        zombie.setHealth(zombie.getHealth() - bullet.getDamage());
-                        bulletIt.remove();
-                        if(zombie.getHealth() <= 0)
-                            zombies.remove(zombie);
 
-                        break;
+                        // check if hit zombie erase bullet
+                        Zombie zombie = checkHitZombie(bullet);
+                        if(zombie != null){
+
+                            zombie.setHealth(zombie.getHealth() - bullet.getDamage());
+                            bullets.remove(bullet);
+                            if(zombie.getHealth() <= 0)
+                                zombies.remove(zombie);
+                        }
+
+                        // check if bullet is at the end of map
+                        if(bullet.getCoordinate().getAxis_x() > 8)
+                            bullets.remove(bullet);
+
+    //                    System.out.println(bullet.getCoordinate().getAxis_x() + " - " + bullet.getCoordinate().getAxis_y());
                     }
-
-                    // check if bullet is at the end of map
-                    if(bullet.getCoordinate().getAxis_x() > 8)
-                        bulletIt.remove();
-
-                    bullet.moveOneStateRight();
-//                    System.out.println(bullet.getCoordinate().getAxis_x() + " - " + bullet.getCoordinate().getAxis_y());
                 }
+
 
                 Thread.sleep(100);
 

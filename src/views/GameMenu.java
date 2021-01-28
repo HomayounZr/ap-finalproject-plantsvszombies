@@ -2,6 +2,7 @@ package views;
 
 import appStart.GameManagement;
 import helpers.BufferedImages;
+import helpers.ImageIcons;
 import helpers.threads.ThreadPool;
 import models.User;
 import myComponents.ImagePanel;
@@ -109,6 +110,7 @@ public class GameMenu {
 
                     // initializing buffered images
                     BufferedImages.init();
+                    ImageIcons.init();
                     // Initialize the global thread-pool
                     ThreadPool.init();
 

@@ -1,11 +1,13 @@
 package models;
 
 import helpers.BufferedImages;
+import helpers.ImageIcons;
 import helpers.threads.ZombieGuiThread;
 import helpers.threads.ZombieLogicalThread;
 import helpers.threads.ThreadPool;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
@@ -23,17 +25,19 @@ public abstract class Zombie {
 //    private String imageUri;
     // new
     private BufferedImage image;
+    private ImageIcon imageIcon;
 
     // adding x and y for easier rendering in GameCanvas
     private int x;
     private int y;
 
-    public Zombie(BufferedImage image,Coordinate coordinate,int health, int damage, double speed){
+    public Zombie(BufferedImage image,Coordinate coordinate,int health, int damage, double speed,ImageIcon icon){
         this.health = health;
         this.damage = damage;
         this.speed = speed;
         this.coordinate = coordinate;
         this.image = image;
+        this.imageIcon = icon;
 
 //        ZombieLogicalThread newThread = new ZombieLogicalThread(this);
 //        ThreadPool.execute(newThread);
@@ -64,8 +68,10 @@ public abstract class Zombie {
 
     public void setHealth(int health){
         this.health = health;
-        if(health <= 200)
+        if(health <= 200) {
             image = BufferedImages.zombie_normal;
+            imageIcon = ImageIcons.zombie_normal;
+        }
     }
 
     public int getDamage() {
@@ -92,5 +98,9 @@ public abstract class Zombie {
 
     public void setY(int y) {
         this.y = y;
+    }
+
+    public ImageIcon getImageIcon() {
+        return imageIcon;
     }
 }

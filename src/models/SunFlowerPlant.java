@@ -2,6 +2,7 @@ package models;
 
 import appStart.Configurations;
 import helpers.BufferedImages;
+import helpers.ImageIcons;
 
 public class SunFlowerPlant extends Plant {
 
@@ -10,17 +11,23 @@ public class SunFlowerPlant extends Plant {
                 coordinate,
                 50,
                 Configurations.sunLoadPlant,
-                BufferedImages.plant_sunflower
+                BufferedImages.plant_sunflower,
+                ImageIcons.plant_sunflower
         );
     }
 
     public void changeImageToDying(){
-        super.changeImageToDying(BufferedImages.plant_sunflower_dying);
+        super.changeImageToDying(BufferedImages.plant_sunflower_dying,ImageIcons.plant_sunflower_dying);
     }
 
     @Override
     public void doAction(){
-        // code to generate suns
+
+        synchronized (suns){
+            Sun sun = new Sun(super.getLocationX() + 25,super.getLocationY() - 10);
+            suns.add(sun);
+        }
+
     }
 
 }

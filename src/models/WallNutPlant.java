@@ -1,6 +1,9 @@
 package models;
 
 import helpers.BufferedImages;
+import helpers.ImageIcons;
+
+import javax.swing.*;
 
 public class WallNutPlant extends Plant {
 
@@ -9,12 +12,13 @@ public class WallNutPlant extends Plant {
                 coordinate,
                 150,
                 1,
-                BufferedImages.plant_giantwallnut
+                BufferedImages.plant_giantwallnut,
+                ImageIcons.plant_giantwallnut
         );
     }
 
     public void changeImageToDying(){
-        super.changeImageToDying(BufferedImages.plant_giantwallnut_dying);
+        super.changeImageToDying(BufferedImages.plant_giantwallnut_dying, ImageIcons.plant_giantwallnut_dying);
     }
 
     @Override

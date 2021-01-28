@@ -1,16 +1,12 @@
 /*** In The Name of Allah ***/
 package views;
 
-import helpers.BufferedImages;
-import helpers.ZombieGenerator;
 import helpers.threads.*;
 import models.*;
 import models.enums.PlantType;
 
-import javax.swing.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.concurrent.Executors;
 
 /**
  * This class holds the state of game and all of its elements.
@@ -55,19 +51,12 @@ public class GameState {
 //		plants = new ArrayList<>();
 		plants = new Plant[9][5];
 
-		playerSuns = 0;
+		playerSuns = 5000;
 		suns = new ArrayList<>(0);
 
 		zombies = new ArrayList<>();
 
 		bullets = new ArrayList<>();
-		Bullet bullet = new Bullet(
-				BufferedImages.bullet_normal,
-				30,
-				new Coordinate(1,1)
-		);
-		bullet.setLocation(94,120);
-		bullets.add(bullet);
 		ThreadPool.execute(new BulletGuiThread(bullets));
 		ThreadPool.execute(new BulletLogicalThread(bullets,zombies));
 
@@ -206,6 +195,8 @@ public class GameState {
 				default:
 					break;
 			}
+			newPlant.setLocation(x,y);
+			newPlant.addGameStateValues(suns,bullets);
 			playerSuns -= selectedCard.getSunsNeed();
 			selectedCard.useCard();
 			selectedCard = null;
@@ -270,7 +261,7 @@ public class GameState {
 		return plants[x][y];
 	}
 
-	public void collectSun(Sun sun){
+	public synchronized void collectSun(Sun sun){
 		if(suns.size() > 0){
 			suns.remove(sun);
 			playerSuns += 25;

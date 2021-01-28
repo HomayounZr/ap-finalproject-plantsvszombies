@@ -2,6 +2,7 @@
 package views;
 
 import helpers.BufferedImages;
+import helpers.ImageIcons;
 import helpers.threads.ThreadPool;
 import models.*;
 
@@ -11,6 +12,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -30,6 +32,8 @@ public class GameCanvas extends JPanel {
 	
 	private BufferedImage bufferedScreen;
 	private Graphics2D bufferedGraphics;
+
+	private JPanel previousZombiePanel = null;
 
 	public GameCanvas() {
 		super(new BorderLayout());
@@ -76,7 +80,7 @@ public class GameCanvas extends JPanel {
 	/**
 	 * The method to perform renderings of game elements.
 	 */
-	public void render(GameState state) {
+	public synchronized void render(GameState state) {
 		//
 		// Draw all game elements according to the game state
 		//  on the offscreen image (using 'bufferedGraphics') ...
@@ -144,8 +148,8 @@ public class GameCanvas extends JPanel {
 		for(Card card: cards){
 			try{
 
-				ImageIcon icon = new ImageIcon(card.getImage());
-				JLabel label = new JLabel(icon);
+//				ImageIcon icon = new ImageIcon(card.getImage());
+				JLabel label = new JLabel(card.getImageIcon());
 				label.setPreferredSize(new Dimension(64,102));
 				label.addMouseListener(new MouseAdapter() {
 					@Override
@@ -178,9 +182,9 @@ public class GameCanvas extends JPanel {
 				// create label for lawn mower
 				try{
 
-					BufferedImage image = ImageIO.read(new File(lawnMower.getImageUri()));
-					ImageIcon icon = new ImageIcon(image);
-					JLabel label = new JLabel(icon);
+//					BufferedImage image = ImageIO.read(new File(lawnMower.getImageUri()));
+//					ImageIcon icon = new ImageIcon(ImageIcons.lawn_mower);
+					JLabel label = new JLabel(lawnMower.getImageIcon());
 					label.setPreferredSize(new Dimension(77,130));
 					label.setBorder(new EmptyBorder(0,0,20,0));
 					westPanel.add(label);
@@ -206,7 +210,7 @@ public class GameCanvas extends JPanel {
 		gbc.weighty = (double)1 / 5;
 		JPanel centerPanel = new JPanel(centerLayout);
 		centerPanel.setBounds(0,0,846,600);
-		centerPanel.setBackground(new Color(0,0,0,0));
+		centerPanel.setBackground(new Color(255,255,255,0));
 		centerPanel.setOpaque(true);
 
 		for(int i = 0;i < 5;i++){
@@ -215,8 +219,8 @@ public class GameCanvas extends JPanel {
 
 					Plant cellPlant = state.checkPlantExist(j,i);
 					if(cellPlant != null){
-						ImageIcon icon = new ImageIcon(cellPlant.getImage());
-						JLabel label = new JLabel(icon);
+//						ImageIcon icon = new ImageIcon(cellPlant.getImage());
+						JLabel label = new JLabel(cellPlant.getImageIcon());
 						gbc.gridx = j;
 						gbc.gridy = i;
 						label.setPreferredSize(new Dimension(94,120));
@@ -252,62 +256,75 @@ public class GameCanvas extends JPanel {
 		panel.setBackground(new Color(255,255,255,0));
 
 		// adding zombies
-		for(Zombie zombie: state.getZombies()){
-			try{
+		synchronized (state.getZombies()){
+			for(Zombie zombie: state.getZombies()){
+				try{
 
-				ImageIcon icon = new ImageIcon(zombie.getImage());
-				JLabel label = new JLabel(icon);
-				label.setBackground(Color.BLUE);
-				label.setBounds(zombie.getX(),zombie.getY(),150,150);
-				panel.add(label);
+					ImageIcon icon = new ImageIcon(zombie.getImage());
+					JLabel label = new JLabel(icon);
+					label.setBackground(Color.BLUE);
+					label.setBounds(zombie.getX(),zombie.getY(),150,150);
+					panel.add(label);
 
-			} catch(Exception ex){
-				ex.printStackTrace();
+				} catch(Exception ex){
+					ex.printStackTrace();
+				}
 			}
 		}
 
-		// adding suns
-		for(Sun sun: state.getSuns()){
-			try{
+		synchronized (state.getSuns()){
+			for(Sun sun: state.getSuns()){
+				try{
 
-				ImageIcon icon = new ImageIcon(BufferedImages.sun);
-				JLabel label = new JLabel(icon);
-				label.setBackground(Color.BLUE);
-				label.setBounds(sun.getLocationX(),sun.getLocationY(),50,50);
+//					ImageIcon icon = new ImageIcon(BufferedImages.sun);
+					JLabel label = new JLabel(ImageIcons.sun);
+					label.setBackground(Color.BLUE);
+					label.setBounds(sun.getLocationX(),sun.getLocationY(),50,50);
 
-				label.addMouseListener(new MouseAdapter() {
-					@Override
-					public void mousePressed(MouseEvent e) {
-						super.mousePressed(e);
-						state.collectSun(sun);
-					}
-				});
+					label.addMouseListener(new MouseAdapter() {
+						@Override
+						public synchronized void mousePressed(MouseEvent e) {
+							super.mousePressed(e);
+							state.collectSun(sun);
+							System.out.println("Hi");
+						}
+					});
 
-				panel.add(label);
+					panel.add(label);
 
-			} catch(Exception ex){
-				ex.printStackTrace();
+				} catch(Exception ex){
+					ex.printStackTrace();
+				}
 			}
 		}
+
 
 		// adding bullets
-		for(Bullet bullet: state.getBullets()){
-			try{
+		synchronized (state.getBullets()){
+			for(Bullet bullet: state.getBullets()){
+				try{
 
-				ImageIcon icon = new ImageIcon(bullet.getImage());
-				JLabel label = new JLabel(icon);
-				label.setBackground(Color.BLUE);
-				label.setBounds(bullet.getLocationX(),bullet.getLocationY(),50,50);
+//					ImageIcon icon = new ImageIcon(bullet.getImage());
+					JLabel label = new JLabel(bullet.getImageIcon());
+					label.setBackground(Color.BLUE);
+					label.setBounds(bullet.getLocationX(),bullet.getLocationY(),50,50);
 
-				panel.add(label);
+					panel.add(label);
 
-			} catch(Exception ex){
-				ex.printStackTrace();
+				} catch(Exception ex){
+					ex.printStackTrace();
+				}
 			}
 		}
 
 
 		panel.setOpaque(false);
+
+//		if(previousZombiePanel != null){
+//			previousZombiePanel.revalidate();
+//			previousZombiePanel.repaint();
+//		}
+//		previousZombiePanel = panel;
 
 		return panel;
 	}

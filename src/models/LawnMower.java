@@ -1,6 +1,9 @@
 package models;
 
+import helpers.ImageIcons;
+
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
@@ -9,26 +12,20 @@ public class LawnMower {
     private String imageUri;
     private int row;
     private BufferedImage image;
+    private ImageIcon imageIcon;
 
     public LawnMower(int row){
         imageUri = "./images/Gifs/lawn_mower.gif";
         this.row = row;
-
-        BufferedImage _image = null;
-        try{
-            _image = ImageIO.read(new File(this.imageUri));
-        } catch (Exception ex){
-            ex.printStackTrace();
-        }
-        this.image = _image;
+        imageIcon = ImageIcons.lawn_mower;
     }
 
     public void activate(){
-        imageUri = "./images/Gifs/lawnmowerActivated.gif";
+        imageIcon = ImageIcons.lawn_mower_active;
     }
 
-    public String getImageUri() {
-        return imageUri;
+    public ImageIcon getImageIcon() {
+        return imageIcon;
     }
 
     public int getRow() {
