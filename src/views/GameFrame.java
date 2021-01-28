@@ -27,6 +27,17 @@ public class GameFrame extends JFrame {
 
     public static final int GAME_HEIGHT = 752;                  // 720p game resolution
     public static final int GAME_WIDTH = 1000;  // wide aspect ratio
+    private BufferedImage bg;
+    private BufferedImage pea;
+    private BufferedImage pea2;
+    private BufferedImage icePea;
+    private BufferedImage icePea2;
+    private BufferedImage walnut;
+    private BufferedImage walnut2;
+    private BufferedImage sunflower;
+    private BufferedImage sunflower2;
+    private BufferedImage cherry;
+    private BufferedImage cherry2;
 
 
     //uncomment all /*...*/ in the class for using Tank icon instead of a simple circle
@@ -41,12 +52,28 @@ public class GameFrame extends JFrame {
 
     public GameFrame(String title) {
         super(title);
-        setResizable(false);
-        setSize(GAME_WIDTH, GAME_HEIGHT);
-        lastRender = -1;
-        fpsHistory = new ArrayList<>(100);
 
-        mainPanel = new ImagePanel("./images/mainBG.png",GAME_WIDTH,new BorderLayout());
+        setResizable(false);
+
+        setSize(GAME_WIDTH, GAME_HEIGHT);
+        try {
+            bg = ImageIO.read(new File("background.jpg"));
+            pea = ImageIO.read(new File("pea.png"));
+            pea2 = ImageIO.read(new File("pea2.png"));
+
+            icePea = ImageIO.read(new File("icePea.png"));
+            icePea2 = ImageIO.read(new File("Snow.png"));
+
+            sunflower = ImageIO.read(new File("sunflower.png"));
+            sunflower2 = ImageIO.read(new File("sunflower2.png"));
+
+            walnut = ImageIO.read(new File("wal.png"));
+            walnut2 = ImageIO.read(new File("wal2.png"));
+
+            cherry = ImageIO.read(new File("cherry.png"));
+            cherry2 = ImageIO.read(new File("cherry2.png"));
+        } catch (IOException e) {
+        }
 
         setContentPane(mainPanel);
         setVisible(true);
