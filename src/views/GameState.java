@@ -2,6 +2,7 @@
 package views;
 
 import helpers.ZombieGenerator;
+import helpers.threads.GameStageThread;
 import helpers.threads.SkySunGenerator;
 import helpers.threads.ThreadPool;
 import models.*;
@@ -10,6 +11,7 @@ import models.enums.PlantType;
 import javax.swing.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
 
 /**
  * This class holds the state of game and all of its elements.
@@ -20,6 +22,7 @@ public class GameState {
 	private KeyHandler keyHandler;
 	private MouseHandler mouseHandler;
 
+	private boolean isFinished;
 	private ArrayList<Card> cards;
 	private ArrayList<LawnMower> lawnMowers;
 	private Card selectedCard;
@@ -35,6 +38,7 @@ public class GameState {
 		//
 		// Initialize the game state and all elements ...
 		//
+		isFinished = false;
 
 		cards = new ArrayList<>();
 		cards.add(new Card(PlantType.SUNFLOWER));
@@ -51,16 +55,21 @@ public class GameState {
 //		plants = new ArrayList<>();
 		plants = new Plant[9][5];
 
-		playerSuns = 1000;
-		skySunGenerator = new SkySunGenerator(suns);
+		playerSuns = 0;
+		suns = new ArrayList<>(0);
 
 		zombies = new ArrayList<>();
-//		zombieGenerator = new ZombieGenerator(zombies,5,1);
-//		ThreadPool.execute(zombieGenerator);
+
+		// starting game with stage thread
+		ThreadPool.execute(new GameStageThread(this));
 
 		// initializing handlers
 		keyHandler = new KeyHandler();
 		mouseHandler = new MouseHandler();
+	}
+
+	public boolean getIsFinished(){
+		return isFinished;
 	}
 	
 	/**
@@ -238,9 +247,48 @@ public class GameState {
 		return playerSuns;
 	}
 
+	public ArrayList<Sun> getSuns() {
+		return suns;
+	}
+
 	public Plant checkPlantExist(int x, int y){
 		return plants[x][y];
 	}
 
-}
+	public void collectSun(Sun sun){
+		if(suns.size() > 0){
+			suns.remove(sun);
+			playerSuns += 25;
+		}
+		System.out.println("" + suns.size());
+	}
 
+	// start collecting stage for 50 seconds
+	public void startCollectingStage(){
+		System.out.println("====> Starting collecting stage for 50 sec");
+
+		skySunGenerator = new SkySunGenerator(suns);
+		ThreadPool.execute(skySunGenerator);
+	}
+
+	// start stage 1 for 2.5 min, zombie per 30sec
+	public void startStage1(){
+		System.out.println("====> Starting stage 1 for 2.5 min");
+
+//		zombieGenerator = new ZombieGenerator(zombies,5,1);
+//		ThreadPool.execute(zombieGenerator);
+	}
+
+	// start stage 2 for 3 min, 2 zombies per 30sec
+	public void startStage2(){
+		System.out.println("====> Starting stage 2 for 3 min");
+
+	}
+
+	// start final wave for 2.5 min, 2 zombies per 25sec
+	public void startFinalWave(){
+		System.out.println("====> Starting final wave for 2.5 min");
+
+	}
+
+}

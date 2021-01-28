@@ -48,6 +48,8 @@ public class GameLoop implements Runnable {
 				//
 				state.update();
 				canvas.render(state);
+				if(state.getLawnMowers().size() <= 0 || state.getIsFinished() == true)
+					gameOver = true;
 				//
 				long delay = (1000 / FPS) - (System.currentTimeMillis() - start);
 				if (delay > 0)

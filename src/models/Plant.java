@@ -12,6 +12,9 @@ public abstract class Plant {
     private int actionInterval;
     private boolean isAlive;
 
+    private int locationX;
+    private int locationY;
+
     public Plant(Coordinate coordinate,int health,int actionInterval,BufferedImage image){
         this.coordinate = coordinate;
         this.health = health;
@@ -21,6 +24,19 @@ public abstract class Plant {
 
 //        PlantThread newThread = new PlantThread(this);
 //        ThreadPool.execute(newThread);
+    }
+
+    public void setLocation(int locationX,int locationY){
+        this.locationX = locationX;
+        this.locationY = locationY;
+    }
+
+    public int getLocationX() {
+        return locationX;
+    }
+
+    public int getLocationY() {
+        return locationY;
     }
 
     public BufferedImage getImage() {

@@ -1,6 +1,7 @@
 /*** In The Name of Allah ***/
 package views;
 
+import helpers.BufferedImages;
 import helpers.threads.ThreadPool;
 import models.*;
 
@@ -111,6 +112,7 @@ public class GameCanvas extends JPanel {
 		public void run() {
 			revalidate();
 			repaint();
+//			paintComponent(getGraphics());
 			// Tell the system to do the drawing NOW;
 			// otherwise it can take a few extra ms and will feel jerky!
 			Toolkit.getDefaultToolkit().sync();
@@ -130,7 +132,6 @@ public class GameCanvas extends JPanel {
 		JPanel cardsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		cardsPanel.setPreferredSize(new Dimension(64*5,102));
 		cardsPanel.setBorder(new EmptyBorder(0,30,0,0));
-//        cardsPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 		cardsPanel.setBackground(new Color(255,255,255,0));
 		cardsPanel.setAlignmentY(FlowLayout.LEADING);
 
@@ -142,8 +143,7 @@ public class GameCanvas extends JPanel {
 
 		for(Card card: cards){
 			try{
-//				System.out.println(card.getImageUri());
-//				BufferedImage image = ImageIO.read(new File(card.getImageUri()));
+
 				ImageIcon icon = new ImageIcon(card.getImage());
 				JLabel label = new JLabel(icon);
 				label.setPreferredSize(new Dimension(64,102));
@@ -158,6 +158,7 @@ public class GameCanvas extends JPanel {
 				});
 				label.setEnabled(card.getIsEnable());
 				cardsPanel.add(label);
+
 			} catch (Exception ex){
 
 			}
@@ -176,6 +177,7 @@ public class GameCanvas extends JPanel {
 			if(i == lawnMower.getRow()){
 				// create label for lawn mower
 				try{
+
 					BufferedImage image = ImageIO.read(new File(lawnMower.getImageUri()));
 					ImageIcon icon = new ImageIcon(image);
 					JLabel label = new JLabel(icon);
@@ -197,9 +199,6 @@ public class GameCanvas extends JPanel {
 	private void addCenterPanel(GameState state){
 		JLayeredPane layeredPane = new JLayeredPane();
 		layeredPane.setBounds(77,102,846,600);
-//		layeredPane.setSize(846,600);
-//		layeredPane.setPreferredSize(new Dimension(846,600));
-//
 
 		GridBagLayout centerLayout = new GridBagLayout();
 		GridBagConstraints gbc = new GridBagConstraints();
@@ -207,10 +206,8 @@ public class GameCanvas extends JPanel {
 		gbc.weighty = (double)1 / 5;
 		JPanel centerPanel = new JPanel(centerLayout);
 		centerPanel.setBounds(0,0,846,600);
-//		centerPanel.setPreferredSize(new Dimension(846,600));
 		centerPanel.setBackground(new Color(0,0,0,0));
 		centerPanel.setOpaque(true);
-//		centerPanel.setOpaque(true);
 
 		for(int i = 0;i < 5;i++){
 			for(int j = 0;j < 9;j++){
@@ -241,12 +238,8 @@ public class GameCanvas extends JPanel {
 		}
 
 		centerPanel.addMouseListener(state.getMouseListener());
-//		layeredPane.add(centerPanel,JLayeredPane.POPUP_LAYER);
 
-//		FlowLayout layout = new FlowLayout();
-//		layout.setAlignment(FlowLayout.RIGHT);
 		JPanel panel = new JPanel(null);
-//		panel.setPreferredSize(new Dimension(846,600));
 		panel.setBounds(0,0,846,600);
 		panel.setBackground(new Color(255,255,255,0));
 		for(Zombie zombie: state.getZombies()){
@@ -257,12 +250,35 @@ public class GameCanvas extends JPanel {
 				label.setBackground(Color.BLUE);
 				label.setBounds(zombie.getX(),zombie.getY(),150,150);
 				panel.add(label);
-//				ThreadPool.execute(new MoveThread(label));
 
 			} catch(Exception ex){
 				ex.printStackTrace();
 			}
 		}
+
+		for(Sun sun: state.getSuns()){
+			try{
+
+				ImageIcon icon = new ImageIcon(BufferedImages.sun);
+				JLabel label = new JLabel(icon);
+				label.setBackground(Color.BLUE);
+				label.setBounds(sun.getLocationX(),sun.getLocationY(),50,50);
+
+				label.addMouseListener(new MouseAdapter() {
+					@Override
+					public void mousePressed(MouseEvent e) {
+						super.mousePressed(e);
+						state.collectSun(sun);
+					}
+				});
+
+				panel.add(label);
+
+			} catch(Exception ex){
+				ex.printStackTrace();
+			}
+		}
+
 		panel.setOpaque(false);
 
 		layeredPane.add(centerPanel,Integer.valueOf(1));

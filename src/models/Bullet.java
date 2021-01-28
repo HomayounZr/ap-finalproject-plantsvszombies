@@ -9,6 +9,9 @@ public class Bullet {
     private Coordinate coordinate;
     private String imageUri;
 
+    private int locationX;
+    private int locationY;
+
     public Bullet(String imageUri,int damage,Coordinate coordinate){
         this.damage = damage;
         this.coordinate = coordinate;
@@ -16,6 +19,19 @@ public class Bullet {
 
 //        BulletLogicalThread newThread = new BulletLogicalThread(this);
 //        ThreadPool.execute(newThread);
+    }
+
+    public void setLocation(int locationX,int locationY){
+        this.locationX = locationX;
+        this.locationY = locationY;
+    }
+
+    public int getLocationX() {
+        return locationX;
+    }
+
+    public int getLocationY() {
+        return locationY;
     }
 
     /**
