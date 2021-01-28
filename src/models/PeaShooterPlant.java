@@ -23,7 +23,7 @@ public class PeaShooterPlant extends Plant {
     public void doAction(){
         // code to generate normal pee
         Bullet bullet = new Bullet(
-                "./images/pea.png",
+                BufferedImages.bullet_normal,
                 35,
                 super.getCoordinate()
         );

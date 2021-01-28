@@ -1,10 +1,9 @@
 /*** In The Name of Allah ***/
 package views;
 
+import helpers.BufferedImages;
 import helpers.ZombieGenerator;
-import helpers.threads.GameStageThread;
-import helpers.threads.SkySunGenerator;
-import helpers.threads.ThreadPool;
+import helpers.threads.*;
 import models.*;
 import models.enums.PlantType;
 
@@ -29,6 +28,7 @@ public class GameState {
 	private Plant[][] plants;
 	private ArrayList<Zombie> zombies;
 	private ArrayList<Sun> suns;
+	private ArrayList<Bullet> bullets;
 	private int playerSuns;
 
 	private ZombieGenerator zombieGenerator;
@@ -59,6 +59,17 @@ public class GameState {
 		suns = new ArrayList<>(0);
 
 		zombies = new ArrayList<>();
+
+		bullets = new ArrayList<>();
+		Bullet bullet = new Bullet(
+				BufferedImages.bullet_normal,
+				30,
+				new Coordinate(1,1)
+		);
+		bullet.setLocation(94,120);
+		bullets.add(bullet);
+		ThreadPool.execute(new BulletGuiThread(bullets));
+		ThreadPool.execute(new BulletLogicalThread(bullets,zombies));
 
 		// starting game with stage thread
 		ThreadPool.execute(new GameStageThread(this));
@@ -249,6 +260,10 @@ public class GameState {
 
 	public ArrayList<Sun> getSuns() {
 		return suns;
+	}
+
+	public ArrayList<Bullet> getBullets() {
+		return bullets;
 	}
 
 	public Plant checkPlantExist(int x, int y){

@@ -21,7 +21,7 @@ public class SnowPeaShooterPlant extends Plant {
     public void doAction(){
         // coed to generate frozen pee
         Bullet bullet = new Bullet(
-                "./images/freezepea.png",
+                BufferedImages.bullet_frozen,
                 35,
                 super.getCoordinate()
         );

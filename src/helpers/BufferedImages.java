@@ -35,6 +35,9 @@ public class BufferedImages {
     public static BufferedImage lawn_mower;
     public static BufferedImage lawn_mower_active;
 
+    public static BufferedImage bullet_normal;
+    public static BufferedImage bullet_frozen;
+
     public static void init(){
         try{
 
@@ -67,6 +70,8 @@ public class BufferedImages {
             lawn_mower = ImageIO.read(new File("./images/Gifs/lawn_mower.gif"));
             lawn_mower_active = ImageIO.read(new File("./images/Gifs/lawnmowerActivated.gif"));
 
+            bullet_normal = ImageIO.read(new File("./images/pea.png"));
+            bullet_frozen = ImageIO.read(new File("./images/freezepea.png"));
 
         } catch (Exception ex){
             System.err.println("Could load image\n" + ex.getMessage());

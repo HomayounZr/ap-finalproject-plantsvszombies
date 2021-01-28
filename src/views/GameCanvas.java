@@ -239,9 +239,19 @@ public class GameCanvas extends JPanel {
 
 		centerPanel.addMouseListener(state.getMouseListener());
 
+		layeredPane.add(centerPanel,Integer.valueOf(1));
+		layeredPane.add(generateSecondPanel(state),Integer.valueOf(2));
+
+		this.add(layeredPane,BorderLayout.CENTER);
+	}
+
+	private JPanel generateSecondPanel(GameState state){
+
 		JPanel panel = new JPanel(null);
 		panel.setBounds(0,0,846,600);
 		panel.setBackground(new Color(255,255,255,0));
+
+		// adding zombies
 		for(Zombie zombie: state.getZombies()){
 			try{
 
@@ -256,6 +266,7 @@ public class GameCanvas extends JPanel {
 			}
 		}
 
+		// adding suns
 		for(Sun sun: state.getSuns()){
 			try{
 
@@ -279,11 +290,25 @@ public class GameCanvas extends JPanel {
 			}
 		}
 
+		// adding bullets
+		for(Bullet bullet: state.getBullets()){
+			try{
+
+				ImageIcon icon = new ImageIcon(bullet.getImage());
+				JLabel label = new JLabel(icon);
+				label.setBackground(Color.BLUE);
+				label.setBounds(bullet.getLocationX(),bullet.getLocationY(),50,50);
+
+				panel.add(label);
+
+			} catch(Exception ex){
+				ex.printStackTrace();
+			}
+		}
+
+
 		panel.setOpaque(false);
 
-		layeredPane.add(centerPanel,Integer.valueOf(1));
-		layeredPane.add(panel,Integer.valueOf(2));
-
-		this.add(layeredPane,BorderLayout.CENTER);
+		return panel;
 	}
 }

@@ -3,19 +3,22 @@ package models;
 import helpers.threads.BulletLogicalThread;
 import helpers.threads.ThreadPool;
 
+import java.awt.image.BufferedImage;
+
 public class Bullet {
 
     private int damage;
     private Coordinate coordinate;
-    private String imageUri;
+//    private String imageUri;
+    private BufferedImage image;
 
     private int locationX;
     private int locationY;
 
-    public Bullet(String imageUri,int damage,Coordinate coordinate){
+    public Bullet(BufferedImage image,int damage,Coordinate coordinate){
         this.damage = damage;
         this.coordinate = coordinate;
-        this.imageUri = imageUri;
+        this.image = image;
 
 //        BulletLogicalThread newThread = new BulletLogicalThread(this);
 //        ThreadPool.execute(newThread);
@@ -45,8 +48,8 @@ public class Bullet {
         return coordinate;
     }
 
-    public String getImageUri() {
-        return imageUri;
+    public BufferedImage getImage() {
+        return image;
     }
 
     public int getDamage() {

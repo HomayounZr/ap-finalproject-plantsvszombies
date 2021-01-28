@@ -4,38 +4,66 @@ import appStart.GameManagement;
 import models.Bullet;
 import models.Zombie;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 public class BulletLogicalThread implements Runnable {
 
-    private Bullet bullet;
+    private ArrayList<Bullet> bullets;
+    private ArrayList<Zombie> zombies;
 
-    public BulletLogicalThread(Bullet bullet){
-        this.bullet = bullet;
+    public BulletLogicalThread(ArrayList<Bullet> bullets,ArrayList<Zombie> zombies){
+        this.zombies = zombies;
+        this.bullets = bullets;
     }
 
     @Override
     public void run() {
         try{
 
+            Iterator<Bullet> bulletIt;
             while(true){
 
-                Thread.sleep(1000);
+                bulletIt = bullets.iterator();
+                while(bulletIt.hasNext()){
+                    Bullet bullet = bulletIt.next();
+                    // check if hit zombie erase bullet
+                    Zombie zombie = checkHitZombie(bullet);
+                    if(zombie != null){
 
-                // check if heated a zombie
-                Zombie zombie = GameManagement.gameController.checkHitZombie(bullet.getCoordinate());
-                if(zombie != null){
-                    // decrease health of first zombie
+                        zombie.setHealth(zombie.getHealth() - bullet.getDamage());
+                        bulletIt.remove();
+                        if(zombie.getHealth() <= 0)
+                            zombies.remove(zombie);
 
+                        break;
+                    }
 
-                    break;
+                    // check if bullet is at the end of map
+                    if(bullet.getCoordinate().getAxis_x() > 8)
+                        bulletIt.remove();
+
+                    bullet.moveOneStateRight();
+//                    System.out.println(bullet.getCoordinate().getAxis_x() + " - " + bullet.getCoordinate().getAxis_y());
                 }
 
-                // move one state to right
-                bullet.moveOneStateRight();
+                Thread.sleep(100);
 
             }
 
         } catch (Exception ex){
             ex.printStackTrace();
         }
+    }
+
+    private Zombie checkHitZombie(Bullet bullet){
+        Iterator<Zombie> zombieIterator = zombies.iterator();
+        while(zombieIterator.hasNext()){
+            Zombie zombie = zombieIterator.next();
+            if(zombie.getCoordinate().equals(bullet.getCoordinate()))
+                return zombie;
+
+        }
+        return null;
     }
 }
