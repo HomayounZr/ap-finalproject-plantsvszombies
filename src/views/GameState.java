@@ -11,9 +11,10 @@ import java.util.Iterator;
 
 public class GameState {
 
+
     private Coordinate coordinate;
     // Fix A Number For The Initial Amount of Suns
-    private int totalSun;
+    public int totalSun;
     private LawnMower[] lawnMowers;
     private Plant[][] plants;
     //For Checking the Presence of Zombies in Row , Good Help For Shooting Bullets

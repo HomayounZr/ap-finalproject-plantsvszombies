@@ -126,6 +126,33 @@ public class GameFrame extends JFrame {
      * Rendering all game elements based on the game state.
      */
     private void doRendering(Graphics2D g2d, GameState state) {
+        g2d.drawImage(bg, null, 0, 27);
+
+        if (state.totalSun >= 50) {
+            g2d.drawImage(sunflower, null, 100, 33);
+        } else {
+            g2d.drawImage(sunflower2, null, 100, 33);
+        }
+        if (state.totalSun >= 100) {
+            g2d.drawImage(pea, null, 160, 33);
+        } else {
+            g2d.drawImage(pea2, null, 160, 33);
+        }
+        if (state.totalSun >= 50) {
+            g2d.drawImage(walnut, null, 220, 33);
+        } else {
+            g2d.drawImage(walnut2, null, 220, 33);
+        }
+        if (state.totalSun >= 175) {
+            g2d.drawImage(icePea, null, 280, 33);
+        } else {
+            g2d.drawImage(icePea2, null, 280, 33);
+        }
+        if (state.totalSun >= 150 ) {
+            g2d.drawImage(cherry, null, 340, 33);
+        } else {
+            g2d.drawImage(cherry2, null, 340, 33);
+        }
 //        // Draw background
 //        g2d.setColor(Color.GRAY);
 //        g2d.fillRect(0, 0, GAME_WIDTH, GAME_HEIGHT);
