@@ -19,7 +19,7 @@ public class SkySunGenerator implements Runnable {
 
             while(true){
 
-                Sun sun = new Sun(423,50);
+                Sun sun = new Sun(523,150);
                 suns.add(sun);
 
                 Thread.sleep(Configurations.sunLoadSky * 1000);

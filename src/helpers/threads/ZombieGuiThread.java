@@ -18,7 +18,7 @@ public class ZombieGuiThread implements Runnable {
         try{
 
             while(true){
-                zombie.setX(zombie.getX() - 1);
+                zombie.setLocation(zombie.getLocationX() - 1, zombie.getLocationY());
                 Thread.sleep(100);
             }
 

@@ -1,6 +1,8 @@
 /*** In The Name of Allah ***/
 package views;
 
+import helpers.BufferedImages;
+import helpers.ImageIcons;
 import helpers.threads.*;
 import models.*;
 import models.enums.PlantType;
@@ -50,13 +52,24 @@ public class GameState {
 
 //		plants = new ArrayList<>();
 		plants = new Plant[9][5];
+		Plant newPlant = new PeaShooterPlant(new Coordinate(3,2));
+		newPlant.setLocation(82 + 3*94,110 + 2*120);
+		plants[3][2] = newPlant;
 
-		playerSuns = 5000;
+		playerSuns = 200;
 		suns = new ArrayList<>(0);
 
 		zombies = new ArrayList<>();
 
 		bullets = new ArrayList<>();
+		Bullet bullet = new Bullet(
+				BufferedImages.bullet_normal,
+				25,
+				newPlant.getCoordinate(),
+				ImageIcons.bullet_normal
+		);
+		bullet.setLocation(90 + 3*94,115 + 2*120);
+		bullets.add(bullet);
 		ThreadPool.execute(new BulletGuiThread(bullets));
 		ThreadPool.execute(new BulletLogicalThread(bullets,zombies));
 
@@ -129,79 +142,7 @@ public class GameState {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-
-			if(selectedCard == null)
-				return;
-
-			// find grids
-			int gridX = 0;
-			int gridY = 0;
-//			int x = e.getX() - 77;
-//			int y = e.getY() - 102;
-			int x = e.getX();
-			int y = e.getY();
-
-			// finding y
-			if(y < 120){
-				gridY = 0;
-			} else if(y < 240){
-				gridY = 1;
-			} else if(y < 360){
-				gridY = 2;
-			} else if(y < 480){
-				gridY = 3;
-			} else {
-				gridY = 4;
-			}
-
-			// finding x
-			if(x < 94){
-				gridX = 0;
-			} else if(x < 188){
-				gridX = 1;
-			} else if(x < 282){
-				gridX = 2;
-			} else if(x < 376){
-				gridX = 3;
-			} else if(x < 470){
-				gridX = 4;
-			} else if(x < 564){
-				gridX = 5;
-			} else if(x < 658){
-				gridX = 6;
-			} else if(x < 752){
-				gridX = 7;
-			} else {
-				gridX = 8;
-			}
-
-			Plant newPlant = null;
-			switch (selectedCard.getPlantType()){
-				case SUNFLOWER:
-					newPlant = new SunFlowerPlant(new Coordinate(gridX,gridY));
-					break;
-				case PEASHOOTER:
-					newPlant = new PeaShooterPlant(new Coordinate(gridX,gridY));
-					break;
-				case SNOWPEASHOOTER:
-					newPlant = new SnowPeaShooterPlant(new Coordinate(gridX,gridY));
-					break;
-				case GIANTWALLNUT:
-					newPlant = new WallNutPlant(new Coordinate(gridX,gridY));
-					break;
-				case CHERRYBOMB:
-					newPlant = new CherryBombPlant(new Coordinate(gridX,gridY));
-					break;
-				default:
-					break;
-			}
-			newPlant.setLocation(x,y);
-			newPlant.addGameStateValues(suns,bullets);
-			playerSuns -= selectedCard.getSunsNeed();
-			selectedCard.useCard();
-			selectedCard = null;
-
-			plants[gridX][gridY] = newPlant;
+			createNewPlant(e);
 		}
 
 		@Override
@@ -223,6 +164,84 @@ public class GameState {
 		@Override
 		public void mouseMoved(MouseEvent e) {
 		}
+	}
+
+	public void createNewPlant(MouseEvent e){
+//		if(selectedCard == null)
+//			return;
+
+		// find grids
+		int gridX = 0;
+		int gridY = 0;
+//		int x = e.getX() - 82;
+//		int y = e.getY() - 110;
+		int x = e.getX();
+		int y = e.getY();
+
+		// finding y
+		if(y < 120){
+			gridY = 0;
+		} else if(y < 240){
+			gridY = 1;
+		} else if(y < 360){
+			gridY = 2;
+		} else if(y < 480){
+			gridY = 3;
+		} else {
+			gridY = 4;
+		}
+		int locationX = 115 + gridY * 120;
+
+		// finding x
+		if(x < 94){
+			gridX = 0;
+		} else if(x < 188){
+			gridX = 1;
+		} else if(x < 282){
+			gridX = 2;
+		} else if(x < 376){
+			gridX = 3;
+		} else if(x < 470){
+			gridX = 4;
+		} else if(x < 564){
+			gridX = 5;
+		} else if(x < 658){
+			gridX = 6;
+		} else if(x < 752){
+			gridX = 7;
+		} else {
+			gridX = 8;
+		}
+		int locationY = 82 + gridX * 94;
+
+		System.out.println("" + x + " - " + y + " / " + gridX + " - " + gridY);
+			Plant newPlant = null;
+			switch (selectedCard.getPlantType()){
+				case SUNFLOWER:
+					newPlant = new SunFlowerPlant(new Coordinate(gridX,gridY));
+					break;
+				case PEASHOOTER:
+					newPlant = new PeaShooterPlant(new Coordinate(gridX,gridY));
+					break;
+				case SNOWPEASHOOTER:
+					newPlant = new SnowPeaShooterPlant(new Coordinate(gridX,gridY));
+					break;
+				case GIANTWALLNUT:
+					newPlant = new WallNutPlant(new Coordinate(gridX,gridY));
+					break;
+				case CHERRYBOMB:
+					newPlant = new CherryBombPlant(new Coordinate(gridX,gridY));
+					break;
+				default:
+					break;
+			}
+			newPlant.setLocation(locationX,locationY);
+			newPlant.addGameStateValues(suns,bullets);
+			playerSuns -= selectedCard.getSunsNeed();
+			selectedCard.useCard();
+			selectedCard = null;
+
+			plants[gridX][gridY] = newPlant;
 	}
 
 	public ArrayList<Card> getCards() {
@@ -273,16 +292,16 @@ public class GameState {
 	public void startCollectingStage(){
 		System.out.println("====> Starting collecting stage for 50 sec");
 
-		skySunGenerator = new SkySunGenerator(suns);
-		ThreadPool.execute(skySunGenerator);
+//		skySunGenerator = new SkySunGenerator(suns);
+//		ThreadPool.execute(skySunGenerator);
 	}
 
 	// start stage 1 for 2.5 min, zombie per 30sec
 	public void startStage1(){
 		System.out.println("====> Starting stage 1 for 2.5 min");
 
-//		zombieGenerator = new ZombieGenerator(zombies,5,1);
-//		ThreadPool.execute(zombieGenerator);
+		zombieGenerator = new ZombieGenerator(zombies,30,1);
+		ThreadPool.execute(zombieGenerator);
 	}
 
 	// start stage 2 for 3 min, 2 zombies per 30sec

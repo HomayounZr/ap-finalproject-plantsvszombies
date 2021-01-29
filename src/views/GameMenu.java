@@ -115,20 +115,36 @@ public class GameMenu {
                     ThreadPool.init();
 
                     // After the player clicks 'PLAY' ...
+//                    EventQueue.invokeLater(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            JFrame frame = new JFrame("PvZ: Current Game...");
+//                            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+//                            frame.setResizable(false);
+//                            // Create game canvas
+//                            GameCanvas canvas = new GameCanvas();
+//                            frame.setContentPane(canvas);
+//                            frame.pack();
+//                            frame.setLocationRelativeTo(null); // put frame at center of screen
+//                            frame.setVisible(true);
+//                            // Create and execute the game-loop
+//                            GameLoop game = new GameLoop(canvas);
+//                            game.init();
+//                            ThreadPool.execute(game);
+//                            // and the game starts ...
+//                        }
+//                    });
+
                     EventQueue.invokeLater(new Runnable() {
                         @Override
                         public void run() {
-                            JFrame frame = new JFrame("PvZ: Current Game...");
-                            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-                            frame.setResizable(false);
-                            // Create game canvas
-                            GameCanvas canvas = new GameCanvas();
-                            frame.setContentPane(canvas);
-                            frame.pack();
+                            GameFrame frame = new GameFrame("Game Title");
                             frame.setLocationRelativeTo(null); // put frame at center of screen
+                            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                             frame.setVisible(true);
+                            frame.initBufferStrategy();
                             // Create and execute the game-loop
-                            GameLoop game = new GameLoop(canvas);
+                            GameLoop game = new GameLoop(frame);
                             game.init();
                             ThreadPool.execute(game);
                             // and the game starts ...

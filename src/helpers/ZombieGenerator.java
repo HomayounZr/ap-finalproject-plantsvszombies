@@ -1,4 +1,4 @@
-package helpers.threads;
+package helpers;
 
 import appStart.Configurations;
 import models.Coordinate;

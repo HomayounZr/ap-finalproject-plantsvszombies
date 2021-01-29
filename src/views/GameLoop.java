@@ -21,10 +21,10 @@ public class GameLoop implements Runnable {
 	 */
 	public static final int FPS = 30;
 	
-	private GameCanvas canvas;
+	private GameFrame canvas;
 	private GameState state;
 
-	public GameLoop(GameCanvas gc) {
+	public GameLoop(GameFrame gc) {
 		canvas = gc;
 	}
 	
@@ -34,9 +34,9 @@ public class GameLoop implements Runnable {
 		//
 		state = new GameState();
 		canvas.addKeyListener(state.getKeyListener());
-//		canvas.addMouseListener(state.getMouseListener());
+//		canvas.addMouseListener(state.getMouse());
 //		canvas.addMouseMotionListener(state.getMouseMotionListener());
-		canvas.requestFocusInWindow();
+//		canvas.requestFocusInWindow();
 	}
 
 	@Override
@@ -59,4 +59,5 @@ public class GameLoop implements Runnable {
 		}
 		
 	}
+
 }

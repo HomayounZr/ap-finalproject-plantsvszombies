@@ -38,6 +38,8 @@ public class BufferedImages {
     public static BufferedImage bullet_normal;
     public static BufferedImage bullet_frozen;
 
+    public static BufferedImage background;
+
     public static void init(){
         try{
 
@@ -72,6 +74,8 @@ public class BufferedImages {
 
             bullet_normal = ImageIO.read(new File("./images/pea.png"));
             bullet_frozen = ImageIO.read(new File("./images/freezepea.png"));
+
+            background = ImageIO.read(new File("./images/mainBG.png"));
 
         } catch (Exception ex){
             System.err.println("Could load image\n" + ex.getMessage());

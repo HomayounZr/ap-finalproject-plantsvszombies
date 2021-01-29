@@ -28,8 +28,8 @@ public abstract class Zombie {
     private ImageIcon imageIcon;
 
     // adding x and y for easier rendering in GameCanvas
-    private int x;
-    private int y;
+    private int locationX;
+    private int locationY;
 
     public Zombie(BufferedImage image,Coordinate coordinate,int health, int damage, double speed,ImageIcon icon){
         this.health = health;
@@ -84,23 +84,20 @@ public abstract class Zombie {
         setCoordinate(new Coordinate(coordinate.getAxis_x() - 1,coordinate.getAxis_y()));
     }
 
-    public int getX() {
-        return x;
-    }
-
-    public void setX(int x) {
-        this.x = x;
-    }
-
-    public int getY() {
-        return y;
-    }
-
-    public void setY(int y) {
-        this.y = y;
-    }
-
     public ImageIcon getImageIcon() {
         return imageIcon;
+    }
+
+    public int getLocationY() {
+        return locationY;
+    }
+
+    public int getLocationX() {
+        return locationX;
+    }
+
+    public void setLocation(int locationX,int locationY){
+        this.locationX = locationX;
+        this.locationY = locationY;
     }
 }

@@ -1,5 +1,6 @@
 package models;
 
+import helpers.BufferedImages;
 import helpers.ImageIcons;
 
 import javax.imageio.ImageIO;
@@ -18,10 +19,12 @@ public class LawnMower {
         imageUri = "./images/Gifs/lawn_mower.gif";
         this.row = row;
         imageIcon = ImageIcons.lawn_mower;
+        image = BufferedImages.lawn_mower;
     }
 
     public void activate(){
         imageIcon = ImageIcons.lawn_mower_active;
+        image = BufferedImages.lawn_mower_active;
     }
 
     public ImageIcon getImageIcon() {
@@ -32,4 +35,7 @@ public class LawnMower {
         return row;
     }
 
+    public BufferedImage getImage() {
+        return image;
+    }
 }
