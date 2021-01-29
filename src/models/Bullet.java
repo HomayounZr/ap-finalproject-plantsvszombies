@@ -5,6 +5,8 @@ import helpers.threads.ThreadPool;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class Bullet {
 
@@ -43,7 +45,9 @@ public class Bullet {
      * code to move one state to the right
      */
     public void moveOneStateRight(){
-        this.coordinate = new Coordinate(coordinate.getAxis_x() + 1,coordinate.getAxis_y());
+//        synchronized (bullets) {
+            this.coordinate = new Coordinate(coordinate.getAxis_x() + 1, coordinate.getAxis_y());
+//        }
     }
 
     public Coordinate getCoordinate() {

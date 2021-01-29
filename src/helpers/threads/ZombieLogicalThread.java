@@ -10,13 +10,15 @@ import java.util.ArrayList;
 public class ZombieLogicalThread implements Runnable {
 
     private Zombie zombie;
-//    private Plant[][] plants;
+    private Plant[][] plants;
     private boolean alive;
+    private ZombieGuiThread guiThread;
 
-    public ZombieLogicalThread(Zombie zombie){
+    public ZombieLogicalThread(Zombie zombie,ZombieGuiThread guiThread,Plant[][] plants){
         this.zombie = zombie;
-//        this.plants = plants;
+        this.plants = plants;
         this.alive = true;
+        this.guiThread = guiThread;
     }
 
     @Override
@@ -39,13 +41,23 @@ public class ZombieLogicalThread implements Runnable {
 
 //                    break;
 //                }
-//                Plant plant = checkHitPlant(zombie.getCoordinate());
-//                if(plant != null){
-//                    System.out.println("hit plant");
-//                    do{
-//
-//                    } while (this.alive && plant.getIsAlive());
-//                }
+                Plant plant = checkHitPlant(zombie.getCoordinate());
+                if(plant != null){
+                    System.out.println("hit plant");
+                    guiThread.pauseThread();
+                    do{
+                        plant.decreaseHealth(zombie.getDamage());
+                        System.out.println("eating... " + plant.getHealth());
+                        if(plant.getHealth() <= 0){
+                            plant.closeThread();
+                            plants[zombie.getCoordinate().getAxis_x()][zombie.getCoordinate().getAxis_y()] = null;
+                            break;
+                        }
+                        Thread.sleep(1000);
+                    } while (this.alive);
+                    guiThread.resumeThread();
+
+                }
 
                 // sleep the thread based on zombie's speed
 
@@ -57,8 +69,7 @@ public class ZombieLogicalThread implements Runnable {
     }
 
     private Plant checkHitPlant(Coordinate coordinate){
-//        return plants[coordinate.getAxis_x()][coordinate.getAxis_y()];
-        return null;
+        return plants[coordinate.getAxis_x()][coordinate.getAxis_y()];
     }
 
     public void stopThread(){

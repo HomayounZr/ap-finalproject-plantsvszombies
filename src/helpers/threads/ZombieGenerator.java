@@ -13,12 +13,14 @@ public class ZombieGenerator implements Runnable {
     private int duration;
     private int count;
     private SecureRandom random;
+    private Plant[][] plants;
 
-    public ZombieGenerator(CopyOnWriteArrayList<Zombie> zombies,int duration,int count){
+    public ZombieGenerator(CopyOnWriteArrayList<Zombie> zombies,int duration,int count,Plant[][] plants){
         this.zombies = zombies;
         this.duration = duration;
         this.count = count;
         this.random = new SecureRandom();
+        this.plants = plants;
     }
 
     public void setDuration(int duration) {
@@ -42,13 +44,13 @@ public class ZombieGenerator implements Runnable {
                     int zombieType = random.nextInt(3);
                     switch (zombieType){
                         case 0:
-                            zombie = new NormalZombie(new Coordinate(8,randomRow));
+                            zombie = new NormalZombie(new Coordinate(8,randomRow),plants);
                             break;
                         case 1:
-                            zombie = new ConeHeadZombie(new Coordinate(8,randomRow));
+                            zombie = new ConeHeadZombie(new Coordinate(8,randomRow),plants);
                             break;
                         case 2:
-                            zombie = new BucketHeadZombie(new Coordinate(8,randomRow));
+                            zombie = new BucketHeadZombie(new Coordinate(8,randomRow),plants);
                             break;
                         default:
                             break;

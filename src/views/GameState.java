@@ -9,6 +9,7 @@ import models.enums.PlantType;
 
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * This class holds the state of game and all of its elements.
@@ -24,9 +25,9 @@ public class GameState {
 	private ArrayList<LawnMower> lawnMowers;
 	private Card selectedCard;
 	private Plant[][] plants;
-	private ArrayList<Zombie> zombies;
-	private ArrayList<Sun> suns;
-	private ArrayList<Bullet> bullets;
+	private CopyOnWriteArrayList<Zombie> zombies;
+	private CopyOnWriteArrayList<Sun> suns;
+	private CopyOnWriteArrayList<Bullet> bullets;
 	private int playerSuns;
 
 	private ZombieGenerator zombieGenerator;
@@ -50,26 +51,14 @@ public class GameState {
 			lawnMowers.add(new LawnMower(i));
 		}
 
-//		plants = new ArrayList<>();
 		plants = new Plant[9][5];
-		Plant newPlant = new PeaShooterPlant(new Coordinate(3,2));
-		newPlant.setLocation(82 + 3*94,110 + 2*120);
-		plants[3][2] = newPlant;
 
-		playerSuns = 200;
-		suns = new ArrayList<>(0);
+		playerSuns = 2500;
+		suns = new CopyOnWriteArrayList<>();
 
-		zombies = new ArrayList<>();
+		zombies = new CopyOnWriteArrayList<>();
 
-		bullets = new ArrayList<>();
-		Bullet bullet = new Bullet(
-				BufferedImages.bullet_normal,
-				25,
-				newPlant.getCoordinate(),
-				ImageIcons.bullet_normal
-		);
-		bullet.setLocation(90 + 3*94,115 + 2*120);
-		bullets.add(bullet);
+		bullets = new CopyOnWriteArrayList<>();
 		ThreadPool.execute(new BulletGuiThread(bullets));
 		ThreadPool.execute(new BulletLogicalThread(bullets,zombies));
 
@@ -142,6 +131,7 @@ public class GameState {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
+			System.out.println("panel clicked");
 			createNewPlant(e);
 		}
 
@@ -167,14 +157,12 @@ public class GameState {
 	}
 
 	public void createNewPlant(MouseEvent e){
-//		if(selectedCard == null)
-//			return;
+		if(selectedCard == null)
+			return;
 
 		// find grids
 		int gridX = 0;
 		int gridY = 0;
-//		int x = e.getX() - 82;
-//		int y = e.getY() - 110;
 		int x = e.getX();
 		int y = e.getY();
 
@@ -190,7 +178,7 @@ public class GameState {
 		} else {
 			gridY = 4;
 		}
-		int locationX = 115 + gridY * 120;
+		int locationY = 115 + gridY * 120;
 
 		// finding x
 		if(x < 94){
@@ -212,36 +200,35 @@ public class GameState {
 		} else {
 			gridX = 8;
 		}
-		int locationY = 82 + gridX * 94;
+		int locationX = 82 + gridX * 94;
 
-		System.out.println("" + x + " - " + y + " / " + gridX + " - " + gridY);
-			Plant newPlant = null;
-			switch (selectedCard.getPlantType()){
-				case SUNFLOWER:
-					newPlant = new SunFlowerPlant(new Coordinate(gridX,gridY));
-					break;
-				case PEASHOOTER:
-					newPlant = new PeaShooterPlant(new Coordinate(gridX,gridY));
-					break;
-				case SNOWPEASHOOTER:
-					newPlant = new SnowPeaShooterPlant(new Coordinate(gridX,gridY));
-					break;
-				case GIANTWALLNUT:
-					newPlant = new WallNutPlant(new Coordinate(gridX,gridY));
-					break;
-				case CHERRYBOMB:
-					newPlant = new CherryBombPlant(new Coordinate(gridX,gridY));
-					break;
-				default:
-					break;
-			}
-			newPlant.setLocation(locationX,locationY);
-			newPlant.addGameStateValues(suns,bullets);
-			playerSuns -= selectedCard.getSunsNeed();
-			selectedCard.useCard();
-			selectedCard = null;
+		Plant newPlant = null;
+		switch (selectedCard.getPlantType()){
+			case SUNFLOWER:
+				newPlant = new SunFlowerPlant(new Coordinate(gridX,gridY));
+				break;
+			case PEASHOOTER:
+				newPlant = new PeaShooterPlant(new Coordinate(gridX,gridY));
+				break;
+			case SNOWPEASHOOTER:
+				newPlant = new SnowPeaShooterPlant(new Coordinate(gridX,gridY));
+				break;
+			case GIANTWALLNUT:
+				newPlant = new WallNutPlant(new Coordinate(gridX,gridY));
+				break;
+			case CHERRYBOMB:
+				newPlant = new CherryBombPlant(new Coordinate(gridX,gridY));
+				break;
+			default:
+				break;
+		}
+		newPlant.setLocation(locationX,locationY);
+		newPlant.addGameStateValues(suns,bullets);
+		playerSuns -= selectedCard.getSunsNeed();
+		selectedCard.useCard();
+		selectedCard = null;
 
-			plants[gridX][gridY] = newPlant;
+		plants[gridX][gridY] = newPlant;
 	}
 
 	public ArrayList<Card> getCards() {
@@ -252,7 +239,7 @@ public class GameState {
 		return lawnMowers;
 	}
 
-	public ArrayList<Zombie> getZombies() {
+	public CopyOnWriteArrayList<Zombie> getZombies() {
 		return zombies;
 	}
 
@@ -268,11 +255,11 @@ public class GameState {
 		return playerSuns;
 	}
 
-	public ArrayList<Sun> getSuns() {
+	public CopyOnWriteArrayList<Sun> getSuns() {
 		return suns;
 	}
 
-	public ArrayList<Bullet> getBullets() {
+	public CopyOnWriteArrayList<Bullet> getBullets() {
 		return bullets;
 	}
 
@@ -292,15 +279,15 @@ public class GameState {
 	public void startCollectingStage(){
 		System.out.println("====> Starting collecting stage for 50 sec");
 
-//		skySunGenerator = new SkySunGenerator(suns);
-//		ThreadPool.execute(skySunGenerator);
+		skySunGenerator = new SkySunGenerator(suns);
+		ThreadPool.execute(skySunGenerator);
 	}
 
 	// start stage 1 for 2.5 min, zombie per 30sec
 	public void startStage1(){
 		System.out.println("====> Starting stage 1 for 2.5 min");
 
-		zombieGenerator = new ZombieGenerator(zombies,30,1);
+		zombieGenerator = new ZombieGenerator(zombies,30,1,plants);
 		ThreadPool.execute(zombieGenerator);
 	}
 
@@ -308,12 +295,16 @@ public class GameState {
 	public void startStage2(){
 		System.out.println("====> Starting stage 2 for 3 min");
 
+		zombieGenerator = new ZombieGenerator(zombies,30,2,plants);
+		ThreadPool.execute(zombieGenerator);
 	}
 
 	// start final wave for 2.5 min, 2 zombies per 25sec
 	public void startFinalWave(){
 		System.out.println("====> Starting final wave for 2.5 min");
 
+		zombieGenerator = new ZombieGenerator(zombies,25,2,plants);
+		ThreadPool.execute(zombieGenerator);
 	}
 
 }

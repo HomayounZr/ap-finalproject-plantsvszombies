@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * this class represents a zombie
@@ -31,19 +32,30 @@ public abstract class Zombie {
     private int locationX;
     private int locationY;
 
-    public Zombie(BufferedImage image,Coordinate coordinate,int health, int damage, double speed,ImageIcon icon){
+    private ZombieLogicalThread logicalThread;
+    private ZombieGuiThread guiThread;
+    private Plant[][] plants;
+
+    public Zombie(BufferedImage image,
+                  Coordinate coordinate,
+                  int health,
+                  int damage,
+                  double speed,
+                  ImageIcon icon,
+                  Plant[][] plants){
         this.health = health;
         this.damage = damage;
         this.speed = speed;
         this.coordinate = coordinate;
         this.image = image;
         this.imageIcon = icon;
+        this.plants = plants;
 
-//        ZombieLogicalThread newThread = new ZombieLogicalThread(this);
-//        ThreadPool.execute(newThread);
-
-        ZombieGuiThread guiThread = new ZombieGuiThread(this);
+        guiThread = new ZombieGuiThread(this);
         ThreadPool.execute(guiThread);
+
+        logicalThread = new ZombieLogicalThread(this,guiThread,plants);
+        ThreadPool.execute(logicalThread);
     }
 
     public BufferedImage getImage() {
@@ -99,5 +111,10 @@ public abstract class Zombie {
     public void setLocation(int locationX,int locationY){
         this.locationX = locationX;
         this.locationY = locationY;
+    }
+
+    public void stopThreads(){
+        logicalThread.stopThread();
+        guiThread.stopThread();
     }
 }

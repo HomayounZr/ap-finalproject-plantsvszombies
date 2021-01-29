@@ -6,14 +6,15 @@ import helpers.ImageIcons;
 
 public class NormalZombie extends Zombie {
 
-    public NormalZombie(Coordinate coordinate){
+    public NormalZombie(Coordinate coordinate,Plant[][] plants){
         super(
                 BufferedImages.zombie_normal,
                 coordinate,
                 200,
                 Configurations.zombieNormalDamage,
                 Configurations.zombieNormalSpeed,
-                ImageIcons.zombie_normal
+                ImageIcons.zombie_normal,
+                plants
         );
     }
 

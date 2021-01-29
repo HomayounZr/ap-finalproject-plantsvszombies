@@ -6,6 +6,7 @@ import helpers.threads.ThreadPool;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -23,8 +24,8 @@ public abstract class Plant {
     private int locationX;
     private int locationY;
 
-    protected ArrayList<Bullet> bullets;
-    protected ArrayList<Sun> suns;
+    protected CopyOnWriteArrayList<Bullet> bullets;
+    protected CopyOnWriteArrayList<Sun> suns;
 
     private PlantThread thread;
 
@@ -45,7 +46,7 @@ public abstract class Plant {
         this.locationY = locationY;
     }
 
-    public void addGameStateValues(ArrayList<Sun> suns,ArrayList<Bullet> bullets){
+    public void addGameStateValues(CopyOnWriteArrayList<Sun> suns,CopyOnWriteArrayList<Bullet> bullets){
         this.suns = suns;
         this.bullets = bullets;
     }
@@ -99,5 +100,9 @@ public abstract class Plant {
 
     public ImageIcon getImageIcon() {
         return imageIcon;
+    }
+
+    public int getHealth() {
+        return health;
     }
 }

@@ -33,9 +33,9 @@ public class PeaShooterPlant extends Plant {
                 ImageIcons.bullet_normal
         );
         bullet.setLocation(super.getLocationX() + 25,super.getLocationY() - 10);
-        synchronized (bullets){
+//        synchronized (bullets){
             bullets.add(bullet);
-        }
+//        }
     }
 
 }

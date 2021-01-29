@@ -23,10 +23,10 @@ public class SunFlowerPlant extends Plant {
     @Override
     public void doAction(){
 
-        synchronized (suns){
-            Sun sun = new Sun(super.getLocationX() + 25,super.getLocationY() - 10);
+//        synchronized (suns){
+            Sun sun = new Sun(super.getLocationX() + 75,super.getLocationY() - 10);
             suns.add(sun);
-        }
+//        }
 
     }
 

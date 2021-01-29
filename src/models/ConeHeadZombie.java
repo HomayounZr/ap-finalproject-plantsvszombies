@@ -6,14 +6,15 @@ import helpers.ImageIcons;
 
 public class ConeHeadZombie extends Zombie {
 
-    public ConeHeadZombie(Coordinate coordinate){
+    public ConeHeadZombie(Coordinate coordinate,Plant[][] plants){
         super(
                 BufferedImages.zombie_conehead,
                 coordinate,
-                200,
+                560,
                 Configurations.zombieConeHeadDamage,
                 Configurations.zombieConeHeadSpeed,
-                ImageIcons.zombie_conehead
+                ImageIcons.zombie_conehead,
+                plants
         );
     }
 

@@ -6,14 +6,15 @@ import helpers.ImageIcons;
 
 public class BucketHeadZombie extends Zombie {
 
-    public BucketHeadZombie(Coordinate coordinate){
+    public BucketHeadZombie(Coordinate coordinate,Plant[][] plants){
         super(
                 BufferedImages.zombie_buckethead,
                 coordinate,
-                200,
-                Configurations.zombieNormalDamage,
-                Configurations.zombieNormalSpeed,
-                ImageIcons.zombie_buckethead
+                1300,
+                Configurations.zombieBucketHeadDamage,
+                Configurations.zombieBucketHeadSpeed,
+                ImageIcons.zombie_buckethead,
+                plants
         );
     }
 

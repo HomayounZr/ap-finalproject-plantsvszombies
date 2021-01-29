@@ -85,6 +85,13 @@ public class GameFrame extends JFrame {
         //
 //        this.removeAll();
         g2d.drawImage(BufferedImages.background,0,0,this);
+        if(plantingPanel == null){
+            plantingPanel = new JPanel();
+            plantingPanel.setBackground(new Color(255,255,255,0));
+            plantingPanel.setBounds(80,100,846,600);
+            plantingPanel.addMouseListener(state.getMouseListener());
+            this.add(plantingPanel);
+        }
 
         createCardsPanelG2D(g2d,state);
 
@@ -97,14 +104,6 @@ public class GameFrame extends JFrame {
         addSunsG2D(g2d,state);
 
         addZombiesG2D(g2d,state);
-
-        if(plantingPanel == null){
-            plantingPanel = new JPanel();
-            plantingPanel.setBackground(Color.BLACK);
-            plantingPanel.setBounds(80,100,846,600);
-            plantingPanel.addMouseListener(state.getMouseListener());
-            this.add(plantingPanel);
-        }
 
         /*
             for gifs -->>
@@ -187,17 +186,22 @@ public class GameFrame extends JFrame {
         synchronized (state.getSuns()){
             for(Sun sun: state.getSuns()){
                 g.drawImage(BufferedImages.sun,sun.getLocationX(),sun.getLocationY(),this);
-                JLabel label = new JLabel(ImageIcons.sun);
+                JLabel label = new JLabel();
+                label.setPreferredSize(new Dimension(50,50));
                 label.setBounds(sun.getLocationX(),sun.getLocationY(),50,50);
-                label.addMouseListener(new MouseAdapter() {
-                    @Override
-                    public synchronized void mousePressed(MouseEvent e) {
-                        super.mousePressed(e);
-                        state.collectSun(sun);
-                        System.out.println("sun collected");
-                    }
-                });
-                this.add(label);
+
+//                plantingPanel.add(label);
+//                label.addMouseListener(new MouseAdapter() {
+//                    @Override
+//                    public void mousePressed(MouseEvent e) {
+//                        super.mousePressed(e);
+//                        synchronized (state.getSuns()){
+//                            state.collectSun(sun);
+//                        }
+//                        plantingPanel.remove(label);
+//                        plantingPanel.revalidate();
+//                    }
+//                });
             }
         }
     }

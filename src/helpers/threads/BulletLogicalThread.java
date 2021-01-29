@@ -43,7 +43,7 @@ public class BulletLogicalThread implements Runnable {
                                 zombies.remove(zombie);
                             }
 
-                            System.out.println(zombie.getHealth() + " - " + bullet.getCoordinate().getAxis_x());
+//                            System.out.println(zombie.getHealth() + " - " + bullet.getCoordinate().getAxis_x());
                         }
 
                         // check if bullet is at the end of map
