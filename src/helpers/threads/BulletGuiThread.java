@@ -3,11 +3,12 @@ package helpers.threads;
 import models.Bullet;
 
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class BulletGuiThread implements Runnable {
 
-    private ArrayList<Bullet> bullets;
-    public BulletGuiThread(ArrayList<Bullet> bullets){
+    private CopyOnWriteArrayList<Bullet> bullets;
+    public BulletGuiThread(CopyOnWriteArrayList<Bullet> bullets){
         this.bullets = bullets;
     }
 
@@ -16,14 +17,16 @@ public class BulletGuiThread implements Runnable {
         try{
 
             while(true){
-                for(Bullet bullet: bullets){
-                    bullet.setLocation(
-                            bullet.getLocationX() + 19,
-                            bullet.getLocationY()
-                    );
+//                synchronized (bullets) {
+                    for (Bullet bullet : bullets) {
+                        bullet.setLocation(
+                                bullet.getLocationX() + 19,
+                                bullet.getLocationY()
+                        );
 //                    System.out.println("" + bullet.getLocationX() + " - " + bullet.getLocationY());
-                }
-                Thread.sleep(20);
+                    }
+                    Thread.sleep(20);
+//                }
             }
 
         } catch (Exception ex){

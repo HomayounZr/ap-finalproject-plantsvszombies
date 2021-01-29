@@ -4,12 +4,13 @@ import appStart.Configurations;
 import models.Sun;
 
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class SkySunGenerator implements Runnable {
 
-    private ArrayList<Sun> suns;
+    private CopyOnWriteArrayList<Sun> suns;
 
-    public SkySunGenerator(ArrayList<Sun> suns){
+    public SkySunGenerator(CopyOnWriteArrayList<Sun> suns){
         this.suns = suns;
     }
 
@@ -20,7 +21,9 @@ public class SkySunGenerator implements Runnable {
             while(true){
 
                 Sun sun = new Sun(523,150);
-                suns.add(sun);
+//                synchronized (suns){
+                    suns.add(sun);
+//                }
 
                 Thread.sleep(Configurations.sunLoadSky * 1000);
 

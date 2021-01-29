@@ -1,21 +1,20 @@
 package helpers.threads;
 
 import appStart.Configurations;
-import models.Coordinate;
-import models.NormalZombie;
-import models.Zombie;
+import models.*;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ZombieGenerator implements Runnable {
 
-    private ArrayList<Zombie> zombies;
+    private CopyOnWriteArrayList<Zombie> zombies;
     private int duration;
     private int count;
     private SecureRandom random;
 
-    public ZombieGenerator(ArrayList<Zombie> zombies,int duration,int count){
+    public ZombieGenerator(CopyOnWriteArrayList<Zombie> zombies,int duration,int count){
         this.zombies = zombies;
         this.duration = duration;
         this.count = count;
@@ -36,10 +35,25 @@ public class ZombieGenerator implements Runnable {
 
             while(true){
 
-                int randomRow = random.nextInt(5);
                 for(int i = 0;i < count;i++){
-                    Zombie zombie = new NormalZombie(new Coordinate(8,randomRow));
-                    zombie.setLocation(700,140);
+                    int randomRow = random.nextInt(5);
+                    int locationY = 110 + randomRow * 120;
+                    Zombie zombie = null;
+                    int zombieType = random.nextInt(3);
+                    switch (zombieType){
+                        case 0:
+                            zombie = new NormalZombie(new Coordinate(8,randomRow));
+                            break;
+                        case 1:
+                            zombie = new ConeHeadZombie(new Coordinate(8,randomRow));
+                            break;
+                        case 2:
+                            zombie = new BucketHeadZombie(new Coordinate(8,randomRow));
+                            break;
+                        default:
+                            break;
+                    }
+                    zombie.setLocation(900,locationY);
                     zombies.add(zombie);
                 }
 
