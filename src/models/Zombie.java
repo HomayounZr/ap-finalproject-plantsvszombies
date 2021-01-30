@@ -66,5 +66,9 @@ public abstract class Zombie {
     public void moveOneStateLeft(){
         setCoordinate(new Coordinate(coordinate.getAxis_x() - 1,coordinate.getAxis_y()));
     }
+    public void stopThreads(){
+        logicalThread.stopThread();
+        guiThread.stopThread();
+    }
 
 }

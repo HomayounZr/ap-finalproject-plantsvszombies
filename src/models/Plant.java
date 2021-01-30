@@ -1,40 +1,70 @@
 package models;
 
-
 import helpers.threads.PlantThread;
 import helpers.threads.ThreadPool;
 
-
+import javax.swing.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public abstract class Plant {
 
     private Coordinate coordinate;
-    private String imageUri;
+    //    private String imageUri;
+    private BufferedImage image;
+    private ImageIcon imageIcon;
     // sun: 50, pea: 70, snowpea: 100, wall-nut: 150, cherrybomb: 70;
     private int health;
     private int actionInterval;
     private boolean isAlive;
-    public ArrayList<Bullet> bullet;
 
-    public Plant(String imageUri,Coordinate coordinate,int health,int actionInterval){
-        this.imageUri = imageUri;
+    private int locationX;
+    private int locationY;
+
+    protected CopyOnWriteArrayList<Bullet> bullets;
+    protected CopyOnWriteArrayList<Sun> suns;
+
+    private PlantThread thread;
+
+    public Plant(Coordinate coordinate,int health,int actionInterval,BufferedImage image,ImageIcon icon){
         this.coordinate = coordinate;
         this.health = health;
         this.actionInterval = actionInterval;
         this.isAlive = true;
-        bullet = new ArrayList<Bullet>();
+        this.image = image;
+        this.imageIcon = icon;
 
-        PlantThread newThread = new PlantThread(this);
-        ThreadPool.execute(newThread);
+        thread = new PlantThread(this);
+        ThreadPool.execute(thread);
+    }
+
+    public void setLocation(int locationX,int locationY){
+        this.locationX = locationX;
+        this.locationY = locationY;
+    }
+
+    public void addGameStateValues(CopyOnWriteArrayList<Sun> suns,CopyOnWriteArrayList<Bullet> bullets){
+        this.suns = suns;
+        this.bullets = bullets;
+    }
+
+    public int getLocationX() {
+        return locationX;
+    }
+
+    public int getLocationY() {
+        return locationY;
+    }
+
+    public BufferedImage getImage() {
+        return image;
     }
 
     public Coordinate getCoordinate() {
         return coordinate;
-    }
-
-    public String getImageUri() {
-        return imageUri;
     }
 
     public int getActionInterval() {
@@ -54,11 +84,25 @@ public abstract class Plant {
     }
 
     // when the plant was dying
-    public void changeImageToDying(String imageUri) {
-        this.imageUri = imageUri;
+    public void changeImageToDying(BufferedImage image,ImageIcon icon) {
+        this.image = image;
+        this.imageIcon = icon;
     }
 
     // doing what it should does after some time
     public abstract void doAction();
 
+    // this is a method destructor when object dies
+    // to remove the thread according to plant
+    public void closeThread(){
+        thread.stopThread();
+    }
+
+    public ImageIcon getImageIcon() {
+        return imageIcon;
+    }
+
+    public int getHealth() {
+        return health;
+    }
 }

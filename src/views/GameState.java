@@ -1,273 +1,140 @@
+/*** In The Name of Allah ***/
 package views;
 
+import helpers.BufferedImages;
+import helpers.ImageIcons;
+import helpers.threads.*;
 import models.*;
+import models.enums.PlantType;
 
-import javax.swing.plaf.basic.BasicTreeUI;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.Iterator;
+import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * This class holds the state of game and all of its elements.
+ * This class also handles user inputs, which affect the game state.
+ */
 public class GameState {
 
-
-    private Coordinate coordinate;
-    // Fix A Number For The Initial Amount of Suns
-    public int totalSun;
-    private LawnMower[] lawnMowers;
-    private Plant[][] plants;
-    //For Checking the Presence of Zombies in Row , Good Help For Shooting Bullets
-    private boolean[] zombieInRow;
-    private ArrayList<Zombie> zombieList;
-    public static boolean gameOver = false;
-    private Iterator<Plant> plantIterator;
-    private int gameType;
-    //0 for the Easy
-    //1 for the Hard
-    private int waveCounter;
-    // Might Need A Frame Counter
-    private int frameCounter = 0;
-    //Defining a MouseHandler Based of Template, No KeyHandlers Might Be Needed
+    private KeyHandler keyHandler;
     private MouseHandler mouseHandler;
 
-    public GameState(){
-        totalSun = 100;
-        plants = new Plant[5][9];
-        zombieInRow = new boolean[5];
-        for (int i = 0; i < 5; i++) {
-            zombieInRow[i] = false;
+    private boolean isFinished;
+    private ArrayList<Card> cards;
+    private CopyOnWriteArrayList<LawnMower> lawnMowers;
+    private Card selectedCard;
+    private Plant[][] plants;
+    private CopyOnWriteArrayList<Zombie> zombies;
+    private CopyOnWriteArrayList<Sun> suns;
+    private CopyOnWriteArrayList<Bullet> bullets;
+    private int playerSuns;
+
+    private ZombieGenerator zombieGenerator;
+    private SkySunGenerator skySunGenerator;
+
+    public GameState() {
+        //
+        // Initialize the game state and all elements ...
+        //
+        isFinished = false;
+
+        cards = new ArrayList<>();
+        cards.add(new Card(PlantType.SUNFLOWER));
+        cards.add(new Card(PlantType.PEASHOOTER));
+        cards.add(new Card(PlantType.SNOWPEASHOOTER));
+        cards.add(new Card(PlantType.GIANTWALLNUT));
+        cards.add(new Card(PlantType.CHERRYBOMB));
+
+        lawnMowers = new CopyOnWriteArrayList<>();
+        for(int i = 0;i < 5;i++){
+            LawnMower lawnMower = new LawnMower(i);
+            lawnMower.setLocation(0,(i + 1) * 120);
+            lawnMowers.add(lawnMower);
         }
+
+        plants = new Plant[9][5];
+
+        playerSuns = 2500;
+        suns = new CopyOnWriteArrayList<>();
+
+        zombies = new CopyOnWriteArrayList<>();
+
+        bullets = new CopyOnWriteArrayList<>();
+        ThreadPool.execute(new BulletGuiThread(bullets));
+        ThreadPool.execute(new BulletLogicalThread(bullets,zombies));
+
+        // starting game with stage thread
+        ThreadPool.execute(new GameStageThread(this));
+
+        // initializing handlers
+        keyHandler = new KeyHandler();
         mouseHandler = new MouseHandler();
-        //Don't get What The Problem Is
+    }
 
+    public boolean getIsFinished(){
+        return isFinished;
     }
 
     /**
-     * The Whole Game Runs On this , First Implement other Methods like Gameover , Hit , Attack and ...
+     * The method which updates the game state.
      */
-    public void update(){
-        while (!gameOver){
-            gameOver();
-            if (frameCounter == 0) {
-                waveCounter++;
-                System.out.println("Wave :" + waveCounter );
-            }
-            //Zombie Location
-            int x;
-            int y;
-            //Plant Location
-            int plantLocX, plantLocY;
-            frameCounter++;
-            stop();
-
-        }
-
+    public void update() {
+        //
+        // Update the state of all game elements
+        //  based on user input and elapsed time ...
+        //
     }
 
-    /**
-     * Zombie Collision Handled
-     */
-    public void stop() {
-
-        for (Zombie z : zombieList) {
-            boolean stoppedByAnother;
-            if (z.stoppedByAnother) {
-                z.zombieMove = true;
-                z.stoppedByAnother = false;
-            }
-        }
-
-        for (Zombie x : zombieList) {
-            for (Zombie y : zombieList) {
-                if (!x.zombieMove && y.zombieMove && x.getCoordinate().getAxis_y() + 40 == y.getCoordinate().getAxis_x() && x.getCoordinate().getAxis_x() == y.getCoordinate().getAxis_y()) {
-                    y.zombieMove = false;
-                    y.stoppedByAnother = true;
-                }
-                if (x.counter > 0 && x.getCoordinate().getAxis_y() + 40 == y.getCoordinate().getAxis_x() && x.getCoordinate().getAxis_x() == y.getCoordinate().getAxis_y()) {
-                    y.zombieMove = false;
-                    y.stoppedByAnother = true;
-                }
-            }
-        }
-    }
-
-    /**
-     * A Method For Checking Game Ending Situations
-     * If The Zombies Reach To End of The Map , U Lose
-     */
-    public void gameOver() {
-        for (Zombie z : zombieList) {
-            if (z.getCoordinate().getAxis_x() == 0) {
-                gameOver = true;
-            }
-        }
-    }
-
-    /**
-     * A Method For Returning The Amount of Suns That Players Have
-     * @return Total Sun
-     */
-    public int getTotalSun() {
-        return totalSun;
-    }
-    /**
-     * A Method to Know What Kinds Of Zombies Have Entered the Map
-     *
-     * @return ArrayList OF Zombies
-     */
-    public ArrayList<Zombie> getZombieList()
-    {
-        return zombieList;
-    }
-
-    /**
-     * A Method For Knowing What Location of The Map Are Occupied
-     * @return Plants
-     */
-
-    public Plant[][] getPlants() {
-        return plants;
-    }
-    public LawnMower[] getLawnMowers(){
-        return lawnMowers;
-    }
-
-    /**
-     * The Next 2 Methods Are For the Attacking Effects on Zombies And Plants
-     * First The Zombie
-     */
-    public void zombieLoseHP(Zombie zombie , Bullet bullet){
-        if(bullet.getCoordinate() == zombie.getCoordinate()){
-            //Added A SetHealth Method in Zombie Class
-            // The 50 is a Prompt
-            zombie.setHealth(zombie.getHealth() - 50);
-        }
-        //Find A Way to Delete The Bullet After The Hit
-    }
-
-    /**
-     * A Method For Loss of Hp in Plants
-     */
-    public void plantLoseHp(Zombie zombie, Plant plant) {
-        if(zombie.getCoordinate() == plant.getCoordinate()){
-            //In This Place U Should Stop The Zombie From Moving
-            if(zombie instanceof BucketHeadZombie){
-                plant.decreaseHealth(50);
-            }
-            if(zombie instanceof ConeHeadZombie){
-                plant.decreaseHealth(75);
-            }
-            if(zombie instanceof NormalZombie){
-                plant.decreaseHealth(25);
-            }
-        }
-    }
-
-    /**
-     * The Next 3 Method Are For Clearing the Map Of Elements
-     * Preferably Used in The Start of a New Game
-     *
-     *
-     * A Method for Clearing the Map Off of Zombies
-     */
-
-    public void removeAllZombies() {
-        Iterator<Zombie> zombieIterator = zombieList.iterator();
-        while (zombieIterator.hasNext()) {
-            Zombie zombie = zombieIterator.next();
-            zombieIterator.remove();
-        }
-    }
-
-    /**
-     * A Method for Clearing the Map Off of Plants
-     */
-
-    public void removeAllPlants() {
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 9; j++) {
-                if (plants[i][j] != null) {
-                    plants[i][j] = null;
-                }
-            }
-        }
-    }
-
-    /**
-     * A Method for Clearing the Map Off of Bullets
-     */
-    public void removeAllBullet() {
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 9; j++) {
-                if (plants[i][j] != null) {
-                    if (plants[i][j] instanceof PeaShooterPlant) {
-                        Iterator<Bullet> bulletIterator;
-                        //Adding an Extra Field In Plant Class IIIIIMMMMPPPP
-                        //So Tough To UnderStand , Try For A Better Approach
-                        bulletIterator = plants[i][j].bullet.iterator();
-                        while (bulletIterator.hasNext()) {
-                            Bullet bullet = bulletIterator.next();
-                            bulletIterator.remove();
-                        }
-                    }
-                }
-            }
-        }
+    public KeyListener getKeyListener() {
+        return keyHandler;
     }
     public MouseListener getMouseListener() {
         return mouseHandler;
     }
-
     public MouseMotionListener getMouseMotionListener() {
         return mouseHandler;
     }
 
-
-
     /**
-     * This Event Only Happens When We Want To Deploy a Plant in the Map
-     * We Need one these For Gathering the Random Suns In The Map
-     *
-     *
-     * THE NUMBERS ARE FAKE , JUST TO SHOW THE 5 CARDS TO CHOSE AND THE RANGE BETWEEN THEM
-     * SHOULD FIND THE RIGHT NUMBERS
-     *
+     * The keyboard handler.
      */
-    //Only a MouseHandler Needed , No KeyHandlers
-    class MouseHandler implements MouseListener, MouseMotionListener {
-
+    class KeyHandler implements KeyListener {
 
         @Override
-        public void mouseClicked(MouseEvent e) {
-            int selectedCard = -1;
-            int locationX= coordinate.getAxis_x();
-            int locationY = coordinate.getAxis_y();
-            if (locationY < 35 && locationY > 10) {
-                if (locationX < 15 && locationX > 10 ) {
-                    selectedCard = 0;
-                }
-                if (locationX < 21 && locationX > 16 && totalSun >= 100) {
-                        selectedCard = 1;
-                }
-                if (locationX < 27 && locationX > 22 && totalSun >= 50) {
-                    selectedCard= 2;
-                }
-                if ( locationX < 33 && locationX > 28 && totalSun >= 175) {
-                    selectedCard = 3;
-                }
-                if (locationX < 39 && locationX > 34 && totalSun >= 150) {
-                    selectedCard = 4;
-                }
-            }
-            if (locationX < 76.5 && locationX > 40 && locationY< 59.5 && locationY > 13 && selectedCard != -1) {
-                //The Above Parameters Should Be In the 9X5 of The Map
-                //Plant Hast Been Planted
+        public void keyTyped(KeyEvent e) {
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            switch (e.getKeyCode()){
+                case KeyEvent.VK_ESCAPE:
+                    // show pause menu
+                    break;
+                default:
+                    break;
             }
         }
 
         @Override
+        public void keyReleased(KeyEvent e) {
+        }
+
+    }
+
+    /**
+     * The mouse handler.
+     */
+    class MouseHandler implements MouseListener, MouseMotionListener {
+
+        @Override
+        public void mouseClicked(MouseEvent e) {
+        }
+
+        @Override
         public void mousePressed(MouseEvent e) {
+            System.out.println("panel clicked");
+            createNewPlant(e);
         }
 
         @Override
@@ -291,4 +158,169 @@ public class GameState {
         }
     }
 
+    public void createNewPlant(MouseEvent e){
+        if(selectedCard == null)
+            return;
+
+        // find grids
+        int gridX = 0;
+        int gridY = 0;
+        int x = e.getX();
+        int y = e.getY();
+
+        // finding y
+        if(y < 120){
+            gridY = 0;
+        } else if(y < 240){
+            gridY = 1;
+        } else if(y < 360){
+            gridY = 2;
+        } else if(y < 480){
+            gridY = 3;
+        } else {
+            gridY = 4;
+        }
+        int locationY = 115 + gridY * 120;
+
+        // finding x
+        if(x < 94){
+            gridX = 0;
+        } else if(x < 188){
+            gridX = 1;
+        } else if(x < 282){
+            gridX = 2;
+        } else if(x < 376){
+            gridX = 3;
+        } else if(x < 470){
+            gridX = 4;
+        } else if(x < 564){
+            gridX = 5;
+        } else if(x < 658){
+            gridX = 6;
+        } else if(x < 752){
+            gridX = 7;
+        } else {
+            gridX = 8;
+        }
+        int locationX = 82 + gridX * 94;
+
+        Plant newPlant = null;
+        switch (selectedCard.getPlantType()){
+            case SUNFLOWER:
+                newPlant = new SunFlowerPlant(new Coordinate(gridX,gridY));
+                break;
+            case PEASHOOTER:
+                newPlant = new PeaShooterPlant(new Coordinate(gridX,gridY));
+                break;
+            case SNOWPEASHOOTER:
+                newPlant = new SnowPeaShooterPlant(new Coordinate(gridX,gridY));
+                break;
+            case GIANTWALLNUT:
+                newPlant = new WallNutPlant(new Coordinate(gridX,gridY));
+                break;
+            case CHERRYBOMB:
+                newPlant = new CherryBombPlant(new Coordinate(gridX,gridY));
+                break;
+            default:
+                break;
+        }
+        newPlant.setLocation(locationX,locationY);
+        newPlant.addGameStateValues(suns,bullets);
+        playerSuns -= selectedCard.getSunsNeed();
+        selectedCard.useCard();
+        selectedCard = null;
+
+        plants[gridX][gridY] = newPlant;
+    }
+
+    public ArrayList<Card> getCards() {
+        return cards;
+    }
+
+    public CopyOnWriteArrayList<LawnMower> getLawnMowers() {
+        return lawnMowers;
+    }
+
+    public CopyOnWriteArrayList<Zombie> getZombies() {
+        return zombies;
+    }
+
+    public void changeSelectedCard(Card card){
+        if(card.getIsEnable())
+            if(playerSuns >= card.getSunsNeed())
+                this.selectedCard = card;
+
+        System.out.println(card.getName() + " is " + (card.getIsEnable() ? "available" : "reloading"));
+    }
+
+    public int getPlayerSuns() {
+        return playerSuns;
+    }
+
+    public CopyOnWriteArrayList<Sun> getSuns() {
+        return suns;
+    }
+
+    public CopyOnWriteArrayList<Bullet> getBullets() {
+        return bullets;
+    }
+
+    public Plant checkPlantExist(int x, int y){
+        return plants[x][y];
+    }
+
+    public void collectSun(Sun sun){
+        if(suns.size() > 0){
+            suns.remove(sun);
+            playerSuns += 25;
+        }
+        System.out.println("" + suns.size());
+    }
+
+    // start collecting stage for 50 seconds
+    public void startCollectingStage(){
+        System.out.println("====> Starting collecting stage for 50 sec");
+
+        skySunGenerator = new SkySunGenerator(suns);
+        ThreadPool.execute(skySunGenerator);
+    }
+
+    // start stage 1 for 2.5 min, zombie per 30sec
+    public void startStage1(){
+        System.out.println("====> Starting stage 1 for 2.5 min");
+
+        zombieGenerator = new ZombieGenerator(zombies,30,1,this);
+        ThreadPool.execute(zombieGenerator);
+    }
+
+    // start stage 2 for 3 min, 2 zombies per 30sec
+    public void startStage2(){
+        System.out.println("====> Starting stage 2 for 3 min");
+
+        zombieGenerator.setDuration(30);
+        zombieGenerator.setCount(2);
+    }
+
+    // start final wave for 2.5 min, 2 zombies per 25sec
+    public void startFinalWave(){
+        System.out.println("====> Starting final wave for 2.5 min");
+
+        zombieGenerator.setDuration(25);
+        zombieGenerator.setCount(2);
+    }
+
+    public Plant[][] getPlants() {
+        if(plants == null)
+            plants = new Plant[9][5];
+        return plants;
+    }
+
+    public void checkIfWon(){
+        zombieGenerator.stopThread();
+        while(zombies.size() > 0){
+            // nothing
+        }
+        if(lawnMowers.size() > 0)
+            isFinished = true;
+    }
 }
