@@ -1,28 +1,33 @@
 package models;
 
 import appStart.Configurations;
+import helpers.BufferedImages;
+import helpers.ImageIcons;
 
 public class SunFlowerPlant extends Plant {
 
     public SunFlowerPlant(Coordinate coordinate){
         super(
-                "./images/Gifs/sun_flower.gif",
                 coordinate,
                 50,
-                Configurations.sunLoadPlant
+                Configurations.sunLoadPlant,
+                BufferedImages.plant_sunflower,
+                ImageIcons.plant_sunflower
         );
     }
 
     public void changeImageToDying(){
-        super.changeImageToDying("./images/Gifs/sun_flower_dying.gif");
-    }
-
-    public void doAction(SunFlowerPlant sunFlowerPlant){
-        Sun sun = new Sun(sunFlowerPlant.getCoordinate());
+        super.changeImageToDying(BufferedImages.plant_sunflower_dying,ImageIcons.plant_sunflower_dying);
     }
 
     @Override
-    public void doAction() {
+    public void doAction(){
+
+//        synchronized (suns){
+        Sun sun = new Sun(super.getLocationX() + 75,super.getLocationY() - 10);
+        suns.add(sun);
+//        }
 
     }
+
 }

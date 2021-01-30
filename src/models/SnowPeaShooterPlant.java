@@ -1,34 +1,39 @@
 package models;
 
+import helpers.BufferedImages;
+import helpers.ImageIcons;
+
+import javax.swing.*;
+
 public class SnowPeaShooterPlant extends Plant {
 
     public SnowPeaShooterPlant(Coordinate coordinate){
         super(
-                "./images/Gifs/freezepeashooter.gif",
                 coordinate,
                 100,
-                1
+                1,
+                BufferedImages.plant_snowpeashooter,
+                ImageIcons.plant_snowpeashooter
         );
     }
 
     public void changeImageToDying(){
-        super.changeImageToDying("./images/Gifs/freezepeashooter.gif");
+        super.changeImageToDying(BufferedImages.plant_snowpeashooter_dying,ImageIcons.plant_snowpeashooter_dying);
     }
 
     @Override
     public void doAction(){
         // coed to generate frozen pee
         Bullet bullet = new Bullet(
-                "./images/freezepea.png",
+                BufferedImages.bullet_frozen,
                 35,
-                super.getCoordinate()
+                super.getCoordinate(),
+                ImageIcons.bullet_frozen
         );
-        /*
-        create thread for moving bullet in Helper folder
-        haven't said anything special about bullet speed
-        choose whatever you like for sleep time in thread
-        something between 0.1 and 1 seconds per state is logical
-         */
+        bullet.setLocation(super.getLocationX() + 25,super.getLocationY() - 10);
+//        synchronized (bullets){
+        bullets.add(bullet);
+//        }
     }
 
 }

@@ -1,16 +1,21 @@
 package models;
 
 import appStart.Configurations;
+import helpers.BufferedImages;
+import helpers.ImageIcons;
+import views.GameState;
 
 public class NormalZombie extends Zombie {
 
-    public NormalZombie(Coordinate coordinate){
+    public NormalZombie(Coordinate coordinate, GameState state){
         super(
-                "./images/Gifs/zombie_normal.gif",
+                BufferedImages.zombie_normal,
                 coordinate,
                 200,
                 Configurations.zombieNormalDamage,
-                Configurations.zombieNormalSpeed
+                Configurations.zombieNormalSpeed,
+                ImageIcons.zombie_normal,
+                state
         );
     }
 
