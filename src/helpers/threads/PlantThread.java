@@ -1,6 +1,11 @@
 package helpers.threads;
 
+import models.CherryBombPlant;
 import models.Plant;
+import models.Zombie;
+
+import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class PlantThread implements Runnable {
 
@@ -23,6 +28,11 @@ public class PlantThread implements Runnable {
 
             while(alive){
                 plant.doAction();
+                if(plant instanceof CherryBombPlant){
+                    // find near zombies
+                    // and remove them
+                    // then remove the plant it self
+                }
                 Thread.sleep(plant.getActionInterval() * 1000);
             }
 

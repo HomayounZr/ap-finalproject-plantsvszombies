@@ -86,7 +86,7 @@ public class GameFrame extends JFrame {
 //        this.removeAll();
         g2d.drawImage(BufferedImages.background,0,0,this);
         if(plantingPanel == null){
-            plantingPanel = new JPanel();
+            plantingPanel = new JPanel(null);
             plantingPanel.setBackground(new Color(255,255,255,0));
             plantingPanel.setBounds(80,100,846,600);
             plantingPanel.addMouseListener(state.getMouseListener());
@@ -154,13 +154,18 @@ public class GameFrame extends JFrame {
     }
 
     private void addLawnMowersG2D(Graphics2D g,GameState state){
-        int i = 0;
-        for(LawnMower lawnMower: state.getLawnMowers()){
-            if(i == lawnMower.getRow()){
-                g.drawImage(lawnMower.getImage(),0,(i + 1) * 120,this);
+//        synchronized (state.getLawnMowers()) {
+            int j = 0;
+            for (int i = 0; i < 5; i++) {
+                if(j < state.getLawnMowers().size()) {
+                    LawnMower lawnMower = state.getLawnMowers().get(j);
+                    if (i == lawnMower.getRow()) {
+                        g.drawImage(lawnMower.getImage(), lawnMower.getLocationX(), lawnMower.getLocationY(), this);
+                        j++;
+                    }
+                }
             }
-            i++;
-        }
+//        }
     }
 
     private void addPlantsG2D(Graphics2D g,GameState state){
@@ -188,20 +193,22 @@ public class GameFrame extends JFrame {
                 g.drawImage(BufferedImages.sun,sun.getLocationX(),sun.getLocationY(),this);
                 JLabel label = new JLabel();
                 label.setPreferredSize(new Dimension(50,50));
-                label.setBounds(sun.getLocationX(),sun.getLocationY(),50,50);
-
-//                plantingPanel.add(label);
-//                label.addMouseListener(new MouseAdapter() {
-//                    @Override
-//                    public void mousePressed(MouseEvent e) {
-//                        super.mousePressed(e);
+                label.setBounds(sun.getLocationX() - 82,sun.getLocationY() - 115,50,50);
+                label.setEnabled(true);
+                plantingPanel.add(label);
+                label.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        super.mousePressed(e);
+                        label.setEnabled(false);
 //                        synchronized (state.getSuns()){
-//                            state.collectSun(sun);
+                            state.collectSun(sun);
 //                        }
+                        plantingPanel.remove(label);
 //                        plantingPanel.remove(label);
 //                        plantingPanel.revalidate();
-//                    }
-//                });
+                    }
+                });
             }
         }
     }

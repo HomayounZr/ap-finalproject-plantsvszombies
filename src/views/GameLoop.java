@@ -1,6 +1,10 @@
 /*** In The Name of Allah ***/
 package views;
 
+import helpers.threads.ThreadPool;
+
+import javax.swing.*;
+
 /**
  * A very simple structure for the main game loop.
  * THIS IS NOT PERFECT, but works for most situations.
@@ -42,20 +46,42 @@ public class GameLoop implements Runnable {
 	@Override
 	public void run() {
 		boolean gameOver = false;
-		while (!gameOver) {
+		boolean finished = false;
+		while (!gameOver && !finished) {
 			try {
 				long start = System.currentTimeMillis();
 				//
 				state.update();
 				canvas.render(state);
-				if(state.getLawnMowers().size() <= 0 || state.getIsFinished() == true)
+				if(state.getLawnMowers().size() <= 0){
 					gameOver = true;
+				}
+				finished = state.getIsFinished();
 				//
 				long delay = (1000 / FPS) - (System.currentTimeMillis() - start);
 				if (delay > 0)
 					Thread.sleep(delay);
 			} catch (InterruptedException ex) {
 			}
+		}
+
+		ThreadPool.shutdownNow();
+
+		if(gameOver){
+			JOptionPane.showMessageDialog(
+					null,
+					"You Lose",
+					"Mission Failed",
+					JOptionPane.INFORMATION_MESSAGE
+			);
+		}
+		if(finished){
+			JOptionPane.showMessageDialog(
+					null,
+					"You Won",
+					"Mission Successful",
+					JOptionPane.INFORMATION_MESSAGE
+			);
 		}
 		
 	}

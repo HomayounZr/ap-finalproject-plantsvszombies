@@ -22,7 +22,7 @@ public class GameState {
 
 	private boolean isFinished;
 	private ArrayList<Card> cards;
-	private ArrayList<LawnMower> lawnMowers;
+	private CopyOnWriteArrayList<LawnMower> lawnMowers;
 	private Card selectedCard;
 	private Plant[][] plants;
 	private CopyOnWriteArrayList<Zombie> zombies;
@@ -46,9 +46,11 @@ public class GameState {
 		cards.add(new Card(PlantType.GIANTWALLNUT));
 		cards.add(new Card(PlantType.CHERRYBOMB));
 
-		lawnMowers = new ArrayList<>();
+		lawnMowers = new CopyOnWriteArrayList<>();
 		for(int i = 0;i < 5;i++){
-			lawnMowers.add(new LawnMower(i));
+			LawnMower lawnMower = new LawnMower(i);
+			lawnMower.setLocation(0,(i + 1) * 120);
+			lawnMowers.add(lawnMower);
 		}
 
 		plants = new Plant[9][5];
@@ -235,7 +237,7 @@ public class GameState {
 		return cards;
 	}
 
-	public ArrayList<LawnMower> getLawnMowers() {
+	public CopyOnWriteArrayList<LawnMower> getLawnMowers() {
 		return lawnMowers;
 	}
 
@@ -267,7 +269,7 @@ public class GameState {
 		return plants[x][y];
 	}
 
-	public synchronized void collectSun(Sun sun){
+	public void collectSun(Sun sun){
 		if(suns.size() > 0){
 			suns.remove(sun);
 			playerSuns += 25;
@@ -287,7 +289,7 @@ public class GameState {
 	public void startStage1(){
 		System.out.println("====> Starting stage 1 for 2.5 min");
 
-		zombieGenerator = new ZombieGenerator(zombies,30,1,plants);
+		zombieGenerator = new ZombieGenerator(zombies,30,1,this);
 		ThreadPool.execute(zombieGenerator);
 	}
 
@@ -295,16 +297,30 @@ public class GameState {
 	public void startStage2(){
 		System.out.println("====> Starting stage 2 for 3 min");
 
-		zombieGenerator = new ZombieGenerator(zombies,30,2,plants);
-		ThreadPool.execute(zombieGenerator);
+		zombieGenerator.setDuration(30);
+		zombieGenerator.setCount(2);
 	}
 
 	// start final wave for 2.5 min, 2 zombies per 25sec
 	public void startFinalWave(){
 		System.out.println("====> Starting final wave for 2.5 min");
 
-		zombieGenerator = new ZombieGenerator(zombies,25,2,plants);
-		ThreadPool.execute(zombieGenerator);
+		zombieGenerator.setDuration(25);
+		zombieGenerator.setCount(2);
 	}
 
+	public Plant[][] getPlants() {
+		if(plants == null)
+			plants = new Plant[9][5];
+		return plants;
+	}
+
+	public void checkIfWon(){
+		zombieGenerator.stopThread();
+		while(zombies.size() > 0){
+			// nothing
+		}
+		if(lawnMowers.size() > 0)
+			isFinished = true;
+	}
 }

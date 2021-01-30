@@ -5,6 +5,7 @@ import helpers.ImageIcons;
 import helpers.threads.ZombieGuiThread;
 import helpers.threads.ZombieLogicalThread;
 import helpers.threads.ThreadPool;
+import views.GameState;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -34,7 +35,6 @@ public abstract class Zombie {
 
     private ZombieLogicalThread logicalThread;
     private ZombieGuiThread guiThread;
-    private Plant[][] plants;
 
     public Zombie(BufferedImage image,
                   Coordinate coordinate,
@@ -42,19 +42,18 @@ public abstract class Zombie {
                   int damage,
                   double speed,
                   ImageIcon icon,
-                  Plant[][] plants){
+                  GameState state){
         this.health = health;
         this.damage = damage;
         this.speed = speed;
         this.coordinate = coordinate;
         this.image = image;
         this.imageIcon = icon;
-        this.plants = plants;
 
         guiThread = new ZombieGuiThread(this);
         ThreadPool.execute(guiThread);
 
-        logicalThread = new ZombieLogicalThread(this,guiThread,plants);
+        logicalThread = new ZombieLogicalThread(this,guiThread,state);
         ThreadPool.execute(logicalThread);
     }
 

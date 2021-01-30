@@ -2,6 +2,7 @@ package helpers.threads;
 
 import appStart.Configurations;
 import models.*;
+import views.GameState;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
@@ -13,14 +14,16 @@ public class ZombieGenerator implements Runnable {
     private int duration;
     private int count;
     private SecureRandom random;
-    private Plant[][] plants;
+    private GameState state;
+    private boolean running;
 
-    public ZombieGenerator(CopyOnWriteArrayList<Zombie> zombies,int duration,int count,Plant[][] plants){
+    public ZombieGenerator(CopyOnWriteArrayList<Zombie> zombies,int duration,int count,GameState state){
         this.zombies = zombies;
         this.duration = duration;
         this.count = count;
         this.random = new SecureRandom();
-        this.plants = plants;
+        this.state = state;
+        this.running = true;
     }
 
     public void setDuration(int duration) {
@@ -35,7 +38,7 @@ public class ZombieGenerator implements Runnable {
     public void run() {
         try{
 
-            while(true){
+            while(running){
 
                 for(int i = 0;i < count;i++){
                     int randomRow = random.nextInt(5);
@@ -44,13 +47,13 @@ public class ZombieGenerator implements Runnable {
                     int zombieType = random.nextInt(3);
                     switch (zombieType){
                         case 0:
-                            zombie = new NormalZombie(new Coordinate(8,randomRow),plants);
+                            zombie = new NormalZombie(new Coordinate(8,randomRow),state);
                             break;
                         case 1:
-                            zombie = new ConeHeadZombie(new Coordinate(8,randomRow),plants);
+                            zombie = new ConeHeadZombie(new Coordinate(8,randomRow),state);
                             break;
                         case 2:
-                            zombie = new BucketHeadZombie(new Coordinate(8,randomRow),plants);
+                            zombie = new BucketHeadZombie(new Coordinate(8,randomRow),state);
                             break;
                         default:
                             break;
@@ -65,5 +68,9 @@ public class ZombieGenerator implements Runnable {
         } catch (Exception ex){
             ex.printStackTrace();
         }
+    }
+
+    public void stopThread(){
+        this.running = false;
     }
 }

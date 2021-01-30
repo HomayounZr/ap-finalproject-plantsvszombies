@@ -3,10 +3,11 @@ package models;
 import appStart.Configurations;
 import helpers.BufferedImages;
 import helpers.ImageIcons;
+import views.GameState;
 
 public class BucketHeadZombie extends Zombie {
 
-    public BucketHeadZombie(Coordinate coordinate,Plant[][] plants){
+    public BucketHeadZombie(Coordinate coordinate, GameState state){
         super(
                 BufferedImages.zombie_buckethead,
                 coordinate,
@@ -14,7 +15,7 @@ public class BucketHeadZombie extends Zombie {
                 Configurations.zombieBucketHeadDamage,
                 Configurations.zombieBucketHeadSpeed,
                 ImageIcons.zombie_buckethead,
-                plants
+                state
         );
     }
 

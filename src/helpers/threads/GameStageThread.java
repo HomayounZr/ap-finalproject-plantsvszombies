@@ -15,12 +15,14 @@ public class GameStageThread implements Runnable {
         try{
 
             state.startCollectingStage();
-            Thread.sleep(3 * 1000);
+            Thread.sleep(50 * 1000);
             state.startStage1();
             Thread.sleep(150 * 1000);
             state.startStage2();
             Thread.sleep(180 * 1000);
             state.startFinalWave();
+            Thread.sleep(150 * 1000);
+            state.checkIfWon();
 
         } catch (Exception ex){
             ex.printStackTrace();

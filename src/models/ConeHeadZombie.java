@@ -3,10 +3,11 @@ package models;
 import appStart.Configurations;
 import helpers.BufferedImages;
 import helpers.ImageIcons;
+import views.GameState;
 
 public class ConeHeadZombie extends Zombie {
 
-    public ConeHeadZombie(Coordinate coordinate,Plant[][] plants){
+    public ConeHeadZombie(Coordinate coordinate, GameState state){
         super(
                 BufferedImages.zombie_conehead,
                 coordinate,
@@ -14,7 +15,7 @@ public class ConeHeadZombie extends Zombie {
                 Configurations.zombieConeHeadDamage,
                 Configurations.zombieConeHeadSpeed,
                 ImageIcons.zombie_conehead,
-                plants
+                state
         );
     }
 
