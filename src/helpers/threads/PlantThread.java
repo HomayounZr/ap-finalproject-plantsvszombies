@@ -5,6 +5,7 @@ import models.Plant;
 public class PlantThread implements Runnable {
 
     private Plant plant;
+    private boolean alive;
 
     public PlantThread(Plant plant){
         this.plant = plant;
@@ -24,6 +25,10 @@ public class PlantThread implements Runnable {
             ex.printStackTrace();
         }
 
+    }
+
+    public void stopThread(){
+        this.alive = false;
     }
 
 

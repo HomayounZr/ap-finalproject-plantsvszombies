@@ -1,29 +1,24 @@
 package models;
 
 import appStart.Configurations;
+import helpers.BufferedImages;
+import helpers.ImageIcons;
+import views.GameState;
 
 public class ConeHeadZombie extends Zombie {
 
-    public ConeHeadZombie(Coordinate coordinate){
+    public ConeHeadZombie(Coordinate coordinate, GameState state){
         super(
-                "./images/Gifs/coneheadzombie.gif",
+                BufferedImages.zombie_conehead,
                 coordinate,
-                200,
+                560,
                 Configurations.zombieConeHeadDamage,
-                Configurations.zombieConeHeadSpeed
+                Configurations.zombieConeHeadSpeed,
+                ImageIcons.zombie_conehead,
+                state
         );
     }
-    /**
-     * This Method Is for the Action of Losing the Cone
-     * for the Zombie When Its HP is lower than A Specified Number
-     * @param zombie
-     * @param imageUri
-     */
-    public void loseCone(ConeHeadZombie zombie, String imageUri){
-        if(zombie.getHealth()<100){
-            zombie.setImageUri(imageUri);
-        }
-    }
+
     @Override
     public void attack() {
 
