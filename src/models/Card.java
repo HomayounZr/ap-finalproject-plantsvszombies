@@ -142,6 +142,9 @@ public class Card implements Serializable {
             default:
                 break;
         }
+        if(!this.isEnable){
+            isEnable = true;
+        }
     }
 
 }

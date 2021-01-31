@@ -389,9 +389,9 @@ public class GameState {
 				currentStage
 		);
 
+		File file = new File("./data/gamesaves.txt");
 		try{
 
-			File file = new File("./data/gamesaves.txt");
 			if(!file.exists())
 				file.createNewFile();
 
@@ -410,6 +410,24 @@ public class GameState {
 			outputStream.writeObject(saves);
 
 			outputStream.flush();
+
+		} catch (EOFException ex){
+
+			GameSaves saves = new GameSaves();
+			saves.addNewSave(save);
+
+			file.delete();
+			try{
+				file.createNewFile();
+
+				ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file));
+
+				outputStream.writeObject(saves);
+
+				outputStream.flush();
+			} catch (Exception ex2){
+
+			}
 
 		} catch (Exception ex){
 			ex.printStackTrace();
