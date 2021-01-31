@@ -15,7 +15,7 @@ public class GameStageThread implements Runnable {
         try{
 
             state.startCollectingStage();
-            Thread.sleep(50 * 1000);
+            Thread.sleep(5 * 1000);
             state.startStage1();
             Thread.sleep(150 * 1000);
             state.startStage2();

@@ -2,7 +2,8 @@ package appStart;
 
 /**
  * this class holds different datas
-*/
+ * for game based on users settings
+ */
 public class Configurations {
 
     // different speeds;

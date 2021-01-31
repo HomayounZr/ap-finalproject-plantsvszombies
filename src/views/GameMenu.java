@@ -1,7 +1,11 @@
 package views;
 
 import appStart.GameManagement;
+import helpers.BufferedImages;
+import helpers.ImageIcons;
 import helpers.threads.ThreadPool;
+import models.GameSave;
+import models.GameSaves;
 import models.User;
 import myComponents.ImagePanel;
 
@@ -10,6 +14,11 @@ import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 
 public class GameMenu {
 
@@ -67,6 +76,7 @@ public class GameMenu {
 
         JButton btnLoadGame = new JButton("Load Game");
         btnLoadGame.setPreferredSize(new Dimension(250,40));
+        btnLoadGame.addMouseListener(mouseHandler);
 
         JButton btnRanking = new JButton("Rankings");
         btnRanking.setPreferredSize(new Dimension(250,40));
@@ -106,32 +116,29 @@ public class GameMenu {
                     rankings.show();
                 } else if (sourceText.equals("New Game")) {
 
+                    // initializing buffered images
+                    BufferedImages.init();
                     // Initialize the global thread-pool
-//                    ThreadPool.init();
+                    ThreadPool.init();
 
-                    // Show the game menu ...
-
-                    // After the player clicks 'PLAY' ...
                     EventQueue.invokeLater(new Runnable() {
                         @Override
                         public void run() {
-                            GameFrame frame = new GameFrame("Simple Ball !");
+                            GameFrame frame = new GameFrame("PvZ Starting...");
                             frame.setLocationRelativeTo(null); // put frame at center of screen
-                            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                            frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
                             frame.setVisible(true);
                             frame.initBufferStrategy();
                             // Create and execute the game-loop
                             GameLoop game = new GameLoop(frame);
-                            game.init();
+                            game.init(null);
                             ThreadPool.execute(game);
                             // and the game starts ...
                         }
                     });
 
-//                    GameFrame gameFrame = new GameFrame();
-//                    gameFrame.show();
                 } else {
-
+                    openSaves();
                 }
 
             } catch (ClassCastException ex){
@@ -147,5 +154,33 @@ public class GameMenu {
                 "New User",
                 JOptionPane.QUESTION_MESSAGE
         );
+    }
+
+    private void openSaves(){
+        ShowGameSaves showGameSaves = new ShowGameSaves();
+        showGameSaves.show();
+    }
+
+    public static void loadGame(GameSave save){
+        // initializing buffered images
+        BufferedImages.init();
+        ImageIcons.init();
+        // Initialize the global thread-pool
+        ThreadPool.init();
+        EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                GameFrame frame = new GameFrame("PvZ Starting...");
+                frame.setLocationRelativeTo(null); // put frame at center of screen
+                frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                frame.setVisible(true);
+                frame.initBufferStrategy();
+                // Create and execute the game-loop
+                GameLoop game = new GameLoop(frame);
+                game.init(save);
+                ThreadPool.execute(game);
+                // and the game starts ...
+            }
+        });
     }
 }

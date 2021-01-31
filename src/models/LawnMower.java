@@ -10,19 +10,18 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.Serializable;
 import java.util.Iterator;
 
-public class LawnMower {
+public class LawnMower implements Serializable {
 
-    private String imageUri;
     private int row;
-    private BufferedImage image;
-    private ImageIcon imageIcon;
+    private transient BufferedImage image;
+    private transient ImageIcon imageIcon;
     private int locationX;
     private int locationY;
 
     public LawnMower(int row){
-        imageUri = "./images/Gifs/lawn_mower.gif";
         this.row = row;
         imageIcon = ImageIcons.lawn_mower;
         image = BufferedImages.lawn_mower;
@@ -32,9 +31,6 @@ public class LawnMower {
         imageIcon = ImageIcons.lawn_mower_active;
         image = BufferedImages.lawn_mower_active;
 
-        LawnMowerGuiThread guiThread = new LawnMowerGuiThread(this);
-        ThreadPool.execute(guiThread);
-
         Iterator<Zombie> it = state.getZombies().iterator();
         while(it.hasNext()){
             Zombie zombie = it.next();
@@ -43,7 +39,8 @@ public class LawnMower {
                 state.getZombies().remove(zombie);
             }
         }
-        state.getLawnMowers().remove(this);
+        LawnMowerGuiThread guiThread = new LawnMowerGuiThread(this,state);
+        ThreadPool.execute(guiThread);
     }
 
     public ImageIcon getImageIcon() {
@@ -69,5 +66,9 @@ public class LawnMower {
 
     public int getLocationY() {
         return locationY;
+    }
+
+    public void resumeObject(){
+        image = BufferedImages.lawn_mower;
     }
 }

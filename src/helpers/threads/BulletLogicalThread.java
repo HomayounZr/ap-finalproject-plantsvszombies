@@ -27,31 +27,31 @@ public class BulletLogicalThread implements Runnable {
 
 //                synchronized (bullets){
 //                    System.out.println("" + bullets.size());
-                bulletIt = bullets.iterator();
-                while(bulletIt.hasNext()){
-                    Bullet bullet = bulletIt.next();
-                    bullet.moveOneStateRight();
-                    // check if hit zombie erase bullet
-                    Zombie zombie = checkHitZombie(bullet);
-                    if(zombie != null){
-                        System.out.println("hit zombie");
+                    bulletIt = bullets.iterator();
+                    while(bulletIt.hasNext()){
+                        Bullet bullet = bulletIt.next();
+                        bullet.moveOneStateRight();
+                        // check if hit zombie erase bullet
+                        Zombie zombie = checkHitZombie(bullet);
+                        if(zombie != null){
+                            System.out.println("hit zombie");
 
-                        zombie.setHealth(zombie.getHealth() - bullet.getDamage());
-                        bullets.remove(bullet);
-                        if(zombie.getHealth() <= 0){
-                            zombie.stopThreads();
-                            zombies.remove(zombie);
-                        }
+                            zombie.setHealth(zombie.getHealth() - bullet.getDamage());
+                            bullets.remove(bullet);
+                            if(zombie.getHealth() <= 0){
+                                zombie.stopThreads();
+                                zombies.remove(zombie);
+                            }
 
 //                            System.out.println(zombie.getHealth() + " - " + bullet.getCoordinate().getAxis_x());
+                        }
+
+                        // check if bullet is at the end of map
+                        if(bullet.getCoordinate().getAxis_x() > 8 || bullet.getLocationX() > 1000)
+                            bullets.remove(bullet);
+
+    //                    System.out.println(bullet.getCoordinate().getAxis_x() + " - " + bullet.getCoordinate().getAxis_y());
                     }
-
-                    // check if bullet is at the end of map
-                    if(bullet.getCoordinate().getAxis_x() > 8 || bullet.getLocationX() > 1000)
-                        bullets.remove(bullet);
-
-                    //                    System.out.println(bullet.getCoordinate().getAxis_x() + " - " + bullet.getCoordinate().getAxis_y());
-                }
 //                }
 
 

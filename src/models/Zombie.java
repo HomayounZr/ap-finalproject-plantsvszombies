@@ -2,36 +2,37 @@ package models;
 
 import helpers.BufferedImages;
 import helpers.ImageIcons;
-import helpers.threads.ZombieLogicalThread;
 import helpers.threads.ZombieGuiThread;
+import helpers.threads.ZombieLogicalThread;
 import helpers.threads.ThreadPool;
 import views.GameState;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 
 /**
  * this class represents a zombie
  * it's the super class for normal, conehead and buckethead zombie
  *
  */
-public abstract class Zombie {
+public abstract class Zombie implements Serializable {
 
     private int health;
     private double speed;
     private int damage;
     private Coordinate coordinate;
-    //    private String imageUri;
+//    private String imageUri;
     // new
-    private BufferedImage image;
-    private ImageIcon imageIcon;
+    private transient BufferedImage image;
+    private transient ImageIcon imageIcon;
 
     // adding x and y for easier rendering in GameCanvas
     private int locationX;
     private int locationY;
 
-    private ZombieLogicalThread logicalThread;
-    private ZombieGuiThread guiThread;
+    private transient ZombieLogicalThread logicalThread;
+    private transient ZombieGuiThread guiThread;
 
     public Zombie(BufferedImage image,
                   Coordinate coordinate,
@@ -113,4 +114,21 @@ public abstract class Zombie {
         logicalThread.stopThread();
         guiThread.stopThread();
     }
+
+    public void resumeObject(GameState state){
+        if(this instanceof NormalZombie){
+            image = BufferedImages.zombie_normal;
+        } else if(this instanceof ConeHeadZombie){
+            image = BufferedImages.zombie_conehead;
+        } else {
+            image = BufferedImages.zombie_buckethead;
+        }
+
+        guiThread = new ZombieGuiThread(this);
+        ThreadPool.execute(guiThread);
+
+        logicalThread = new ZombieLogicalThread(this,guiThread,state);
+        ThreadPool.execute(logicalThread);
+    }
+
 }

@@ -30,17 +30,13 @@ public class PeaShooterPlant extends Plant {
                 BufferedImages.bullet_normal,
                 35,
                 super.getCoordinate(),
-                ImageIcons.bullet_normal
+                ImageIcons.bullet_normal,
+                0
         );
         bullet.setLocation(super.getLocationX() + 25,super.getLocationY() - 10);
 //        synchronized (bullets){
-        bullets.add(bullet);
+            bullets.add(bullet);
 //        }
     }
-        /*
-        create thread for moving bullet in Helper folder
-        haven't said anything special about bullet speed
-        choose whatever you like for sleep time in thread
-        something between 0.1 and 1 seconds per state is logical
-         */
+
 }

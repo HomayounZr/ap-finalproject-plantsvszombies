@@ -1,21 +1,24 @@
 package models;
 
+import helpers.BufferedImages;
+import helpers.ImageIcons;
 import helpers.threads.PlantThread;
 import helpers.threads.ThreadPool;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public abstract class Plant {
+public abstract class Plant implements Serializable {
 
     private Coordinate coordinate;
-    //    private String imageUri;
-    private BufferedImage image;
-    private ImageIcon imageIcon;
+//    private String imageUri;
+    private transient BufferedImage image;
+    private transient ImageIcon imageIcon;
     // sun: 50, pea: 70, snowpea: 100, wall-nut: 150, cherrybomb: 70;
     private int health;
     private int actionInterval;
@@ -27,7 +30,7 @@ public abstract class Plant {
     protected CopyOnWriteArrayList<Bullet> bullets;
     protected CopyOnWriteArrayList<Sun> suns;
 
-    private PlantThread thread;
+    private transient PlantThread thread;
 
     public Plant(Coordinate coordinate,int health,int actionInterval,BufferedImage image,ImageIcon icon){
         this.coordinate = coordinate;
@@ -105,4 +108,27 @@ public abstract class Plant {
     public int getHealth() {
         return health;
     }
+
+    public void resumeObject(){
+        if(this instanceof SunFlowerPlant){
+            imageIcon = ImageIcons.plant_sunflower;
+            image = BufferedImages.plant_sunflower;
+        } else if(this instanceof PeaShooterPlant){
+            imageIcon = ImageIcons.plant_peashooter;
+            image = BufferedImages.plant_peashooter;
+        } else if(this instanceof SnowPeaShooterPlant){
+            imageIcon = ImageIcons.plant_snowpeashooter;
+            image = BufferedImages.plant_snowpeashooter;
+        } else if(this instanceof WallNutPlant){
+            imageIcon = ImageIcons.plant_giantwallnut;
+            image = BufferedImages.plant_giantwallnut;
+        } else {
+            imageIcon = ImageIcons.plant_cherrybomb;
+            image = BufferedImages.plant_cherrybomb;
+        }
+
+        thread = new PlantThread(this);
+        ThreadPool.execute(thread);
+    }
+
 }

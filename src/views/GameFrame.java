@@ -16,7 +16,7 @@ import javax.swing.border.EmptyBorder;
 
 /**
  * The window on which the rendering is performed.
- * This example uses the modern BufferStrategy approach for double-buffering,
+ * This example uses the modern BufferStrategy approach for double-buffering, 
  * actually it performs triple-buffering!
  * For more information on BufferStrategy check out:
  *    http://docs.oracle.com/javase/tutorial/extra/fullscreen/bufferstrategy.html
@@ -134,37 +134,45 @@ public class GameFrame extends JFrame {
 
         int i = 1;
         for(Card card: state.getCards()){
-            JLabel label = new JLabel(card.getImageIcon());
-            label.addMouseListener(new MouseAdapter() {
-                @Override
-                public void mousePressed(MouseEvent e) {
-                    super.mousePressed(e);
+                JLabel label = new JLabel(card.getImageIcon());
+                label.addMouseListener(new MouseAdapter() {
+                    @Override
+                    public void mousePressed(MouseEvent e) {
+                        super.mousePressed(e);
 
-                    Card selectedCard = card;
-                    state.changeSelectedCard(card);
-                }
-            });
-            label.setEnabled(card.getIsEnable());
-            label.setBackground(Color.WHITE);
-            label.setBounds(i * 64 + 50,10,64,90);
-            this.add(label);
-            g.drawImage(card.getImage(),i * 64 + 50,10,this);
-            i++;
+                        Card selectedCard = card;
+                        state.changeSelectedCard(card);
+                    }
+                });
+                label.setEnabled(card.getIsEnable());
+                label.setBackground(Color.WHITE);
+                label.setBounds(i * 64 + 50,10,64,90);
+                this.add(label);
+                g.drawImage(card.getImage(),i * 64 + 50,10,this);
+                i++;
         }
+
+        g.setColor(Color.BLACK);
+        g.setFont(new Font(null,Font.BOLD,18));
+        g.drawString("" + state.getTotalTimePassed(),500,50);
+
+        g.setColor(Color.BLACK);
+        g.setFont(new Font(null,Font.BOLD,18));
+        g.drawString("Stage: " + state.getCurrentStage(),500,90);
     }
 
     private void addLawnMowersG2D(Graphics2D g,GameState state){
 //        synchronized (state.getLawnMowers()) {
-        int j = 0;
-        for (int i = 0; i < 5; i++) {
-            if(j < state.getLawnMowers().size()) {
-                LawnMower lawnMower = state.getLawnMowers().get(j);
-                if (i == lawnMower.getRow()) {
-                    g.drawImage(lawnMower.getImage(), lawnMower.getLocationX(), lawnMower.getLocationY(), this);
-                    j++;
+            int j = 0;
+            for (int i = 0; i < 5; i++) {
+                if(j < state.getLawnMowers().size()) {
+                    LawnMower lawnMower = state.getLawnMowers().get(j);
+                    if (i == lawnMower.getRow()) {
+                        g.drawImage(lawnMower.getImage(), lawnMower.getLocationX(), lawnMower.getLocationY(), this);
+                        j++;
+                    }
                 }
             }
-        }
 //        }
     }
 
@@ -192,23 +200,25 @@ public class GameFrame extends JFrame {
             for(Sun sun: state.getSuns()){
                 g.drawImage(BufferedImages.sun,sun.getLocationX(),sun.getLocationY(),this);
                 JLabel label = new JLabel();
-                label.setPreferredSize(new Dimension(50,50));
+//                label.setPreferredSize(new Dimension(50,50));
                 label.setBounds(sun.getLocationX() - 82,sun.getLocationY() - 115,50,50);
-                label.setEnabled(true);
-                plantingPanel.add(label);
                 label.addMouseListener(new MouseAdapter() {
                     @Override
                     public void mousePressed(MouseEvent e) {
                         super.mousePressed(e);
                         label.setEnabled(false);
 //                        synchronized (state.getSuns()){
-                        state.collectSun(sun);
+                            state.collectSun(sun);
 //                        }
                         plantingPanel.remove(label);
-//                        plantingPanel.remove(label);
 //                        plantingPanel.revalidate();
                     }
                 });
+                plantingPanel.add(label);
+            }
+            if(state.getSuns().size() > 0) {
+//                plantingPanel.revalidate();
+//                plantingPanel.repaint();
             }
         }
     }

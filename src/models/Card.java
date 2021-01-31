@@ -10,19 +10,20 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.Serializable;
 import java.lang.module.Configuration;
 import java.nio.Buffer;
 
-public class Card {
+public class Card implements Serializable {
 
     private String name;
-    //    private String imageUri;
+//    private String imageUri;
     private double reloadTime;
     private int sunsNeed;
     private PlantType plantType;
     private boolean isEnable;
-    private BufferedImage image;
-    private ImageIcon imageIcon;
+    private transient BufferedImage image;
+    private transient ImageIcon imageIcon;
 
     public Card(PlantType type){
         this.plantType = type;
@@ -115,6 +116,34 @@ public class Card {
     public BufferedImage getImage() {
         return image;
     }
+
+    public void resumeObject(){
+        switch (plantType){
+            case SUNFLOWER:
+                image = BufferedImages.card_sunflower;
+                imageIcon = ImageIcons.card_sunflower;
+                break;
+            case PEASHOOTER:
+                image = BufferedImages.card_peashooter;
+                imageIcon = ImageIcons.card_peashooter;
+                break;
+            case SNOWPEASHOOTER:
+                image = BufferedImages.card_snowpeashooter;
+                imageIcon = ImageIcons.card_snowpeashooter;
+                break;
+            case GIANTWALLNUT:
+                image = BufferedImages.card_giantwallnut;
+                imageIcon = ImageIcons.card_giantwallnut;
+                break;
+            case CHERRYBOMB:
+                image = BufferedImages.card_cherrybomb;
+                imageIcon = ImageIcons.card_cherrybomb;
+                break;
+            default:
+                break;
+        }
+    }
+
 }
 
 class CardReloadThread implements Runnable{

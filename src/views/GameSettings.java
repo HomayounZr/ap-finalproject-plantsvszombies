@@ -1,6 +1,7 @@
 package views;
 
 import appStart.Configurations;
+import appStart.GameManagement;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -79,10 +80,10 @@ public class GameSettings {
 //              System.out.println(source.getSelectedItem());
                 if(source.getSelectedItem().equals("Easy")){
                     Configurations.changeToEasy();
-                    isEasy = true;
+                    GameManagement.isEasy = true;
                 } else {
                     Configurations.changeToHard();
-                    isEasy = false;
+                    GameManagement.isEasy = false;
                 }
             } catch (ClassCastException ex){
 

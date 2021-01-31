@@ -28,11 +28,12 @@ public class SnowPeaShooterPlant extends Plant {
                 BufferedImages.bullet_frozen,
                 35,
                 super.getCoordinate(),
-                ImageIcons.bullet_frozen
+                ImageIcons.bullet_frozen,
+                1
         );
         bullet.setLocation(super.getLocationX() + 25,super.getLocationY() - 10);
 //        synchronized (bullets){
-        bullets.add(bullet);
+            bullets.add(bullet);
 //        }
     }
 

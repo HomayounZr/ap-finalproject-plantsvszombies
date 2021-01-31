@@ -8,7 +8,7 @@ public class Player {
 
     public Player(String username){
         this.user = new User(username);
-        suns = 100;
+        suns = 0;
     }
 
     public void collectSun(int amount){

@@ -18,14 +18,14 @@ public class BulletGuiThread implements Runnable {
 
             while(true){
 //                synchronized (bullets) {
-                for (Bullet bullet : bullets) {
-                    bullet.setLocation(
-                            bullet.getLocationX() + 19,
-                            bullet.getLocationY()
-                    );
+                    for (Bullet bullet : bullets) {
+                        bullet.setLocation(
+                                bullet.getLocationX() + 19,
+                                bullet.getLocationY()
+                        );
 //                    System.out.println("" + bullet.getLocationX() + " - " + bullet.getLocationY());
-                }
-                Thread.sleep(20);
+                    }
+                    Thread.sleep(20);
 //                }
             }
 

@@ -6,7 +6,7 @@ import javax.swing.*;
 
 public class ZombieGuiThread implements Runnable {
 
-    //    private JLabel zombieLabel;
+//    private JLabel zombieLabel;
     private Zombie zombie;
     private boolean alive;
     private boolean pause;

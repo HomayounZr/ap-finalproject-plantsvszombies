@@ -1,29 +1,29 @@
 package models;
 
-import helpers.threads.BulletLogicalThread;
-import helpers.threads.ThreadPool;
+import helpers.BufferedImages;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.io.Serializable;
 
-public class Bullet {
+public class Bullet implements Serializable {
 
     private int damage;
     private Coordinate coordinate;
-    //    private String imageUri;
-    private BufferedImage image;
-    private ImageIcon imageIcon;
+//    private String imageUri;
+    private transient BufferedImage image;
+    private transient ImageIcon imageIcon;
+    private int type;
 
     private int locationX;
     private int locationY;
 
-    public Bullet(BufferedImage image,int damage,Coordinate coordinate,ImageIcon icon){
+    public Bullet(BufferedImage image,int damage,Coordinate coordinate,ImageIcon icon,int type){
         this.damage = damage;
         this.coordinate = coordinate;
         this.image = image;
         this.imageIcon = icon;
+        this.type = type;
 //        BulletLogicalThread newThread = new BulletLogicalThread(this);
 //        ThreadPool.execute(newThread);
     }
@@ -46,7 +46,7 @@ public class Bullet {
      */
     public void moveOneStateRight(){
 //        synchronized (bullets) {
-        this.coordinate = new Coordinate(coordinate.getAxis_x() + 1, coordinate.getAxis_y());
+            this.coordinate = new Coordinate(coordinate.getAxis_x() + 1, coordinate.getAxis_y());
 //        }
     }
 
@@ -65,4 +65,13 @@ public class Bullet {
     public ImageIcon getImageIcon() {
         return imageIcon;
     }
+
+    public void resumeObject(){
+        if(type == 0){
+            image = BufferedImages.bullet_normal;
+        } else {
+            image = BufferedImages.bullet_frozen;
+        }
+    }
+
 }

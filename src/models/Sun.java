@@ -1,6 +1,10 @@
 package models;
 
-public class Sun {
+import helpers.BufferedImages;
+
+import java.io.Serializable;
+
+public class Sun implements Serializable {
 
     private int locationX;
     private int locationY;

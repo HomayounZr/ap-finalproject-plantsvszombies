@@ -27,8 +27,6 @@ public class ZombieLogicalThread implements Runnable {
 
             while(alive){
                 // move the zombie by one coordinate to the left
-                Thread.sleep((int)(zombie.getSpeed() * 1000));
-                zombie.moveOneStateLeft();
                 /*
                     check if zombie arrived to a plant
                     then break the loop
@@ -94,7 +92,7 @@ public class ZombieLogicalThread implements Runnable {
 
                 // check if zombie arived at a lawn mower
                 if(plant == null && zombie.getCoordinate().getAxis_x() <= 0){
-                    synchronized (state.getLawnMowers()){
+//                    synchronized (state.getLawnMowers()){
                         Iterator<LawnMower> it = state.getLawnMowers().iterator();
                         while(it.hasNext()){
                             LawnMower lawnMower = it.next();
@@ -102,17 +100,19 @@ public class ZombieLogicalThread implements Runnable {
                             if(lawnMower.getRow() == zombie.getCoordinate().getAxis_y()){
                                 alive = false;
                                 lawnMower.activate(state);
-                                Thread.sleep(1000);
                                 break;
                             }
                         }
-                    }
+//                    }
                 }
 
                 if(zombie.getCoordinate().getAxis_x() < 0 || zombie.getLocationX() < 0){
                     zombie.stopThreads();
                     state.getZombies().remove(zombie);
                 }
+
+                Thread.sleep((int)(zombie.getSpeed() * 1000));
+                zombie.moveOneStateLeft();
             }
 
         } catch (InterruptedException ex){

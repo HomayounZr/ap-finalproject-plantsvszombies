@@ -1,6 +1,8 @@
 package models.enums;
 
-public enum PlantType {
+import java.io.Serializable;
+
+public enum PlantType implements Serializable {
 
     SUNFLOWER,
     PEASHOOTER,

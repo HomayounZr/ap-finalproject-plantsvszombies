@@ -1,11 +1,12 @@
 package models;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * This class represent and element's coordinate
  */
-public class Coordinate {
+public class Coordinate implements Serializable {
 
     private int axis_x;
     private int axis_y;

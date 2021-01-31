@@ -24,8 +24,8 @@ public class SunFlowerPlant extends Plant {
     public void doAction(){
 
 //        synchronized (suns){
-        Sun sun = new Sun(super.getLocationX() + 75,super.getLocationY() - 10);
-        suns.add(sun);
+            Sun sun = new Sun(super.getLocationX() + 75,super.getLocationY() - 10);
+            suns.add(sun);
 //        }
 
     }
