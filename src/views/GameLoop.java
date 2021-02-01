@@ -31,9 +31,19 @@ public class GameLoop implements Runnable {
 	private GameFrame canvas;
 	private GameState state;
 
+	/**
+	 * Constructor of Class
+	 * @param gc GameFrame
+	 */
+
 	public GameLoop(GameFrame gc) {
 		canvas = gc;
 	}
+
+	/**
+	 * Method OF Initializing the Game
+	 *@param save GameSave if nothing , it's a new Game
+	 */
 	
 	public void init(GameSave save) {
 		//
@@ -45,6 +55,13 @@ public class GameLoop implements Runnable {
 //		canvas.addMouseMotionListener(state.getMouseMotionListener());
 //		canvas.requestFocusInWindow();
 	}
+
+	/**
+	 * Game Main Event Course
+	 *Checks The GameEnding Situations , Elements Death or Score Based
+	 *Updating the Game
+	 *Score Handling For Both Versions Of the Game
+	 */
 
 	@Override
 	public void run() {

@@ -5,8 +5,17 @@ import helpers.BufferedImages;
 import helpers.ImageIcons;
 import views.GameState;
 
-public class BucketHeadZombie extends Zombie {
+/**
+ * This Class Represents BucketHeadZombies
+ * Currently the Most PowerFull Zombie
+ */
 
+public class BucketHeadZombie extends Zombie {
+    /**
+     * Constructor of the Class
+     * @param coordinate Location of the Zombie
+     * @param state State Of the Zombie
+     */
     public BucketHeadZombie(Coordinate coordinate, GameState state){
         super(
                 BufferedImages.zombie_buckethead,

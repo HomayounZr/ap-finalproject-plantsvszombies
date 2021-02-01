@@ -5,6 +5,12 @@ import helpers.BufferedImages;
 import helpers.ImageIcons;
 import views.GameState;
 
+/**
+ * The Normal Zombie Class , Are Just Like the Zombie
+ * No Special Ability
+ * The Father to all Types Of zombies
+ */
+
 public class NormalZombie extends Zombie {
 
     public NormalZombie(Coordinate coordinate, GameState state){

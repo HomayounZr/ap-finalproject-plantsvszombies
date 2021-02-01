@@ -20,11 +20,20 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
+/**
+ * GameMenu Class Is for the Start of the Game
+ * First Screen that the PLayer Can Change How He/She Likes to Play The game
+ * Access Settings , Username Input , Level Of The Game
+ */
+
 public class GameMenu {
 
     private JFrame mainFrame;
     private ImagePanel mainPanel;
 
+    /**
+     * Constructor Of the Class
+     */
     public GameMenu(){
         mainFrame = new JFrame();
         mainFrame.setTitle("Plants vs Zombies");
@@ -57,9 +66,18 @@ public class GameMenu {
         mainFrame.setContentPane(mainPanel);
     }
 
+    /**
+     * Setting the MainFrame Visible
+     */
+
     public void show(){
         mainFrame.setVisible(true);
     }
+
+    /**
+     * Adding Menu Buttons To the Main Frame
+     * @return buttons in the Frame
+     */
 
     private JPanel addButtons(){
         JPanel flowPanel = new JPanel(new FlowLayout());
@@ -98,6 +116,10 @@ public class GameMenu {
 
         return flowPanel;
     }
+
+    /**
+     * ButtonHandler For The Menu Items
+     */
 
     private class MenuButtonHandler extends MouseAdapter{
         @Override
@@ -147,6 +169,10 @@ public class GameMenu {
         }
     }
 
+    /**
+     *
+     * @return UserName String
+     */
     private String askUsername(){
         return JOptionPane.showInputDialog(
                 null,
@@ -156,10 +182,19 @@ public class GameMenu {
         );
     }
 
+    /**
+     * Showing All the Saved Games Of the Player On the Pc or Server
+     */
+
     private void openSaves(){
         ShowGameSaves showGameSaves = new ShowGameSaves();
         showGameSaves.show();
     }
+
+    /**
+     * Loading the Chosen Game
+     * @param save GameState That Was Saved Before
+     */
 
     public static void loadGame(GameSave save){
         // initializing buffered images

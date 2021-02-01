@@ -6,8 +6,14 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-public class ImagePanel extends JPanel {
+/**
+ * This Class Is for Handling the Source Images Of the game
+ * To fit The Inside the Game Frame
+ * Increasing Or Reducing The Size Of Any Source Picture
+ */
 
+public class ImagePanel extends JPanel {
+    //Image Path
     private String imageUri;
     private int width;
 
@@ -56,11 +62,23 @@ public class ImagePanel extends JPanel {
 
     }
 
+    /**
+     * Constructor of the Class
+     * @param imageUri Image Path in the Source File
+     * @param width Image Width
+     */
     public ImagePanel(String imageUri,int width){
 //        super(new BorderLayout());
         this.imageUri = imageUri;
         this.width = width;
     }
+
+    /**
+     * Second Constructor For Some Extra Information of The Layout Of The Frame
+     * @param imageUri Image Path in the Source File
+     * @param width Image Width
+     * @param layout The Main Layout of The Game
+     */
 
     public ImagePanel(String imageUri,int width,LayoutManager layout){
         super(layout);

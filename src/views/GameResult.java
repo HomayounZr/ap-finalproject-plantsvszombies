@@ -10,6 +10,10 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * GameResult Class Which is Shown At The End of Every Game
+ * To Show Who Won and Who Lost
+ */
 public class GameResult {
 
     private int newScore;
@@ -19,6 +23,11 @@ public class GameResult {
     private JFrame mainFrame;
     private JPanel mainPanel;
 
+    /**
+     * Constructor of The Class
+     * @param newScore Score Of the Player
+     * @param won Whether He/She Has Lost or Won The Game
+     */
     public GameResult(int newScore,boolean won){
         this.newScore = newScore;
         this.won = won;
@@ -60,6 +69,10 @@ public class GameResult {
         mainFrame.setContentPane(mainPanel);
     }
 
+    /**
+     * Setting The Result Frame Visible
+     */
+
     public void show(){
         mainFrame.setVisible(true);
     }
@@ -85,6 +98,12 @@ public class GameResult {
         mainPanel.add(bottomPanel, BorderLayout.SOUTH);
     }
 
+    /**
+     * Button Handler For The Result Frame
+     * 2 Items : Save Your Score For Rankings And Closing
+     * Or Changing Your UserName
+     */
+
     private class ButtonHandler extends MouseAdapter{
         @Override
         public void mousePressed(MouseEvent e) {
@@ -109,6 +128,11 @@ public class GameResult {
         }
     }
 
+    /**
+     * The Player Can Change His/Her Username In The End Of the Game
+     * Check For The Unity Of The Chosen UserNAME
+     */
+
     private void changeUsername(){
         boolean result = false;
         do{
@@ -123,6 +147,10 @@ public class GameResult {
         } while (!result);
         JOptionPane.showMessageDialog(null,"New username saved");
     }
+
+    /**
+     * Saving Players Data for The Ranking List
+     */
 
     private void submitData(){
         GameManagement.userController.saveNewData(newScore);

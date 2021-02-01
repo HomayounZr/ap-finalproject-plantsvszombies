@@ -12,6 +12,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.lang.module.Configuration;
 
+/**
+ * Settings Class That Can Be Accessed From Menu Items
+ * Player Can Change The Game Level From Hard To Easy
+ * Game Sound Off or On
+ */
 public class GameSettings {
 
     private JFrame mainFrame;
@@ -20,6 +25,9 @@ public class GameSettings {
     private boolean isEasy;
     private boolean hasSound;
 
+    /**
+     * Constructor of the Class
+     */
     public GameSettings(){
         mainFrame = new JFrame("Game Settings");
         mainFrame.setSize(300,250);
@@ -68,9 +76,18 @@ public class GameSettings {
         mainFrame.setContentPane(mainPanel);
     }
 
+    /**
+     * Setting The SettingMenu Visible
+     */
+
     public void show(){
         mainFrame.setVisible(true);
     }
+
+    /**
+     * ActionListener For Game Mode
+     *
+     */
 
     private class ComboModeItemListener implements ActionListener {
         @Override
@@ -90,4 +107,5 @@ public class GameSettings {
             }
         }
     }
+    //Sound Should Be Implemented
 }

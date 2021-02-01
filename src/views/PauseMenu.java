@@ -8,6 +8,11 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
+/**
+ * This Class Is Implemented in case of Pause Menu Pressed in Game
+ *
+ */
+
 public class PauseMenu {
 
     private GameState state;
@@ -15,6 +20,10 @@ public class PauseMenu {
     private JFrame mainFrame;
     private JPanel mainPanel;
 
+    /**
+     * Constructor For The Class
+     * @param state GameState
+     */
     public PauseMenu(GameState state){
         this.state = state;
 
@@ -43,9 +52,17 @@ public class PauseMenu {
         mainFrame.setContentPane(mainPanel);
     }
 
+    /**
+     * Setting PauseMenu Frame Visible
+     */
+
     public void show(){
         mainFrame.setVisible(true);
     }
+
+    /**
+     * Button Handler Class For Pause Menu Buttons
+     */
 
     private class ButtonHandler extends MouseAdapter{
         @Override
@@ -75,15 +92,27 @@ public class PauseMenu {
         }
     }
 
+    /**
+     * Exit Button Pressed Method For Stopping The Game
+     */
+
     private void exit(){
         ThreadPool.shutdownNow();
         // close frame and state and loop
     }
 
+    /**
+     * Resume Game Button
+     */
+
     private void resumeGame(){
 //        ThreadPool.resumePool();
         mainFrame.dispose();
     }
+
+    /**
+     * Saving The GameState Before EXITING
+     */
 
     private void saveAndExit(){
         state.saveCurrentGame();

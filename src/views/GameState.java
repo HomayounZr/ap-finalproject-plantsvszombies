@@ -40,6 +40,10 @@ public class GameState {
 	private int currentStage;
 	private int totalTimePassed;
 
+	/**
+	 * Constructor of The Game
+	 * @param save if the Game Is Continued Of A Saved Game
+	 */
 	public GameState(GameSave save) {
 		//
 		// Initialize the game state and all elements ...
@@ -85,6 +89,11 @@ public class GameState {
 		keyHandler = new KeyHandler();
 		mouseHandler = new MouseHandler();
 	}
+
+	/**
+	 * Checking if The Game is Over Or Not
+	 * @return boolean isFinished
+	 */
 
 	public boolean getIsFinished(){
 		return isFinished;
@@ -173,6 +182,12 @@ public class GameState {
 		}
 	}
 
+	/**
+	 * Creating A New Plant In the Game
+	 *When The Player Chooses a Card The Chosen Plant can be Placed in the 5x9 Array of the Map
+	 *@param e MouseEvent Of The Chosen Card
+	 */
+
 	public void createNewPlant(MouseEvent e){
 		if(selectedCard == null)
 			return;
@@ -248,17 +263,37 @@ public class GameState {
 		plants[gridX][gridY] = newPlant;
 	}
 
+	/**
+	 * A method for returning what Kind Of Plants Can the Player Play With
+	 *@return Available Card For Player
+	 */
+
 	public ArrayList<Card> getCards() {
 		return cards;
 	}
 
+	/**
+	 * A Method For making a fresh copy of the underlying array of LawnMowers
+	 * @return list of LawnMowers
+	 */
+
 	public CopyOnWriteArrayList<LawnMower> getLawnMowers() {
 		return lawnMowers;
 	}
+	/**
+	 * A Method For making a fresh copy of the underlying array of Zombie
+	 * @return list of Zombie
+	 */
 
 	public CopyOnWriteArrayList<Zombie> getZombies() {
 		return zombies;
 	}
+
+	/**
+	 * A Method For Player That He/She Can change The Card He Had Chosen
+	 * Switching BetWeen Cards is Possible
+	 * @param card
+	 */
 
 	public void changeSelectedCard(Card card){
 		if(card.getIsEnable())
@@ -268,21 +303,48 @@ public class GameState {
 		System.out.println(card.getName() + " is " + (card.getIsEnable() ? "available" : "reloading"));
 	}
 
+	/**
+	 * Returns the Amount Of Suns That The Player Has
+	 * @return
+	 */
+
 	public int getPlayerSuns() {
 		return playerSuns;
 	}
+	/**
+	 * A Method For making a fresh copy of the underlying array of Suns
+	 * @return list of Zombie
+	 */
+
 
 	public CopyOnWriteArrayList<Sun> getSuns() {
 		return suns;
 	}
+	/**
+	 * A Method For making a fresh copy of the underlying array of Bullets
+	 * @return list of Zombie
+	 */
 
 	public CopyOnWriteArrayList<Bullet> getBullets() {
 		return bullets;
 	}
 
+	/**
+	 * A Method For Checking If A Spot is Empty Or Not
+	 * For Player So That He Can Plant Element In The Spot Or Not
+	 * @param x is a Number From 1 to 9
+	 * @param y is a Number From 1 to 5
+	 * @return plant type in the Location , Null For Empty
+	 */
+
 	public Plant checkPlantExist(int x, int y){
 		return plants[x][y];
 	}
+
+	/***
+	 * Collecting Suns In Map By The Player
+	 * @param sun
+	 */
 
 	public void collectSun(Sun sun){
 //		if(suns.size() > 0){
@@ -299,19 +361,39 @@ public class GameState {
 //		System.out.println("" + suns.size());
 	}
 
+	/**
+	 * Returning The Amount OF time That the PLayer Have Been Playing
+	 * @return time Played
+	 */
+
     public int getTotalTimePassed() {
         return totalTimePassed;
     }
 
-    public void setTotalTimePassed(int totalTimePassed) {
+	/**
+	 * Setting The TimePassed For The Saved Game
+	 *@param totalTimePassed time played
+	 */
+
+	public void setTotalTimePassed(int totalTimePassed) {
         this.totalTimePassed = totalTimePassed;
     }
+
+	/**
+	 * Returns The Stage Of The Game
+	 *Like Planting , Zombie Attack , Collecting Suns
+	 *@return Current Stage
+	 */
 
 	public int getCurrentStage() {
 		return currentStage;
 	}
 
-	// start collecting stage for 50 seconds
+	/**
+	 * start collecting stage for 50 seconds
+	 */
+
+
 	public void startCollectingStage(){
 		System.out.println("====> Starting collecting stage for 50 sec");
 
@@ -320,7 +402,10 @@ public class GameState {
 		currentStage = 0;
 	}
 
-	// start stage 1 for 2.5 min, zombie per 30sec
+	/**
+	 * start stage 1 for 2.5 min, zombie per 30sec
+	 */
+
 	public void startStage1(){
 		System.out.println("====> Starting stage 1 for 2.5 min");
 
@@ -331,7 +416,11 @@ public class GameState {
 		currentStage = 1;
 	}
 
-	// start stage 2 for 3 min, 2 zombies per 30sec
+	/**
+	 *  start stage 2 for 3 min, 2 zombies per 30sec
+	 */
+
+
 	public void startStage2(){
 		totalTimePassed = 150;
 		System.out.println("====> Starting stage 2 for 3 min");
@@ -342,7 +431,11 @@ public class GameState {
 		currentStage = 2;
 	}
 
-	// start final wave for 2.5 min, 2 zombies per 25sec
+	/**
+	 * start finalWave for 2.5 min, 2 zombies per 25sec
+	 */
+
+
 	public void startFinalWave(){
 		totalTimePassed = 330;
 		System.out.println("====> Starting final wave for 2.5 min");
@@ -353,11 +446,21 @@ public class GameState {
 		currentStage = 3;
 	}
 
+	/**
+	 * Returns A List Of Plants In The Game Map
+	 * @return
+	 */
+
 	public Plant[][] getPlants() {
 		if(plants == null)
 			plants = new Plant[9][5];
 		return plants;
 	}
+
+	/**
+	 * Wining Situation Check
+	 * Based On Size Of Zombies , Any LawnMowers Left , Stages Finished Or Not
+	 */
 
 	public void checkIfWon(){
 		zombieGenerator.stopThread();
@@ -370,11 +473,20 @@ public class GameState {
 			isFinished = true;
 	}
 
+	/**
+	 * Setting the Pause Menu Visible
+	 */
+
 	private void showPauseMenu(){
 //		ThreadPool.pausePool();
 		PauseMenu menu = new PauseMenu(this);
 		menu.show();
 	}
+
+	/**
+	 * A Method For Saving The Current Game
+	 * In An External File
+	 */
 
 	public void saveCurrentGame(){
 		GameSave save = new GameSave(
@@ -436,6 +548,12 @@ public class GameState {
 		System.out.println("saved...");
 	}
 
+	/**
+	 * Method For Loading The SavedGame
+	 * Using The Resume Methods That Are Placed In Elements Class
+	 * @param save GameSaved
+	 */
+
 	public void loadSave(GameSave save){
 		this.cards = save.getCards();
 		this.plants = save.getPlants();
@@ -472,6 +590,10 @@ public class GameState {
 	}
 }
 
+/**
+ * An Insider Class For Handling Stage Evolve , Based on Time
+ */
+
 class StageTimer implements Runnable {
 
 	private int timePassed;
@@ -490,6 +612,9 @@ class StageTimer implements Runnable {
 	}
 
 	@Override
+	/**
+	 * Running The Main Game and Increasing time Passed
+	 */
 	public void run() {
 		try{
 
@@ -504,9 +629,20 @@ class StageTimer implements Runnable {
 		}
 	}
 
+	/**
+	 * Returns Time Passed For Player
+	 * And The Player Can See It Used For Stage Handling , Later Implementation
+	 *@return shows in game How Much The Player Has Been Playing And He/She Can See It
+	 */
+
+
 	public int getTimePassed(){
 		return timePassed;
 	}
+
+	/**
+	 * Stopping The Main Course Of The Game
+	 */
 
 	public void stopThread(){
 		this.running = false;

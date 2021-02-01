@@ -5,8 +5,16 @@ import helpers.BufferedImages;
 import helpers.ImageIcons;
 import views.GameState;
 
-public class ConeHeadZombie extends Zombie {
+/**
+ * The Second Type of Zombies
+ */
 
+public class ConeHeadZombie extends Zombie {
+    /**
+     * Constructor of the Class
+     * @param coordinate Location of the Zombie
+     * @param state GameState
+     */
     public ConeHeadZombie(Coordinate coordinate, GameState state){
         super(
                 BufferedImages.zombie_conehead,

@@ -1,8 +1,9 @@
 package appStart;
 
 /**
- * this class holds different datas
- * for game based on users settings
+ * This Class Holds Initial Values of the Game
+ * Like The Amount of Speed , Hp , ... OF Different Elements
+ *
  */
 public class Configurations {
 
@@ -78,7 +79,7 @@ public class Configurations {
     public static int losingScore = LOSING_EASY;
 
     /**
-     * change game mode to easy
+     * Change game mode to easy
      */
     public static void changeToEasy(){
         zombieNormalSpeed = ZOMBIE_NORMAL_SPEED_EASY;
@@ -104,7 +105,7 @@ public class Configurations {
     }
 
     /**
-     * change game mode to hard
+     * Change game mode to hard
      */
     public static void changeToHard(){
         zombieNormalSpeed = ZOMBIE_NORMAL_SPEED_HARD;

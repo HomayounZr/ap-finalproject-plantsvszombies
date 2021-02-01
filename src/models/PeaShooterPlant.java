@@ -5,10 +5,19 @@ import helpers.ImageIcons;
 
 import javax.swing.*;
 
-public class PeaShooterPlant extends Plant {
+/**
+ * An Instantiated Class for Peashooters
+ * They Hit Zombies , And Lower the Health Of them
+ */
 
+public class PeaShooterPlant extends Plant {
+    //  External Field Of Bullet Damage
     private int bulletDamage;
 
+    /**
+     * Constructor of the Class
+     * @param coordinate Location of the Shooter
+     */
     public PeaShooterPlant(Coordinate coordinate){
         super(
                 coordinate,
@@ -18,10 +27,19 @@ public class PeaShooterPlant extends Plant {
                 ImageIcons.plant_peashooter
         );
     }
+    /**
+     * A Method For Changing Element Image to Dying Gif
+     * Case OF HP == 0
+     */
 
     public void changeImageToDying(){
         super.changeImageToDying(BufferedImages.plant_peashooter_dying, ImageIcons.plant_peashooter_dying);
     }
+    /**
+     * Action Method Is Implemented To Shoot Peas At Zombies
+     * Using An Instance Of The Bullet Class
+     */
+
 
     @Override
     public void doAction(){
