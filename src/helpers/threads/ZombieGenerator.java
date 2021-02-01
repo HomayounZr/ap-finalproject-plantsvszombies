@@ -62,6 +62,8 @@ public class ZombieGenerator implements Runnable {
                     zombies.add(zombie);
                 }
 
+                AudioThreadPool.execute(new AudioPlayer("./sounds/zombies_coming.wav",3,false));
+
                 Thread.sleep(duration * 1000);
             }
 

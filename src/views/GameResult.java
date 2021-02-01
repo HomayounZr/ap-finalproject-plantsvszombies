@@ -1,6 +1,8 @@
 package views;
 
 import appStart.GameManagement;
+import helpers.threads.AudioPlayer;
+import helpers.threads.AudioThreadPool;
 import models.User;
 
 import javax.swing.*;
@@ -23,12 +25,15 @@ public class GameResult {
     private JFrame mainFrame;
     private JPanel mainPanel;
 
+    private AudioPlayer music;
     /**
      * Constructor of The Class
      * @param newScore Score Of the Player
      * @param won Whether He/She Has Lost or Won The Game
      */
     public GameResult(int newScore,boolean won){
+        music = new AudioPlayer("./sounds/game_end.wav",7,true);
+        AudioThreadPool.execute(music);
         this.newScore = newScore;
         this.won = won;
         this.user = GameManagement.userController.getUser();
@@ -161,6 +166,8 @@ public class GameResult {
             if(!result)
                 JOptionPane.showMessageDialog(null,"Failed to save data, check your connection");
         }
+        music.stop();
+        GameMenu.audioPlayer = new AudioPlayer("./sounds/menu.wav",8.5,true);
         mainFrame.dispose();
     }
 

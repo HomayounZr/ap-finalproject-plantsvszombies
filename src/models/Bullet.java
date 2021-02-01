@@ -15,7 +15,7 @@ public class Bullet implements Serializable {
 
     private int damage;
     private Coordinate coordinate;
-//    private String imageUri;
+    //    private String imageUri;
     private transient BufferedImage image;
     private transient ImageIcon imageIcon;
     private int type;
@@ -75,7 +75,7 @@ public class Bullet implements Serializable {
      */
     public void moveOneStateRight(){
 //        synchronized (bullets) {
-            this.coordinate = new Coordinate(coordinate.getAxis_x() + 1, coordinate.getAxis_y());
+        this.coordinate = new Coordinate(coordinate.getAxis_x() + 1, coordinate.getAxis_y());
 //        }
     }
 

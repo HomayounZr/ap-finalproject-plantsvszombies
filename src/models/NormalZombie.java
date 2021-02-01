@@ -2,6 +2,7 @@ package models;
 
 import appStart.Configurations;
 import helpers.BufferedImages;
+import helpers.GifHelper;
 import helpers.ImageIcons;
 import views.GameState;
 
@@ -21,6 +22,7 @@ public class NormalZombie extends Zombie {
                 Configurations.zombieNormalDamage,
                 Configurations.zombieNormalSpeed,
                 ImageIcons.zombie_normal,
+                GifHelper.zombie_normal,
                 state
         );
     }

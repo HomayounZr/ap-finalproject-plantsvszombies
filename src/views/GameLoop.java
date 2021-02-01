@@ -3,6 +3,7 @@ package views;
 
 import appStart.Configurations;
 import appStart.GameManagement;
+import helpers.threads.AudioThreadPool;
 import helpers.threads.ThreadPool;
 import models.GameSave;
 
@@ -11,23 +12,23 @@ import javax.swing.*;
 /**
  * A very simple structure for the main game loop.
  * THIS IS NOT PERFECT, but works for most situations.
- * Note that to make this work, none of the 2 methods 
- * in the while loop (update() and render()) should be 
- * long running! Both must execute very quickly, without 
+ * Note that to make this work, none of the 2 methods
+ * in the while loop (update() and render()) should be
+ * long running! Both must execute very quickly, without
  * any waiting and blocking!
- * 
- * Detailed discussion on different game-loop design-patterns 
+ *
+ * Detailed discussion on different game-loop design-patterns
  * is available in the following link:
  *    http://gameprogrammingpatterns.com/game-loop.html
  */
 public class GameLoop implements Runnable {
-	
+
 	/**
 	 * Frame Per Second.
 	 * Higher is better, but any value above 24 is fine.
 	 */
 	public static final int FPS = 30;
-	
+
 	private GameFrame canvas;
 	private GameState state;
 
@@ -44,7 +45,7 @@ public class GameLoop implements Runnable {
 	 * Method OF Initializing the Game
 	 *@param save GameSave if nothing , it's a new Game
 	 */
-	
+
 	public void init(GameSave save) {
 		//
 		// Perform all initializations ...
@@ -86,6 +87,8 @@ public class GameLoop implements Runnable {
 		}
 
 		ThreadPool.shutdownNow();
+		AudioThreadPool.shutdown();
+		AudioThreadPool.init();
 
 		int score;
 		if(GameManagement.isEasy){

@@ -15,9 +15,9 @@ public class EatingMusic implements Runnable{
     public void run() {
 
         try {
-            AudioPlayer t1 = new AudioPlayer("Resource/audio/chomp.mp3");
-            Thread t =new Thread(t1);
-            t.start();
+           // AudioPlayer t1 = new AudioPlayer("Resource/audio/chomp.mp3");
+            //Thread t =new Thread(t1);
+            //t.start();
 
         } catch (Exception e)
         {

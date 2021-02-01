@@ -2,6 +2,7 @@ package models;
 
 import appStart.Configurations;
 import helpers.BufferedImages;
+import helpers.GifHelper;
 import helpers.ImageIcons;
 import views.GameState;
 
@@ -23,6 +24,7 @@ public class ConeHeadZombie extends Zombie {
                 Configurations.zombieConeHeadDamage,
                 Configurations.zombieConeHeadSpeed,
                 ImageIcons.zombie_conehead,
+                GifHelper.zombie_conehead,
                 state
         );
     }

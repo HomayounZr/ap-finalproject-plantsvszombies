@@ -8,6 +8,7 @@ import helpers.threads.ThreadPool;
 import views.GameState;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
@@ -34,6 +35,8 @@ public abstract class Zombie implements Serializable {
     private transient ZombieLogicalThread logicalThread;
     private transient ZombieGuiThread guiThread;
 
+    private Image imageGif;
+
     /**
      * Constructor
      *
@@ -52,6 +55,7 @@ public abstract class Zombie implements Serializable {
                   int damage,
                   double speed,
                   ImageIcon icon,
+                  Image gif,
                   GameState state){
         this.health = health;
         this.damage = damage;
@@ -59,12 +63,21 @@ public abstract class Zombie implements Serializable {
         this.coordinate = coordinate;
         this.image = image;
         this.imageIcon = icon;
+        this.imageGif = gif;
 
         guiThread = new ZombieGuiThread(this);
         ThreadPool.execute(guiThread);
 
         logicalThread = new ZombieLogicalThread(this,guiThread,state);
         ThreadPool.execute(logicalThread);
+    }
+
+    /**
+     * method for returning image specially gifs
+     * @return Image
+     */
+    public Image getImageGif() {
+        return imageGif;
     }
 
     /**

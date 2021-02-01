@@ -78,6 +78,7 @@ public class ZombieLogicalThread implements Runnable {
                             plant.decreaseHealth(zombie.getDamage());
                             System.out.println("eating... " + plant.getHealth());
                             if (plant.getHealth() <= 0) {
+                                AudioThreadPool.execute(new AudioPlayer("./sounds/chomp.wav",0.5,false));
                                 plant.closeThread();
                                 plants[zombie.getCoordinate().getAxis_x()][zombie.getCoordinate().getAxis_y()] = null;
                                 break;
@@ -93,16 +94,17 @@ public class ZombieLogicalThread implements Runnable {
                 // check if zombie arived at a lawn mower
                 if(plant == null && zombie.getCoordinate().getAxis_x() <= 0){
 //                    synchronized (state.getLawnMowers()){
-                        Iterator<LawnMower> it = state.getLawnMowers().iterator();
-                        while(it.hasNext()){
-                            LawnMower lawnMower = it.next();
-                            System.out.println("hit lawn mower");
-                            if(lawnMower.getRow() == zombie.getCoordinate().getAxis_y()){
-                                alive = false;
-                                lawnMower.activate(state);
-                                break;
-                            }
+                    Iterator<LawnMower> it = state.getLawnMowers().iterator();
+                    while(it.hasNext()){
+                        LawnMower lawnMower = it.next();
+                        System.out.println("hit lawn mower");
+                        if(lawnMower.getRow() == zombie.getCoordinate().getAxis_y()){
+                            alive = false;
+                            lawnMower.activate(state);
+                            AudioThreadPool.execute(new AudioPlayer("./sounds/lamborghini.wav",3,false));
+                            break;
                         }
+                    }
 //                    }
                 }
 
@@ -114,6 +116,8 @@ public class ZombieLogicalThread implements Runnable {
                 Thread.sleep((int)(zombie.getSpeed() * 1000));
                 zombie.moveOneStateLeft();
             }
+
+            AudioThreadPool.execute(new AudioPlayer("./sounds/chomp.wav",0.5,false));
 
         } catch (InterruptedException ex){
             ex.printStackTrace();
