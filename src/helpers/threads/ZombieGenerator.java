@@ -9,16 +9,33 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * this thread is used for creating new zombies
+ * based on stage duration whe give it
+ */
 public class ZombieGenerator implements Runnable {
 
+    // all zombies
     private CopyOnWriteArrayList<Zombie> zombies;
+    // duration to create new zombies
     private int duration;
+    // count of zombies to make
     private int count;
+    // random generator
     private SecureRandom random;
+    // game state
     private GameState state;
     private boolean running;
+    // valid rows to generate zombies
     private ArrayList<Integer> validRows;
 
+    /**
+     * constructor
+     * @param zombies CopyOnWriteArrayList Zombie
+     * @param duration int
+     * @param count int
+     * @param state GameState
+     */
     public ZombieGenerator(CopyOnWriteArrayList<Zombie> zombies,int duration,int count,GameState state){
         this.zombies = zombies;
         this.duration = duration;
@@ -28,15 +45,28 @@ public class ZombieGenerator implements Runnable {
         this.running = true;
     }
 
+    /**
+     * set new duration when stage changes
+     * @param duration int
+     */
     public void setDuration(int duration) {
         this.duration = duration;
     }
 
+    /**
+     * set new count when stage changes
+     * @param count int
+     */
     public void setCount(int count) {
         this.count = count;
     }
 
+    /*
+    find valid row to generate zombies each time
+    Smart Zombie Generator
+     */
     private int findValidRows(){
+        // find rows whit lawn mower
         validRows = new ArrayList<>();
         for(LawnMower lawnMower: state.getLawnMowers()){
             validRows.add(lawnMower.getRow());
@@ -101,10 +131,12 @@ public class ZombieGenerator implements Runnable {
             i++;
         }
 
+        // select a random row from valid ones
         int randomRow = random.nextInt(validRows.size());
         return validRows.get(randomRow);
     }
 
+    // check if selected row is valid
     private boolean isValidRow(int _row){
         for(Integer row: validRows){
             if(row == _row)
@@ -120,6 +152,7 @@ public class ZombieGenerator implements Runnable {
             while(running){
 
                 for(int i = 0;i < count;i++){
+                    // refresh valid rows each time
                     findValidRows();
 //                    int randomRow = random.nextInt(5);
 //                    while(!isValidRow(randomRow)){
@@ -128,6 +161,7 @@ public class ZombieGenerator implements Runnable {
                     int randomRow = findValidRows();
                     int locationY = 110 + randomRow * 120;
                     Zombie zombie = null;
+                    // select a random number for new zombie type
                     int zombieType = random.nextInt(4);
                     switch (zombieType){
                         case 0:
@@ -148,6 +182,7 @@ public class ZombieGenerator implements Runnable {
                     zombies.add(zombie);
                 }
 
+                // playing sound
                 if(Configurations.hasSound)
                     AudioThreadPool.execute(new AudioPlayer("./sounds/zombies_coming.wav",3,false));
 
@@ -159,6 +194,9 @@ public class ZombieGenerator implements Runnable {
         }
     }
 
+    /**
+     * stop the thread
+     */
     public void stopThread(){
         this.running = false;
     }

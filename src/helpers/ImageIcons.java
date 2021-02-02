@@ -3,6 +3,16 @@ package helpers;
 import javax.swing.*;
 import java.io.File;
 
+/**
+ * this class holds static fields of ImageIcons
+ * for each graphical object in whole game
+ * help a lot saving memory
+ *
+ * **NOTE**
+ * this class won't be used because with using Graphic2D
+ * all elements will be shown with buffered image
+ * and not JLabel
+ */
 public class ImageIcons {
 
     public static ImageIcon plant_sunflower;

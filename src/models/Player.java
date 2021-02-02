@@ -8,7 +8,9 @@ package models;
 
 public class Player {
 
+    // user
     private User user;
+    // suns
     private int suns;
 
     /**

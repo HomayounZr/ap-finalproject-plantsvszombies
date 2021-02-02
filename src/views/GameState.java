@@ -85,6 +85,7 @@ public class GameState {
 			ThreadPool.execute(new ResumeGameStageThread(this,save.getLastStage(),save.getTimePassedLastStage()));
 		}
 
+		// run bullets thread
 		ThreadPool.execute(new BulletGuiThread(bullets));
 		ThreadPool.execute(new BulletLogicalThread(bullets,zombies));
 
@@ -92,6 +93,7 @@ public class GameState {
 		keyHandler = new KeyHandler();
 		mouseHandler = new MouseHandler();
 
+		// play background sound if it's on
 		if(Configurations.hasSound)
 			AudioThreadPool.execute(new AudioPlayer("./sounds/background.wav",51,true));
 	}
@@ -100,7 +102,6 @@ public class GameState {
 	 * Checking if The Game is Over Or Not
 	 * @return boolean isFinished
 	 */
-
 	public boolean getIsFinished(){
 		return isFinished;
 	}
@@ -127,6 +128,7 @@ public class GameState {
 
 	/**
 	 * The keyboard handler.
+	 * show pause menu pressing esc
 	 */
 	class KeyHandler implements KeyListener {
 
@@ -163,7 +165,7 @@ public class GameState {
 
 		@Override
 		public void mousePressed(MouseEvent e) {
-			System.out.println("panel clicked");
+//			System.out.println("panel clicked");
 			createNewPlant(e);
 		}
 
@@ -190,10 +192,9 @@ public class GameState {
 
 	/**
 	 * Creating A New Plant In the Game
-	 *When The Player Chooses a Card The Chosen Plant can be Placed in the 5x9 Array of the Map
-	 *@param e MouseEvent Of The Chosen Card
+	 * When The Player Chooses a Card The Chosen Plant can be Placed in the 5x9 Array of the Map
+	 * @param e MouseEvent
 	 */
-
 	public void createNewPlant(MouseEvent e){
 		if(selectedCard == null)
 			return;
@@ -240,6 +241,7 @@ public class GameState {
 		}
 		int locationX = 82 + gridX * 94;
 
+		// initiate new plant
 		Plant newPlant = null;
 		switch (selectedCard.getPlantType()){
 			case SUNFLOWER:
@@ -270,27 +272,25 @@ public class GameState {
 	}
 
 	/**
-	 * A method for returning what Kind Of Plants Can the Player Play With
+	 * return all cards in list
 	 *@return Available Card For Player
 	 */
-
 	public ArrayList<Card> getCards() {
 		return cards;
 	}
 
 	/**
-	 * A Method For making a fresh copy of the underlying array of LawnMowers
-	 * @return list of LawnMowers
+	 * lawnmowers getter
+	 * @return CopyOnWriteArrayList LawnMower
 	 */
-
 	public CopyOnWriteArrayList<LawnMower> getLawnMowers() {
 		return lawnMowers;
 	}
-	/**
-	 * A Method For making a fresh copy of the underlying array of Zombie
-	 * @return list of Zombie
-	 */
 
+	/**
+	 * zombies getter
+	 * @return CopyOnWriteArrayList Zombie
+	 */
 	public CopyOnWriteArrayList<Zombie> getZombies() {
 		return zombies;
 	}
@@ -298,9 +298,8 @@ public class GameState {
 	/**
 	 * A Method For Player That He/She Can change The Card He Had Chosen
 	 * Switching BetWeen Cards is Possible
-	 * @param card
+	 * @param card Card
 	 */
-
 	public void changeSelectedCard(Card card){
 		if(card.getIsEnable())
 			if(playerSuns >= card.getSunsNeed())
@@ -311,26 +310,24 @@ public class GameState {
 
 	/**
 	 * Returns the Amount Of Suns That The Player Has
-	 * @return
+	 * @return int
 	 */
-
 	public int getPlayerSuns() {
 		return playerSuns;
 	}
+
 	/**
-	 * A Method For making a fresh copy of the underlying array of Suns
-	 * @return list of Zombie
+	 * suns getter
+	 * @return CopyOnWriteArrayList Zombie
 	 */
-
-
 	public CopyOnWriteArrayList<Sun> getSuns() {
 		return suns;
 	}
+
 	/**
 	 * A Method For making a fresh copy of the underlying array of Bullets
 	 * @return list of Zombie
 	 */
-
 	public CopyOnWriteArrayList<Bullet> getBullets() {
 		return bullets;
 	}
@@ -342,16 +339,14 @@ public class GameState {
 	 * @param y is a Number From 1 to 5
 	 * @return plant type in the Location , Null For Empty
 	 */
-
 	public Plant checkPlantExist(int x, int y){
 		return plants[x][y];
 	}
 
 	/***
 	 * Collecting Suns In Map By The Player
-	 * @param sun
+	 * @param sun Sun
 	 */
-
 	public void collectSun(Sun sun){
 //		if(suns.size() > 0){
 			Iterator<Sun> it = suns.iterator();
@@ -371,26 +366,23 @@ public class GameState {
 	 * Returning The Amount OF time That the PLayer Have Been Playing
 	 * @return time Played
 	 */
-
     public int getTotalTimePassed() {
         return totalTimePassed;
     }
 
 	/**
 	 * Setting The TimePassed For The Saved Game
-	 *@param totalTimePassed time played
+	 * @param totalTimePassed int
 	 */
-
 	public void setTotalTimePassed(int totalTimePassed) {
         this.totalTimePassed = totalTimePassed;
     }
 
 	/**
 	 * Returns The Stage Of The Game
-	 *Like Planting , Zombie Attack , Collecting Suns
-	 *@return Current Stage
+	 * 0 for collecting , 1, 2, 3 for final wave
+	 * @return int Current Stage
 	 */
-
 	public int getCurrentStage() {
 		return currentStage;
 	}
@@ -398,8 +390,6 @@ public class GameState {
 	/**
 	 * start collecting stage for 50 seconds
 	 */
-
-
 	public void startCollectingStage(){
 		System.out.println("====> Starting collecting stage for 50 sec");
 
@@ -411,7 +401,6 @@ public class GameState {
 	/**
 	 * start stage 1 for 2.5 min, zombie per 30sec
 	 */
-
 	public void startStage1(){
 		System.out.println("====> Starting stage 1 for 2.5 min");
 
@@ -425,8 +414,6 @@ public class GameState {
 	/**
 	 *  start stage 2 for 3 min, 2 zombies per 30sec
 	 */
-
-
 	public void startStage2(){
 		totalTimePassed = 150;
 		System.out.println("====> Starting stage 2 for 3 min");
@@ -440,8 +427,6 @@ public class GameState {
 	/**
 	 * start finalWave for 2.5 min, 2 zombies per 25sec
 	 */
-
-
 	public void startFinalWave(){
 		totalTimePassed = 330;
 		System.out.println("====> Starting final wave for 2.5 min");
@@ -453,10 +438,9 @@ public class GameState {
 	}
 
 	/**
-	 * Returns A List Of Plants In The Game Map
+	 * Returns A two dimensional Array Of Plants In The Game Map
 	 * @return
 	 */
-
 	public Plant[][] getPlants() {
 		if(plants == null)
 			plants = new Plant[9][5];
@@ -465,9 +449,9 @@ public class GameState {
 
 	/**
 	 * Wining Situation Check
-	 * Based On Size Of Zombies , Any LawnMowers Left , Stages Finished Or Not
+	 * Based On Size Of Zombies , Any LawnMowers Left
+	 * will be invoked after all stages
 	 */
-
 	public void checkIfWon(){
 		zombieGenerator.stopThread();
 		totalTimePassed = 480;
@@ -480,9 +464,8 @@ public class GameState {
 	}
 
 	/**
-	 * Setting the Pause Menu Visible
+	 * Show the Pause Menu
 	 */
-
 	private void showPauseMenu(){
 //		ThreadPool.pausePool();
 		PauseMenu menu = new PauseMenu(this);
@@ -493,8 +476,8 @@ public class GameState {
 	 * A Method For Saving The Current Game
 	 * In An External File
 	 */
-
 	public void saveCurrentGame(){
+		// create a new GameSave instance
 		GameSave save = new GameSave(
 				cards,
 				plants,
@@ -509,36 +492,37 @@ public class GameState {
 
 		File file = new File("./data/gamesaves.txt");
 		try{
-
 			if(!file.exists())
 				file.createNewFile();
 
+			// read current file and previous saves
 			ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file));
 			GameSaves saves = (GameSaves)inputStream.readObject();
 			if(saves == null)
 				saves = new GameSaves();
 
+			// add new save
 			saves.addNewSave(save);
 
 			file.delete();
 			file.createNewFile();
 
+			// write the new file
 			ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file));
 
 			outputStream.writeObject(saves);
 
 			outputStream.flush();
 			saveToServer(save);
-
 		} catch (EOFException ex){
-
+			// if file was empty create new one
 			GameSaves saves = new GameSaves();
 			saves.addNewSave(save);
 
 			file.delete();
 			try{
 				file.createNewFile();
-
+				// write new file
 				ObjectOutputStream outputStream = new ObjectOutputStream(new FileOutputStream(file));
 
 				outputStream.writeObject(saves);
@@ -548,7 +532,6 @@ public class GameState {
 			} catch (Exception ex2){
 
 			}
-
 		} catch (Exception ex){
 			ex.printStackTrace();
 		}
@@ -556,6 +539,10 @@ public class GameState {
 		System.out.println("saved...");
 	}
 
+	/**
+	 * send a new GameSave to server
+	 * @param save GameSave
+	 */
 	private void saveToServer(GameSave save){
 		int result = JOptionPane.showConfirmDialog(
 				null,
@@ -582,9 +569,8 @@ public class GameState {
 	/**
 	 * Method For Loading The SavedGame
 	 * Using The Resume Methods That Are Placed In Elements Class
-	 * @param save GameSaved
+	 * @param save GameSave
 	 */
-
 	public void loadSave(GameSave save){
 		this.cards = save.getCards();
 		this.plants = save.getPlants();
@@ -598,22 +584,27 @@ public class GameState {
 
 //		System.out.println(bullets.size());
 
+		// run all bullets
 		for(Bullet bullet: bullets){
 			bullet.resumeObject();
 		}
 
+		// run all cards
 		for(Card card: cards){
 			card.resumeObject();
 		}
 
+		// run all zombies
 		for(Zombie zombie: zombies){
 			zombie.resumeObject(this);
 		}
 
+		// run all lawn mowers
 		for(LawnMower lawnMower: lawnMowers){
 			lawnMower.resumeObject();
 		}
 
+		// run all plants
 		for(int i = 0;i < 9;i++)
 			for(int j = 0;j < 5;j++)
 				if(plants[i][j] != null)
@@ -622,30 +613,33 @@ public class GameState {
 }
 
 /**
- * An Insider Class For Handling Stage Evolve , Based on Time
+ * Just a timer to calculate passed time after each stage
  */
-
 class StageTimer implements Runnable {
 
 	private int timePassed;
 	private boolean running;
 	private GameState state;
 
+	/**
+	 * constructor
+	 * @param state GameState
+	 */
 	public StageTimer(GameState state){
         this.state = state;
         timePassed = 0;
         running = true;
     }
 
+	/**
+	 * resent timer after each stage
+	 */
 	public void reset(){
 		timePassed = 0;
 		running = true;
 	}
 
 	@Override
-	/**
-	 * Running The Main Game and Increasing time Passed
-	 */
 	public void run() {
 		try{
 
@@ -661,20 +655,17 @@ class StageTimer implements Runnable {
 	}
 
 	/**
-	 * Returns Time Passed For Player
+	 * Returns Time Passed For of Current Stage
 	 * And The Player Can See It Used For Stage Handling , Later Implementation
-	 *@return shows in game How Much The Player Has Been Playing And He/She Can See It
+	 * @return shows in game How Much The Player Has Been Playing And He/She Can See It
 	 */
-
-
 	public int getTimePassed(){
 		return timePassed;
 	}
 
 	/**
-	 * Stopping The Main Course Of The Game
+	 * Stop the whole timer thread
 	 */
-
 	public void stopThread(){
 		this.running = false;
 	}

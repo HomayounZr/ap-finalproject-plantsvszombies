@@ -13,11 +13,11 @@ import helpers.threads.AudioThreadPool;
  */
 
 public class SunFlowerPlant extends Plant {
+
     /**
      * Constructor Of The Class
      * @param coordinate Location Of THE Plant
      */
-
     public SunFlowerPlant(Coordinate coordinate){
         super(
                 coordinate,
@@ -27,6 +27,7 @@ public class SunFlowerPlant extends Plant {
                 ImageIcons.plant_sunflower
         );
     }
+
     /**
      * A Method For Changing Element Image to Dying Gif
      * Case OF HP == 0
@@ -38,14 +39,13 @@ public class SunFlowerPlant extends Plant {
     /**
      * The Action Method Created New Suns In the Game MAP Around The Sunflower
      */
-
     @Override
     public void doAction(){
-
 //        synchronized (suns){
             Sun sun = new Sun(super.getLocationX() + 75,super.getLocationY() - 10);
             suns.add(sun);
 //        }
+        // playing sound
         if(Configurations.hasSound)
             AudioThreadPool.execute(new AudioPlayer("./sounds/ting.wav",0.5,false));
 

@@ -36,7 +36,6 @@ public class GameLoop implements Runnable {
 	 * Constructor of Class
 	 * @param gc GameFrame
 	 */
-
 	public GameLoop(GameFrame gc) {
 		canvas = gc;
 	}
@@ -45,7 +44,6 @@ public class GameLoop implements Runnable {
 	 * Method OF Initializing the Game
 	 *@param save GameSave if nothing , it's a new Game
 	 */
-
 	public void init(GameSave save) {
 		//
 		// Perform all initializations ...
@@ -63,7 +61,6 @@ public class GameLoop implements Runnable {
 	 *Updating the Game
 	 *Score Handling For Both Versions Of the Game
 	 */
-
 	@Override
 	public void run() {
 		boolean gameOver = false;
@@ -86,12 +83,14 @@ public class GameLoop implements Runnable {
 			}
 		}
 
+		// shutdown all threads
 		ThreadPool.shutdownNow();
 		if(Configurations.hasSound) {
 			AudioThreadPool.shutdown();
 			AudioThreadPool.init();
 		}
 
+		// find game score based on type
 		int score;
 		if(GameManagement.isEasy){
 			if(finished){

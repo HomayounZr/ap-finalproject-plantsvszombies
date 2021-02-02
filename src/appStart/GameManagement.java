@@ -3,6 +3,9 @@ package appStart;
 
 import controllers.*;
 
+/**
+ * This is class is used for initializing game controllers
+ */
 public class GameManagement {
 
     public static UserController userController;

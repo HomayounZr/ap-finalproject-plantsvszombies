@@ -19,9 +19,8 @@ public class SnowPeaShooterPlant extends Plant {
 
     /**
      * Constructor Of The Class
-     * @param coordinate The Location Of The Plant
+     * @param coordinate Coordinate
      */
-
     public SnowPeaShooterPlant(Coordinate coordinate){
         super(
                 coordinate,
@@ -36,7 +35,6 @@ public class SnowPeaShooterPlant extends Plant {
      * A Method For Changing Element Image to Dying Gif
      * Case OF HP == 0
      */
-
     public void changeImageToDying(){
         super.changeImageToDying(BufferedImages.plant_snowpeashooter_dying,ImageIcons.plant_snowpeashooter_dying);
     }
@@ -45,7 +43,6 @@ public class SnowPeaShooterPlant extends Plant {
      * Action Method Is Implemented To Shoot Frozen Peas At Zombies
      * Using An Instance Of The Bullet Class
      */
-
     @Override
     public void doAction(){
         // coed to generate frozen pee
@@ -60,6 +57,7 @@ public class SnowPeaShooterPlant extends Plant {
 //        synchronized (bullets){
             bullets.add(bullet);
 //        }
+        // playing sound
         if(Configurations.hasSound)
             AudioThreadPool.execute(new AudioPlayer("./sounds/shoot.wav",2,false));
 

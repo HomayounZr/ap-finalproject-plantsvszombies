@@ -4,6 +4,11 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
+/**
+ * this class holds static fields of BufferedImage
+ * for each graphical object in whole game
+ * help a lot saving memory
+ */
 public class BufferedImages {
 
     public static BufferedImage plant_sunflower;

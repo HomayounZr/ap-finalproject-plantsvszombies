@@ -8,13 +8,27 @@ import views.GameState;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+/**
+ * this class is a thread for moving zombie logically
+ * and check to hit plant, lawn mower,...
+ */
 public class ZombieLogicalThread implements Runnable {
 
+    // zombie
     private Zombie zombie;
+    // if zombie is alive
     private boolean alive;
+    // zombie gui threa
     private ZombieGuiThread guiThread;
+    // game state
     private GameState state;
 
+    /**
+     * constructor
+     * @param zombie Zombie
+     * @param guiThread ZombieGuiThread
+     * @param state GameState
+     */
     public ZombieLogicalThread(Zombie zombie,ZombieGuiThread guiThread,GameState state){
         this.zombie = zombie;
         this.alive = true;
@@ -38,8 +52,13 @@ public class ZombieLogicalThread implements Runnable {
                 Plant plant = checkHitPlant(plants,zombie.getCoordinate());
                 if(plant != null){
                     System.out.println("hit plant");
+                    // pause the gui thread until finished eating or zombie dies
                     guiThread.pauseThread();
                     boolean isCherryBomb = false;
+                    /*
+                    if the existing plant was cherry bomb
+                    remove all zombies in 8 near states and the current state it self
+                     */
                     if(plant instanceof CherryBombPlant){
                         isCherryBomb = true;
                         // find near zombies and remove them
@@ -51,6 +70,7 @@ public class ZombieLogicalThread implements Runnable {
                         int max_y = y + 1 > 4 ? 4 : y + 1;
 //                        System.out.println("" + min_x + " " + max_x + " " + min_y + " " + max_y);
 
+                        // removing zombies in near states
                         for(int i = min_x;i <= max_x;i++){
                             for(int j = min_y;j <= max_y;j++){
                                 if(i != x || j != y) {
@@ -68,16 +88,22 @@ public class ZombieLogicalThread implements Runnable {
                             }
                         }
 
+                        // stop zombies threads
                         zombie.stopThreads();
+                        // remove zombie from list
                         state.getZombies().remove(zombie);
 
-                        // removing the plant
+                        // removing the cherry bomb
                         plants[zombie.getCoordinate().getAxis_x()][zombie.getCoordinate().getAxis_y()] = null;
                     }
+                    // if it wasn't cherry bomb
                     if(!isCherryBomb) {
+                        // start eating plant
                         do {
+                            // decrease plant health by zombie damage
                             plant.decreaseHealth(zombie.getDamage());
                             System.out.println("eating... " + plant.getHealth());
+                            // remove plant if health goes under 0
                             if (plant.getHealth() <= 0) {
                                 if(Configurations.hasSound)
                                     AudioThreadPool.execute(new AudioPlayer("./sounds/chomp.wav",0.5,false));
@@ -86,6 +112,7 @@ public class ZombieLogicalThread implements Runnable {
                                 break;
                             }
                             Thread.sleep(1000);
+                            // keep eating plant until zombie is alive
                         } while (this.alive);
                     }
                     guiThread.resumeThread();
@@ -100,6 +127,10 @@ public class ZombieLogicalThread implements Runnable {
                     while(it.hasNext()){
                         LawnMower lawnMower = it.next();
                         System.out.println("hit lawn mower");
+                        // find lawn mower
+                        // remove all zombies in row
+                        // remove lawn mower it self
+                        // more implementation in LawnMower.java
                         if(lawnMower.getRow() == zombie.getCoordinate().getAxis_y()){
                             alive = false;
                             lawnMower.activate(state);
@@ -117,6 +148,7 @@ public class ZombieLogicalThread implements Runnable {
                 }
 
                 Thread.sleep((int)(zombie.getSpeed() * 1000));
+                // move the zombie one state left
                 zombie.moveOneStateLeft();
             }
 
@@ -127,6 +159,10 @@ public class ZombieLogicalThread implements Runnable {
         }
     }
 
+    /*
+    check if there is a plant in that coordinate
+    and then return it
+     */
     private Plant checkHitPlant(Plant[][] plants,Coordinate coordinate){
         int x = zombie.getCoordinate().getAxis_x();
         int y = zombie.getCoordinate().getAxis_y();
@@ -135,6 +171,9 @@ public class ZombieLogicalThread implements Runnable {
         return plants[coordinate.getAxis_x()][coordinate.getAxis_y()];
     }
 
+    /**
+     * stop the thread when zombie dies
+     */
     public void stopThread(){
         this.alive = false;
     }

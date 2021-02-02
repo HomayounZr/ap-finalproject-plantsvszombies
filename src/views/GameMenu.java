@@ -29,17 +29,18 @@ import java.util.ArrayList;
  * First Screen that the PLayer Can Change How He/She Likes to Play The game
  * Access Settings , Username Input , Level Of The Game
  */
-
 public class GameMenu {
 
     private JFrame mainFrame;
     private ImagePanel mainPanel;
 
     public static AudioPlayer audioPlayer;
+
     /**
      * Constructor Of the Class
      */
     public GameMenu(){
+        // play audio if sound is on
         if(Configurations.hasSound) {
             audioPlayer = new AudioPlayer("./sounds/menu.wav", 8.5, true);
             AudioThreadPool.execute(audioPlayer);
@@ -79,7 +80,6 @@ public class GameMenu {
     /**
      * Setting the MainFrame Visible
      */
-
     public void show(){
         mainFrame.setVisible(true);
     }
@@ -88,7 +88,6 @@ public class GameMenu {
      * Adding Menu Buttons To the Main Frame
      * @return buttons in the Frame
      */
-
     private JPanel addButtons(){
         JPanel flowPanel = new JPanel(new FlowLayout());
 
@@ -130,7 +129,6 @@ public class GameMenu {
     /**
      * ButtonHandler For The Menu Items
      */
-
     private class MenuButtonHandler extends MouseAdapter{
         @Override
         public void mousePressed(MouseEvent e) {
@@ -183,8 +181,8 @@ public class GameMenu {
     }
 
     /**
-     *
-     * @return UserName String
+     * Ask a new username with JOptionPane
+     * @return String username
      */
     private String askUsername(){
         return JOptionPane.showInputDialog(
@@ -198,7 +196,6 @@ public class GameMenu {
     /**
      * Showing All the Saved Games Of the Player On the Pc or Server
      */
-
     private void openSaves(){
         ShowGameSaves showGameSaves = new ShowGameSaves();
         showGameSaves.show();
@@ -208,8 +205,8 @@ public class GameMenu {
      * Loading the Chosen Game
      * @param save GameState That Was Saved Before
      */
-
     public static void loadGame(GameSave save){
+        // stop current audio
         if(Configurations.hasSound)
             audioPlayer.stop();
         // initializing buffered images

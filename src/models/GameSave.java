@@ -14,15 +14,23 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class GameSave implements Serializable {
 
+    // all cards
     private ArrayList<Card> cards;
+    // plants array
     private Plant[][] plants;
+    // all zombies
     private CopyOnWriteArrayList<Zombie> zombies;
+    // all suns
     private CopyOnWriteArrayList<Sun> suns;
+    // all lawn mowers
     private CopyOnWriteArrayList<LawnMower> lawnMowers;
+    // all bullets
     private CopyOnWriteArrayList<Bullet> bullets;
-
+    // all player's uns
     private int playerSuns;
+    // int passed time since last stage
     private int timePassedLastStage;
+    // last stage
     private int lastStage;
 
     /**

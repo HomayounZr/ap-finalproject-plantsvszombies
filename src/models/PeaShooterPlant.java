@@ -58,6 +58,7 @@ public class PeaShooterPlant extends Plant {
 //        synchronized (bullets){
             bullets.add(bullet);
 //        }
+        // playing sound
         if(Configurations.hasSound)
             AudioThreadPool.execute(new AudioPlayer("./sounds/shoot.wav",2,false));
 

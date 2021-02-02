@@ -4,12 +4,27 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+/**
+ * this class is for saving a current game to
+ * the file and reading it again for loading game
+ * another time
+ *
+ * **NOTE**
+ * this class won't be used all logics and codes
+ * is implemented in GameState and ShowGameSaves
+ */
 public class GameFileHelper {
 
+    // destination
     private static final String path = "./data/gamedata.txt";
+    // file
     private File file;
-//    private
 
+    /**
+     * constructor
+     * creating a new file when doesn't exist
+     * and initiating the file
+     */
     public GameFileHelper(){
         file = new File(path);
         if(!file.exists()){
@@ -23,6 +38,9 @@ public class GameFileHelper {
         loadData();
     }
 
+    /*
+     * load previous data and write them on memory
+     */
     private void loadData(){
         try(ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file))){
 
@@ -30,6 +48,7 @@ public class GameFileHelper {
             ex.printStackTrace();
         }
     }
+
 
     public void saveGame(){
         // logic for saving game
@@ -39,6 +58,9 @@ public class GameFileHelper {
         // logic for loading game
     }
 
+    /**
+     * save new file after changes
+     */
     public void save(){
         if(file.exists())
             file.delete();

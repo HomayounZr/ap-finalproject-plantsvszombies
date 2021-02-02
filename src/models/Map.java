@@ -7,7 +7,6 @@ import java.util.ArrayList;
  * Includes a List of Elements and States
  *
  */
-
 public class Map {
 
     private ArrayList<State> states;
@@ -37,7 +36,6 @@ public class Map {
      * @param y Vertical Point
      * @return Boolean True Or False
      */
-
     public boolean checkStateIsEmpty(int x, int y){
         Coordinate newCoordinate = new Coordinate(x,y);
         for(State state: states){
@@ -58,7 +56,6 @@ public class Map {
      * @param y Vertical Point
      * @return the State That Was Called
      */
-
     public State findStateByCoodrinate(int x, int y){
         Coordinate newCoordinate = new Coordinate(x,y);
         for(State state: states){
@@ -73,7 +70,6 @@ public class Map {
      * Adding A Plant To The Given State of the Map
      * @param plant Plant Type
      */
-
     public void addNewPlant(Plant plant){
         plants.add(plant);
         Coordinate coordinate = plant.getCoordinate();
@@ -86,7 +82,6 @@ public class Map {
      * @param x Horizontal Point
      * @param y Vertical Point
      */
-
     public void removePlant(int x,int y){
         State state = findStateByCoodrinate(x,y);
         if(state.getPlant() != null){
@@ -98,18 +93,17 @@ public class Map {
      * Adding Zombies to a Given State of the Map
      * @param zombie the Type of the Zombie
      */
-
     public void addNewZombie(Zombie zombie){
         zombies.add(zombie);
         Coordinate coordinate = zombie.getCoordinate();
         State state = findStateByCoodrinate(coordinate.getAxis_x(),coordinate.getAxis_y());
         state.addZombie(zombie);
     }
+
     /**
      * Removing Zombie From Map By Given Coordinates
      * @param zombie Zombie TYPE
      */
-
     public void removeZombie(Zombie zombie){
         Coordinate coordinate = zombie.getCoordinate();
         State state = findStateByCoodrinate(coordinate.getAxis_x(),coordinate.getAxis_y());
@@ -121,7 +115,6 @@ public class Map {
      * @param coordinate Location of the Plant
      * @return Plant
      */
-
     public Plant checkHitPlant(Coordinate coordinate){
         State state = findStateByCoodrinate(coordinate.getAxis_x(), coordinate.getAxis_y());
         return state.getPlant();

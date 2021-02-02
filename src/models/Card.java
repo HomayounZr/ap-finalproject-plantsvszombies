@@ -14,23 +14,40 @@ import java.io.Serializable;
 import java.lang.module.Configuration;
 import java.nio.Buffer;
 
+/**
+ * represent a card
+ */
 public class Card implements Serializable {
 
+    // name
     private String name;
 //    private String imageUri;
+    // time to reload
     private double reloadTime;
+    // required suns
     private int sunsNeed;
+    // plant type
     private PlantType plantType;
+    // can be selected
     private boolean isEnable;
+    // buffered image
     private transient BufferedImage image;
+    // image icons
     private transient ImageIcon imageIcon;
 
+    /**
+     * constructor
+     * @param type enum PlantType
+     */
     public Card(PlantType type){
         this.plantType = type;
         setDetails(type);
         this.isEnable = true;
     }
 
+    /*
+    find card details bsaed on plant type
+     */
     private void setDetails(PlantType type){
         String name = "";
         String imageUri = "";
@@ -80,43 +97,83 @@ public class Card implements Serializable {
         this.sunsNeed = suns;
     }
 
+    /**
+     * get image icon
+     * @return ImageIcon
+     */
     public ImageIcon getImageIcon() {
         return imageIcon;
     }
 
+    /**
+     * get required suns
+     * @return int
+     */
     public int getSunsNeed() {
         return sunsNeed;
     }
 
+    /**
+     * get realod time
+     * @return double
+     */
     public double getReloadTime() {
         return reloadTime;
     }
 
+    /**
+     * get name
+     * @return String
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * method to disable for a while
+     * when using it
+     */
     public void useCard(){
         this.isEnable = false;
         ThreadPool.execute(new CardReloadThread(this));
     }
 
+    /**
+     * enable card again for next use
+     */
     public void enableCard(){
         this.isEnable = true;
     }
 
+    /**
+     * get plant type
+     * @return PlantType
+     */
     public PlantType getPlantType() {
         return plantType;
     }
 
+    /**
+     *
+     * @return
+     */
     public boolean getIsEnable(){
         return isEnable;
     }
 
+    /**
+     * get Image
+     * @return BufferedImage
+     */
     public BufferedImage getImage() {
         return image;
     }
 
+    /**
+     * this method is for re-rendering saved object
+     * and re-run it's threads when load a previous
+     * saved game
+     */
     public void resumeObject(){
         switch (plantType){
             case SUNFLOWER:
@@ -149,6 +206,9 @@ public class Card implements Serializable {
 
 }
 
+/**
+ * Thread for enabling and disabling a card after using it
+ */
 class CardReloadThread implements Runnable{
     private Card card;
     public CardReloadThread(Card card){

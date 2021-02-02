@@ -99,7 +99,6 @@ public class GameSettings {
      * ActionListener For Game Mode
      *
      */
-
     private class ComboModeItemListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {

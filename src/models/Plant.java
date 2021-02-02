@@ -20,21 +20,29 @@ import java.util.concurrent.Executors;
 
 public abstract class Plant implements Serializable {
 
+    // coordinate, used for logic
     private Coordinate coordinate;
 //    private String imageUri;
     private transient BufferedImage image;
     private transient ImageIcon imageIcon;
     // sun: 50, pea: 70, snowpea: 100, wall-nut: 150, cherrybomb: 70;
     private int health;
+    // duration between each action
     private int actionInterval;
+    // is alive
     private boolean isAlive;
 
+    // location x
     private int locationX;
+    // location y
     private int locationY;
 
+    // list of bullets in game
     protected CopyOnWriteArrayList<Bullet> bullets;
+    // list of suns in the game
     protected CopyOnWriteArrayList<Sun> suns;
 
+    // plant's thread for doing it's action
     private transient PlantThread thread;
 
     /**
@@ -62,7 +70,6 @@ public abstract class Plant implements Serializable {
      * @param locationX Horizontal Point
      * @param locationY Vertical Point
      */
-
     public void setLocation(int locationX,int locationY){
         this.locationX = locationX;
         this.locationY = locationY;
@@ -73,7 +80,6 @@ public abstract class Plant implements Serializable {
      * @param suns Sun Created
      * @param bullets Bullet Created
      */
-
     public void addGameStateValues(CopyOnWriteArrayList<Sun> suns,CopyOnWriteArrayList<Bullet> bullets){
         this.suns = suns;
         this.bullets = bullets;
@@ -83,15 +89,14 @@ public abstract class Plant implements Serializable {
      * a Method for Getting The Horizontal Point of the Plant
      * @return Horizontal Point
      */
-
     public int getLocationX() {
         return locationX;
     }
+
     /**
      * a Method for Getting The Vertical Point of the Plant
      * @return Vertical Point
      */
-
     public int getLocationY() {
         return locationY;
     }
@@ -100,7 +105,6 @@ public abstract class Plant implements Serializable {
      * A Getter Method For Image of The Plant
      * @return Buffered Image
      */
-
     public BufferedImage getImage() {
         return image;
     }
@@ -109,7 +113,6 @@ public abstract class Plant implements Serializable {
      * A Getter Method for the Coordinates Of the Plant
      * @return Coordinates
      */
-
     public Coordinate getCoordinate() {
         return coordinate;
     }
@@ -118,7 +121,6 @@ public abstract class Plant implements Serializable {
      * If The Plants Coincide In Action
      * @return 1 if The Interval Is True , 0 is Not
      */
-
     public int getActionInterval() {
         return actionInterval;
     }
@@ -142,6 +144,7 @@ public abstract class Plant implements Serializable {
             // code to remove the plant
         }
     }
+
     /**
      * A Method For Changing Element Image to Dying Gif
      * Case OF HP == 0
@@ -155,6 +158,7 @@ public abstract class Plant implements Serializable {
      * Doing what it should do after some time
      */
     public abstract void doAction();
+
     /**
     * This is a method destructor when object dies
     * to remove the thread according to plant
@@ -168,7 +172,6 @@ public abstract class Plant implements Serializable {
      * A Getter Method For Image Icon
      * @return Image Icon Of the Plant
      */
-
     public ImageIcon getImageIcon() {
         return imageIcon;
     }
@@ -177,16 +180,15 @@ public abstract class Plant implements Serializable {
      * A Method For Receiving How Much The Plants Hp Is
      * @return Plants Hp
      */
-
     public int getHealth() {
         return health;
     }
 
     /**
-     * A Method for resuming a Saved Game Based of Where Game elements where
-     * it builds their thread
+     * this method is for re-rendering saved object
+     * and re-run it's threads when load a previous
+     * saved game
      */
-
     public void resumeObject(){
         if(this instanceof SunFlowerPlant){
             imageIcon = ImageIcons.plant_sunflower;

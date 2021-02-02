@@ -8,7 +8,9 @@ import java.util.Objects;
  */
 public class Coordinate implements Serializable {
 
+    // x axis
     private int axis_x;
+    // y axis
     private int axis_y;
 
     /**
@@ -27,7 +29,6 @@ public class Coordinate implements Serializable {
      * @param o Object Coordinate Type
      * @return Boolean True Or False
      */
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

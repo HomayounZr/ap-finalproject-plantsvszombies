@@ -48,7 +48,6 @@ public abstract class Zombie implements Serializable {
      * @param icon Zombies Icon Image
      * @param state State of Each Zombie In The Game
      */
-
     public Zombie(BufferedImage image,
                   Coordinate coordinate,
                   int health,
@@ -65,9 +64,10 @@ public abstract class Zombie implements Serializable {
         this.imageIcon = icon;
 //        this.imageGif = gif;
 
+        // running gui thread
         guiThread = new ZombieGuiThread(this);
         ThreadPool.execute(guiThread);
-
+        // running logical thread
         logicalThread = new ZombieLogicalThread(this,guiThread,state);
         ThreadPool.execute(logicalThread);
     }
@@ -82,36 +82,33 @@ public abstract class Zombie implements Serializable {
 
     /**
      * A method for Returning the needed Image
-     * @return image
+     * @return BufferedImage
      */
-
     public BufferedImage getImage() {
         return image;
     }
 
     /**
      * A Method for Returning the Coordinate of a Zombie
-     * @return coordinate
+     * @return Coordinate
      */
-
     public Coordinate getCoordinate() {
         return coordinate;
     }
 
     /**
      * A set Method for Placing a Zombie
-     * @param coordinate Vertical and Horizontal Points of the Zombie
+     * @param coordinate Coordinate, Vertical and Horizontal Points of the Zombie
      */
-
     public void setCoordinate(Coordinate coordinate) {
         this.coordinate = coordinate;
     }
 
     /**
      * Method for Knowing How Fast a Zombie is
-     * @return speed
+     * how much it takes to move one state to the left
+     * @return double speed
      */
-
     public double getSpeed() {
         return speed;
     }
@@ -126,10 +123,9 @@ public abstract class Zombie implements Serializable {
     }
 
     /**
-     * Returning Zombies Hp in each State
+     * get zombie health
      * @return health
      */
-
     public int getHealth() {
         return health;
     }
@@ -137,7 +133,7 @@ public abstract class Zombie implements Serializable {
     /**
      * Setting Zombies Health after getting hit by bullets
      * Changing Cone AND Bucket To A Normal Zombie in the Specified Situation
-     * @param health Hp loss of Zombie
+     * @param health int Hp loss of Zombie
      */
     public void setHealth(int health){
         this.health = health;
@@ -149,79 +145,71 @@ public abstract class Zombie implements Serializable {
 
     /**
      * Returning How Much Damage can a Zombie Cost on Plants Life
-     * @return damage
+     * @return int damage
      */
-
     public int getDamage() {
         return damage;
     }
 
     /**
-     * Zombie Attack
+     * Zombie Attack **useless**
      */
-
     public abstract void attack();
 
     /**
-     * A Method for Game Current by Moving Zombies
+     * Moving zombie one state forward
      */
-
     public void moveOneStateLeft(){
         setCoordinate(new Coordinate(coordinate.getAxis_x() - 1,coordinate.getAxis_y()));
     }
 
     /**
-     * A Method For Zombies Icon In The Map
-     * @return imageIcon
+     * get ImageIcon
+     * @return ImageIcon
      */
-
     public ImageIcon getImageIcon() {
         return imageIcon;
     }
 
     /**
      * Returning the Vertical Point of Zombie
-     * @return locationY
+     * @return int locationY
      */
-
     public int getLocationY() {
         return locationY;
     }
 
     /**
      *  Returning the Horizontal Point of Zombie
-     * @return locationX
+     * @return int locationX
      */
-
     public int getLocationX() {
         return locationX;
     }
 
     /**
      * Setting The Location of A Zombie In the Map
-     * @param locationX Vertical point
-     * @param locationY Horizontal point
+     * @param locationX int Vertical point
+     * @param locationY int Horizontal point
      */
-
     public void setLocation(int locationX,int locationY){
         this.locationX = locationX;
         this.locationY = locationY;
     }
 
     /**
-     * Removing A Zombie of The Map in Case of Its Death
+     * stop zombie threads when dies
      */
-
     public void stopThreads(){
         logicalThread.stopThread();
         guiThread.stopThread();
     }
 
     /**
-     * A Method for resuming a Saved Game Based of Where Game elements where , it builds their thread
-     * @param state the State of the map that zombie was placed in the last load
+     * this method is for re-rendering saved object
+     * and re-run it's threads when load a previous
+     * saved game
      */
-
     public void resumeObject(GameState state){
         if(this instanceof NormalZombie){
             image = BufferedImages.zombie_normal;

@@ -3,6 +3,12 @@ import views.GameMenu;
 
 import javax.swing.*;
 
+/**
+ * Plant vs Zombies game with java
+ * Ap Final Project
+ *
+ * @author HomayounZarei_SeyedSaeedShafie
+ */
 public class Main {
 
     public static void main(String[] args) {

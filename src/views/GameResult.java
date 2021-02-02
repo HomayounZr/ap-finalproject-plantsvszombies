@@ -27,6 +27,7 @@ public class GameResult {
     private JPanel mainPanel;
 
     private AudioPlayer music;
+
     /**
      * Constructor of The Class
      * @param newScore Score Of the Player
@@ -80,7 +81,6 @@ public class GameResult {
     /**
      * Setting The Result Frame Visible
      */
-
     public void show(){
         mainFrame.setVisible(true);
     }
@@ -111,7 +111,6 @@ public class GameResult {
      * 2 Items : Save Your Score For Rankings And Closing
      * Or Changing Your UserName
      */
-
     private class ButtonHandler extends MouseAdapter{
         @Override
         public void mousePressed(MouseEvent e) {
@@ -138,9 +137,8 @@ public class GameResult {
 
     /**
      * The Player Can Change His/Her Username In The End Of the Game
-     * Check For The Unity Of The Chosen UserNAME
+     * Check For The Uniqueness Of The Chosen Username
      */
-
     private void changeUsername(){
         boolean result = false;
         do{
@@ -157,9 +155,8 @@ public class GameResult {
     }
 
     /**
-     * Saving Players Data for The Ranking List
+     * Saving Players Data for The Ranking List on the server
      */
-
     private void submitData(){
         GameManagement.userController.saveNewData(newScore);
         // save to server

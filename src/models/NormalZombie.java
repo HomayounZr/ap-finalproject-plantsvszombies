@@ -14,6 +14,11 @@ import views.GameState;
 
 public class NormalZombie extends Zombie {
 
+    /**
+     * constructor
+     * @param coordinate Coordinate
+     * @param state GameState
+     */
     public NormalZombie(Coordinate coordinate, GameState state){
         super(
                 BufferedImages.zombie_normal,

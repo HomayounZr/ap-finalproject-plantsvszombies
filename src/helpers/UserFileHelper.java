@@ -6,12 +6,23 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+/**
+ * file helper for user like saving new username, game results,...
+ */
 public class UserFileHelper {
 
+    // destination
     private static final String path = "./data/user.txt";
+    // file instance
     private File file;
+    // user instance
     private User user;
 
+    /**
+     * constructor
+     * creating a new file when doesn't exist
+     * and initiating the file
+     */
     public UserFileHelper(){
         file = new File(path);
         if(!file.exists()){
@@ -25,6 +36,10 @@ public class UserFileHelper {
         loadData();
     }
 
+    /*
+     * load all previous data in file
+     * and load the in memory
+     */
     private void loadData(){
         user = null;
         try(ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file))){
@@ -41,14 +56,26 @@ public class UserFileHelper {
         }
     }
 
+    /**
+     * get user
+     * @return User
+     */
     public User getUser(){
         return user;
     }
 
+    /**
+     * set new user
+     * @param user User
+     */
     public void setUser(User user){
         this.user = user;
     }
 
+    /**
+     * save the changes to new file
+     * after each operation on user object
+     */
     public void save(){
         if(file.exists())
             file.delete();

@@ -24,7 +24,6 @@ public class State {
      * Getter Method for Coordinates
      * @return Location OF a State
      */
-
     public Coordinate getCoordinate() {
         return coordinate;
     }
@@ -33,15 +32,14 @@ public class State {
      * Setter Method for Plant in the State
      * @param plant
      */
-
     public void setPlant(Plant plant) {
         this.plant = plant;
     }
+
     /**
      * Getter Method for Plant in the State
      * Check If their Are Any Plants In The State Or Not, Null If Empty
      */
-
     public Plant getPlant() {
         return plant;
     }
@@ -58,7 +56,6 @@ public class State {
      * Removing Zombies From Each State that is Needed
      * @param zombie
      */
-
     public void removeZombie(Zombie zombie){
         zombies.remove(zombie);
     }
@@ -67,7 +64,6 @@ public class State {
      * Checks if the State Includes Zombie Or Not
      * @return if the State Includes Zombie Or Not
      */
-
     public Zombie checkHasZombie(){
         if(zombies.size() != 0)
             return zombies.get(0);

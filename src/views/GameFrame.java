@@ -31,6 +31,7 @@ public class GameFrame extends JFrame {
 
     private BufferStrategy bufferStrategy;
 
+    // just for handling click to plant a new plant
     private JPanel plantingPanel;
 
     public GameFrame(String title) {
@@ -128,12 +129,10 @@ public class GameFrame extends JFrame {
     }
 
     /**
-     * Creating Cards Panel on Top of The Frame
-     * So that Player Can Chose What to Play With
-     * @param g 2DGraphics
-     * @param state Game State
+     * Show Game Cards
+     * @param g Graphics2D
+     * @param state GameState
      */
-
     private void createCardsPanelG2D(Graphics2D g,GameState state){
         g.setColor(Color.BLACK);
         g.setFont(new Font(null,Font.BOLD,18));
@@ -169,11 +168,10 @@ public class GameFrame extends JFrame {
     }
 
     /**
-     * Creating LawnMowers In The Map
-     * @param g 2DGraphics
+     * Draw LawnMowers In The Map
+     * @param g Graphics2D
      * @param state GameState
      */
-
     private void addLawnMowersG2D(Graphics2D g,GameState state){
 //        synchronized (state.getLawnMowers()) {
             int j = 0;
@@ -190,11 +188,10 @@ public class GameFrame extends JFrame {
     }
 
     /**
-     * Creating Plants In the Map
-     * @param g 2DGraphics
+     * Draw Plants In the Map
+     * @param g Graphics2D
      * @param state GameState
      */
-
     private void addPlantsG2D(Graphics2D g,GameState state){
         for(int i = 0;i < 5;i++){
             for(int j = 0;j < 9;j++){
@@ -207,11 +204,10 @@ public class GameFrame extends JFrame {
     }
 
     /**
-     * Showing Bullets In Map
-     * @param g 2dGraphics
+     * Draw Bullets In Map
+     * @param g Graphics2D
      * @param state GameState
      */
-
     private void addBulletsG2D(Graphics2D g,GameState state){
         synchronized (state.getBullets()){
             for(Bullet bullet: state.getBullets()){
@@ -221,11 +217,11 @@ public class GameFrame extends JFrame {
     }
 
     /**
-     * Building Sun In The Map
-     * @param g 2DGraphics
+     * Draw suns in frame
+     * add a jlabel for collecting each one
+     * @param g Graphics2D
      * @param state GameState
      */
-
     private void addSunsG2D(Graphics2D g,GameState state){
         synchronized (state.getSuns()){
             for(Sun sun: state.getSuns()){
@@ -255,11 +251,10 @@ public class GameFrame extends JFrame {
     }
 
     /**
-     *  Creating Zombie Element In The Map
-     * @param g 2DGraphics
+     * draw zombies in frame
+     * @param g Graphics2D
      * @param state GameState
      */
-
     private void addZombiesG2D(Graphics2D g,GameState state){
         synchronized (state.getZombies()){
             for(Zombie zombie: state.getZombies()){

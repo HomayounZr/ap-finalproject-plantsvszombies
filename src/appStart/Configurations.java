@@ -84,6 +84,7 @@ public class Configurations {
 
     public static int losingScore = LOSING_EASY;
 
+    // to determine game has sound or not
     public static boolean hasSound = true;
 
     /**

@@ -15,18 +15,17 @@ import java.util.ArrayList;
  * Ranking Page Class
  * Shows The Ranking Of the Players Based Of Their Score
  */
-
 public class RankingsPage {
 
     private JFrame mainFrame;
     private JPanel mainPanel;
 
+    // list of scoreboards
     private ArrayList<BoardItem> items;
 
     /**
      * Constructor of The Class
      */
-
     public RankingsPage(){
         mainFrame = new JFrame("Rankings");
         mainFrame.setSize(550,400);
@@ -64,17 +63,14 @@ public class RankingsPage {
     /**
      * Setting The Frame Visible
      */
-
     public void show(){
         mainFrame.setVisible(true);
     }
 
     /**
-     * Button Handler for the Frame
+     * Button Handler for the Buttons
      * Only A Refresh Button For Renewing The Data
-     *
      */
-
     private class ButtonClickHandler extends MouseAdapter{
         @Override
         public void mousePressed(MouseEvent e) {
@@ -93,7 +89,6 @@ public class RankingsPage {
     /**
      * Refreshing Data Method TO Renew the Info in The Ranking List
      */
-
     private void refreshData(){
         items = GameManagement.userController.getScoreBoard();
 //        for(BoardItem item: items){
@@ -102,9 +97,8 @@ public class RankingsPage {
     }
 
     /**
-     * Ranking Table Elements included
+     * Set the rankings table
      */
-
     public void getTable(){
 //        JPanel centerPanel = new JPanel();
 

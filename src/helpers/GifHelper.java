@@ -2,6 +2,15 @@ package helpers;
 
 import java.awt.*;
 
+/**
+ * this class holds static fields of Image(Gifs)
+ * for each graphical object in whole game
+ * help a lot saving memory
+ *
+ * **NOTE**
+ * this class won't be used because showing images as gif in frame
+ * will slow than rendering and user will see the frame updating
+ */
 public class GifHelper {
 
     public static Image zombie_normal;

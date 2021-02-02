@@ -10,7 +10,9 @@ import java.io.Serializable;
 
 public class Sun implements Serializable {
 
+    // location x
     private int locationX;
+    // location y
     private int locationY;
 
     /**
@@ -18,7 +20,6 @@ public class Sun implements Serializable {
      * @param locationX Horizontal Point
      * @param locationY Vertical Point
      */
-
     public Sun(int locationX, int locationY){
         this.locationX = locationX;
         this.locationY = locationY;
@@ -31,11 +32,11 @@ public class Sun implements Serializable {
     public int getLocationX() {
         return locationX;
     }
+
     /**
      * For Returning the Sun Location ON Y's Vector
      * @return Vertical Point
      */
-
     public int getLocationY() {
         return locationY;
     }

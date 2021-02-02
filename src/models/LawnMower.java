@@ -19,17 +19,21 @@ import java.util.Iterator;
 
 public class LawnMower implements Serializable {
 
+    // row
     private int row;
+    // buffered image
     private transient BufferedImage image;
+    // image icon
     private transient ImageIcon imageIcon;
+    // x location on frame
     private int locationX;
+    // y location on frame
     private int locationY;
 
     /**
      * Constructor for the Class
-     * @param row the number of the row 1 to 5
+     * @param row the number of the row 0 to 4
      */
-
     public LawnMower(int row){
         this.row = row;
         imageIcon = ImageIcons.lawn_mower;
@@ -39,9 +43,8 @@ public class LawnMower implements Serializable {
     /**
      * The Method Activates Lawn Mowers
      * if Zombies Reach the Edge of the Map the Element Will be Activated
-     * @param state GameState of th 5x9
+     * @param state GameState
      */
-
     public void activate(GameState state){
         imageIcon = ImageIcons.lawn_mower_active;
         image = BufferedImages.lawn_mower_active;
@@ -62,25 +65,22 @@ public class LawnMower implements Serializable {
      * Image of the LawnMowers
      * @return ImageIcon
      */
-
     public ImageIcon getImageIcon() {
         return imageIcon;
     }
 
     /**
      * The RowNumber Of the LawnMowers
-     * @return rowNumber
+     * @return int rowNumber
      */
-
     public int getRow() {
         return row;
     }
 
     /**
      * The BufferedImage Of LawnMowers
-     * @return image
+     * @return BufferedImage image
      */
-
     public BufferedImage getImage() {
         return image;
     }
@@ -90,7 +90,6 @@ public class LawnMower implements Serializable {
      * @param locationX Horizontal Point
      * @param locationY Vertical Point
      */
-
     public void setLocation(int locationX,int locationY){
         this.locationX = locationX;
         this.locationY = locationY;
@@ -100,7 +99,6 @@ public class LawnMower implements Serializable {
      * Getter For Horizontal Point
      * @return X's Vector Point
      */
-
     public int getLocationX() {
         return locationX;
     }
@@ -109,13 +107,14 @@ public class LawnMower implements Serializable {
      * Getter For Vertical Point
      * @return Y's Vector Point
      */
-
     public int getLocationY() {
         return locationY;
     }
 
     /**
-     * Loading the Remaining LawnMowers of the SavedGAME
+     * this method is for re-rendering saved object
+     * and re-run it's threads when load a previous
+     * saved game
      */
     public void resumeObject(){
         image = BufferedImages.lawn_mower;

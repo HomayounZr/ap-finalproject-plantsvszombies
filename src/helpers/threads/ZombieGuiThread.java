@@ -4,13 +4,23 @@ import models.Zombie;
 
 import javax.swing.*;
 
+/**
+ * this thread is just for moving zombie in Gui
+ */
 public class ZombieGuiThread implements Runnable {
 
 //    private JLabel zombieLabel;
+    // zombie
     private Zombie zombie;
+    // when removing zombie
     private boolean alive;
+    // pause for eating plant
     private boolean pause;
 
+    /**
+     * constructor
+     * @param zombie Zombie
+     */
     public ZombieGuiThread(Zombie zombie){
         this.zombie = zombie;
         this.alive = true;
@@ -34,10 +44,16 @@ public class ZombieGuiThread implements Runnable {
         }
     }
 
+    /**
+     * stop the whole thread when removing zombie
+     */
     public void stopThread(){
         this.alive = false;
     }
 
+    /**
+     * pause thread when zombie start eating until finished
+     */
     public void pauseThread(){
         this.pause = true;
     }

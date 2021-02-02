@@ -5,6 +5,9 @@ import helpers.BufferedImages;
 import helpers.ImageIcons;
 import views.GameState;
 
+/**
+ * Football Zombie extending Zombie
+ */
 public class FootballZombie extends Zombie {
     /**
      * Constructor of the Class

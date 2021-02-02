@@ -34,6 +34,7 @@ public class WallNutPlant extends Plant {
     public void changeImageToDying(){
         super.changeImageToDying(BufferedImages.plant_giantwallnut_dying, ImageIcons.plant_giantwallnut_dying);
     }
+    
     /**
      * Doing what it should do after some time
      */

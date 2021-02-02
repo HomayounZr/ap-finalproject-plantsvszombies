@@ -19,6 +19,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
+/**
+ * Class for GameSaves Page
+ */
 public class ShowGameSaves {
 
     private JFrame mainFrame;
@@ -27,6 +30,9 @@ public class ShowGameSaves {
 
     ArrayList<GameSave> gameSaves;
 
+    /**
+     * Constructor
+     */
     public ShowGameSaves(){
         gameSaves = new ArrayList<>();
         mainFrame = new JFrame("Saves");
@@ -43,10 +49,17 @@ public class ShowGameSaves {
         mainFrame.setContentPane(mainPanel);
     }
 
+    /**
+     * Show the main frame
+     */
     public void show(){
         mainFrame.setVisible(true);
     }
 
+    /**
+     * Load saved games locally
+     * and show them on JTable
+     */
     public void tablePanelLocal(){
         String[] columns = {"Save"};
         DefaultTableModel tableModel = new DefaultTableModel(columns,0);
@@ -86,6 +99,10 @@ public class ShowGameSaves {
         mainPanel.add(scrollPane,BorderLayout.CENTER);
     }
 
+    /**
+     * Load saved games on the server
+     * and create a new JTable to show the
+     */
     public void tablePanelServer(){
         String[] columns = {"Save"};
         DefaultTableModel tableModel = new DefaultTableModel(columns,0);
@@ -126,6 +143,7 @@ public class ShowGameSaves {
         mainPanel.add(scrollPane,BorderLayout.CENTER);
     }
 
+    // add south panel, including 3 buttons
     private JPanel southPanel(){
         GridLayout layout = new GridLayout(1,3);
         layout.setHgap(10);
@@ -151,6 +169,7 @@ public class ShowGameSaves {
         return panel;
     }
 
+    // handler for buttons
     private class ButtonHandler extends MouseAdapter{
         @Override
         public void mousePressed(MouseEvent e) {
@@ -172,6 +191,7 @@ public class ShowGameSaves {
         }
     }
 
+    // listener for selecting a saved game
     private class SaveSelectionListener implements ListSelectionListener{
         @Override
         public void valueChanged(ListSelectionEvent e) {
