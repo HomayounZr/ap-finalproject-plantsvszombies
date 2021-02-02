@@ -65,70 +65,156 @@ public class ZombieGenerator implements Runnable {
     find valid row to generate zombies each time
     Smart Zombie Generator
      */
-    private int findValidRows(){
-        // find rows whit lawn mower
+//    private synchronized int findValidRows(){
+//        // find rows whit lawn mower
+//        validRows = new ArrayList<>();
+//        for(LawnMower lawnMower: state.getLawnMowers()){
+//            validRows.add(lawnMower.getRow());
+//        }
+//
+//        // find rows with least plant
+//        Plant[][] plants = state.getPlants();
+//        int minRowIndex = validRows.get(0);
+//        int plantsCount = 0;
+//        for(int i = 0;i < 9;i++){
+//            if(plants[i][minRowIndex] != null)
+//                plantsCount++;
+//        }
+//        Iterator<Integer> it = validRows.iterator();
+//        it.next();
+//        int i = 1;
+//        while(it.hasNext()){
+//            int count = 0;
+//            if(i >= validRows.size())
+//                break;
+//            int row = validRows.get(i);
+//            for(int j = 0;j < 9;j++){
+//                if(plants[j][row] != null){
+//                    count++;
+//                }
+//            }
+//            if(count < plantsCount){
+//                plantsCount = count;
+//                minRowIndex = row;
+//            }
+//            i++;
+//            it.next();
+//        }
+//
+////        it = validRows.iterator();
+////        while()
+//
+//        // find row with most zombies
+//        int rowIndex = validRows.get(0);
+//        int zombiesCount = 0;
+//        for(Zombie zombie: zombies){
+//            if(zombie.getCoordinate().getAxis_y() == validRows.get(0)){
+//                zombiesCount++;
+//            }
+//        }
+//        it = validRows.iterator();
+////        it.next();
+//        i = 0;
+//        while(it.hasNext()){
+//            int count = 0;
+//            if(i >= validRows.size())
+//                break;
+//            for(Zombie zombie: zombies){
+//                if(zombie.getCoordinate().getAxis_y() == validRows.get(i)){
+//                    count++;
+//                }
+//            }
+//            if(count < zombiesCount){
+//                it.remove();
+//            } else if(count >= zombiesCount) {
+//                zombiesCount = count;
+//                rowIndex = i;
+////                validRows.remove(i);
+//            }
+//            i++;
+//            it.next();
+//        }
+//
+//        // select a random row from valid ones
+//        int randomRow = random.nextInt(validRows.size());
+//        return validRows.get(randomRow);
+//    }
+
+    /*
+    find a row with this specifications
+
+     */
+    private synchronized int findVaildRows(){
         validRows = new ArrayList<>();
         for(LawnMower lawnMower: state.getLawnMowers()){
             validRows.add(lawnMower.getRow());
         }
 
-        // find rows with least plant
+        int minPlantRowIndex = validRows.get(0);
+        int minPlantsInRow = 0;
         Plant[][] plants = state.getPlants();
-        int minRowIndex = validRows.get(0);
-        int plantsCount = 0;
         for(int i = 0;i < 9;i++){
-            if(plants[i][minRowIndex] != null)
-                plantsCount++;
+            if(plants[i][minPlantRowIndex] != null){
+                minPlantsInRow++;
+            }
         }
-        Iterator<Integer> it = validRows.iterator();
-        it.next();
-        int i = 1;
-        while(it.hasNext()){
-            int count = 0;
-            if(i >= validRows.size())
-                break;
-            int row = validRows.get(i);
+        for(Integer row: validRows){
+            int newPlantsInRow = 0;
             for(int j = 0;j < 9;j++){
                 if(plants[j][row] != null){
-                    count++;
+                    newPlantsInRow++;
                 }
             }
-            if(count > plantsCount){
-                it.remove();
-            } else {
-                plantsCount = count;
-                minRowIndex = i;
+            if(newPlantsInRow < minPlantsInRow){
+                minPlantsInRow = newPlantsInRow;
+                minPlantRowIndex = row;
             }
-            i++;
+        }
+        Iterator<Integer> it = validRows.iterator();
+        while(it.hasNext()){
+            int row = it.next();
+            int newPlantsInRow = 0;
+            for(int j = 0;j < 9;j++){
+                if(plants[j][row] != null){
+                    newPlantsInRow++;
+                }
+            }
+            if(newPlantsInRow > minPlantsInRow){
+                it.remove();
+            }
         }
 
-        // find row with most zombies
-        int rowIndex = 0;
-        int zombiesCount = 0;
+        int maxZombiesRowIndex = validRows.get(0);
+        int maxZombiesInRow = 0;
         for(Zombie zombie: zombies){
-            if(zombie.getCoordinate().getAxis_y() == validRows.get(0)){
-                zombiesCount++;
+            if(zombie.getCoordinate().getAxis_y() == maxZombiesRowIndex){
+                maxZombiesInRow++;
+            }
+        }
+        for(Integer row: validRows){
+            int newZombiesInRow = 0;
+            for(Zombie zombie: zombies){
+                if(zombie.getCoordinate().getAxis_y() == row){
+                    newZombiesInRow++;
+                }
+            }
+            if(newZombiesInRow > maxZombiesInRow){
+                maxZombiesInRow = newZombiesInRow;
+                maxZombiesRowIndex = row;
             }
         }
         it = validRows.iterator();
-        it.next();
-        i = 1;
         while(it.hasNext()){
-            int count = 0;
-            if(i >= validRows.size())
-                break;
+            int row = it.next();
+            int newZombiesInRow = 0;
             for(Zombie zombie: zombies){
-                if(zombie.getCoordinate().getAxis_y() == validRows.get(i)){
-                    count++;
+                if(zombie.getCoordinate().getAxis_y() == row){
+                    newZombiesInRow++;
                 }
             }
-            if(count < zombiesCount){
+            if(newZombiesInRow < maxZombiesInRow){
                 it.remove();
-            } else {
-                zombiesCount = count;
-                rowIndex = i;
             }
-            i++;
         }
 
         // select a random row from valid ones
@@ -151,14 +237,18 @@ public class ZombieGenerator implements Runnable {
 
             while(running){
 
+                // playing sound
+                if(Configurations.hasSound)
+                    AudioThreadPool.execute(new AudioPlayer("./sounds/zombies_coming.wav",3,false));
                 for(int i = 0;i < count;i++){
                     // refresh valid rows each time
-                    findValidRows();
+//                    findValidRows();
 //                    int randomRow = random.nextInt(5);
 //                    while(!isValidRow(randomRow)){
 //                        randomRow = random.nextInt(5);
 //                    }
-                    int randomRow = findValidRows();
+                    int randomRow = findVaildRows();
+                    System.out.println("" + validRows.size() + " - " + randomRow);
                     int locationY = 110 + randomRow * 120;
                     Zombie zombie = null;
                     // select a random number for new zombie type
@@ -180,13 +270,10 @@ public class ZombieGenerator implements Runnable {
                     }
                     zombie.setLocation(900,locationY);
                     zombies.add(zombie);
+                    Thread.sleep(2000);
                 }
 
-                // playing sound
-                if(Configurations.hasSound)
-                    AudioThreadPool.execute(new AudioPlayer("./sounds/zombies_coming.wav",3,false));
-
-                Thread.sleep(duration * 1000);
+                Thread.sleep(duration * 1000 - 2000 * (count - 1));
             }
 
         } catch (Exception ex){

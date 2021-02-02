@@ -232,10 +232,10 @@ public class UserController {
             }
             out.flush();
 
-            dataInputStream.close();
-            inputStream.close();
-            outputStream.close();
-            socket.close();
+//            dataInputStream.close();
+//            inputStream.close();
+//            outputStream.close();
+//            socket.close();
         } catch (Exception ex){
             ex.printStackTrace();
         }
@@ -304,7 +304,7 @@ public class UserController {
 //            in.close();
 //            inputStream.close();
 //            outputStream.close();
-            socket.close();
+//            socket.close();
 
             return true;
 
