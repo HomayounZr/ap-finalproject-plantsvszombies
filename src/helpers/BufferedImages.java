@@ -31,6 +31,8 @@ public class BufferedImages {
     public static BufferedImage zombie_conehead_dying;
     public static BufferedImage zombie_buckethead;
     public static BufferedImage zombie_buckethead_dying;
+    public static BufferedImage zombie_football;
+    public static BufferedImage zombie_football_dying;
 
     public static BufferedImage lawn_mower;
     public static BufferedImage lawn_mower_active;
@@ -68,6 +70,8 @@ public class BufferedImages {
             zombie_conehead_dying = ImageIO.read(new File("./images/Gifs/coneheadzombie.gif"));
             zombie_buckethead = ImageIO.read(new File("./images/Gifs/bucketheadzombie.gif"));
             zombie_buckethead_dying = ImageIO.read(new File("./images/Gifs/bucketheadzombie.gif"));
+            zombie_football = ImageIO.read(new File("./images/Gifs/zombie_football.gif"));
+            zombie_football_dying = ImageIO.read(new File("./images/Gifs/zombie_football_dying.gif"));
 
             lawn_mower = ImageIO.read(new File("./images/Gifs/lawn_mower.gif"));
             lawn_mower_active = ImageIO.read(new File("./images/Gifs/lawnmowerActivated.gif"));

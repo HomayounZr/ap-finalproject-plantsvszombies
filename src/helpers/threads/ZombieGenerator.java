@@ -128,7 +128,7 @@ public class ZombieGenerator implements Runnable {
                     int randomRow = findValidRows();
                     int locationY = 110 + randomRow * 120;
                     Zombie zombie = null;
-                    int zombieType = random.nextInt(3);
+                    int zombieType = random.nextInt(4);
                     switch (zombieType){
                         case 0:
                             zombie = new NormalZombie(new Coordinate(8,randomRow),state);
@@ -139,6 +139,8 @@ public class ZombieGenerator implements Runnable {
                         case 2:
                             zombie = new BucketHeadZombie(new Coordinate(8,randomRow),state);
                             break;
+                        case 3:
+                            zombie = new FootballZombie(new Coordinate(8,randomRow),state);
                         default:
                             break;
                     }
@@ -146,7 +148,8 @@ public class ZombieGenerator implements Runnable {
                     zombies.add(zombie);
                 }
 
-                AudioThreadPool.execute(new AudioPlayer("./sounds/zombies_coming.wav",3,false));
+                if(Configurations.hasSound)
+                    AudioThreadPool.execute(new AudioPlayer("./sounds/zombies_coming.wav",3,false));
 
                 Thread.sleep(duration * 1000);
             }

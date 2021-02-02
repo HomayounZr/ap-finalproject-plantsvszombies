@@ -30,6 +30,8 @@ public class ImageIcons {
     public static ImageIcon zombie_conehead_dying;
     public static ImageIcon zombie_buckethead;
     public static ImageIcon zombie_buckethead_dying;
+    public static ImageIcon zombie_football;
+    public static ImageIcon zombie_football_dying;
 
     public static ImageIcon lawn_mower;
     public static ImageIcon lawn_mower_active;
@@ -65,6 +67,8 @@ public class ImageIcons {
             zombie_conehead_dying = new ImageIcon(BufferedImages.zombie_conehead_dying);
             zombie_buckethead = new ImageIcon(BufferedImages.zombie_buckethead);
             zombie_buckethead_dying = new ImageIcon(BufferedImages.zombie_buckethead_dying);
+            zombie_football = new ImageIcon(BufferedImages.zombie_football);
+            zombie_football_dying = new ImageIcon(BufferedImages.zombie_football_dying);
 
             lawn_mower = new ImageIcon(BufferedImages.lawn_mower);
             lawn_mower_active = new ImageIcon(BufferedImages.lawn_mower_active);

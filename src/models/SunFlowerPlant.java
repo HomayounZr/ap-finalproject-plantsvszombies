@@ -3,6 +3,8 @@ package models;
 import appStart.Configurations;
 import helpers.BufferedImages;
 import helpers.ImageIcons;
+import helpers.threads.AudioPlayer;
+import helpers.threads.AudioThreadPool;
 
 /**
  * Class Represents The SunFlower Elements
@@ -44,6 +46,8 @@ public class SunFlowerPlant extends Plant {
             Sun sun = new Sun(super.getLocationX() + 75,super.getLocationY() - 10);
             suns.add(sun);
 //        }
+        if(Configurations.hasSound)
+            AudioThreadPool.execute(new AudioPlayer("./sounds/ting.wav",0.5,false));
 
     }
 

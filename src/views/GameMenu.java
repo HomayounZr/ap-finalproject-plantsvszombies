@@ -1,5 +1,6 @@
 package views;
 
+import appStart.Configurations;
 import appStart.GameManagement;
 import helpers.BufferedImages;
 import helpers.GifHelper;
@@ -39,8 +40,10 @@ public class GameMenu {
      * Constructor Of the Class
      */
     public GameMenu(){
-        audioPlayer = new AudioPlayer("./sounds/menu.wav",8.5,true);
-        AudioThreadPool.execute(audioPlayer);
+        if(Configurations.hasSound) {
+            audioPlayer = new AudioPlayer("./sounds/menu.wav", 8.5, true);
+            AudioThreadPool.execute(audioPlayer);
+        }
 
         mainFrame = new JFrame();
         mainFrame.setTitle("Plants vs Zombies");
@@ -144,11 +147,12 @@ public class GameMenu {
                     RankingsPage rankings = new RankingsPage();
                     rankings.show();
                 } else if (sourceText.equals("New Game")) {
-                    audioPlayer.stop();
+                    if(Configurations.hasSound)
+                        audioPlayer.stop();
 
                     // initializing buffered images
                     BufferedImages.init();
-                    GifHelper.init();
+//                    GifHelper.init();
                     // Initialize the global thread-pool
                     ThreadPool.init();
 
@@ -206,10 +210,11 @@ public class GameMenu {
      */
 
     public static void loadGame(GameSave save){
-        audioPlayer.stop();
+        if(Configurations.hasSound)
+            audioPlayer.stop();
         // initializing buffered images
         BufferedImages.init();
-        GifHelper.init();
+//        GifHelper.init();
         // Initialize the global thread-pool
         ThreadPool.init();
         EventQueue.invokeLater(new Runnable() {

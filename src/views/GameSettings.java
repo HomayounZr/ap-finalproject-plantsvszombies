@@ -2,6 +2,8 @@ package views;
 
 import appStart.Configurations;
 import appStart.GameManagement;
+import helpers.threads.AudioPlayer;
+import helpers.threads.AudioThreadPool;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -50,12 +52,13 @@ public class GameSettings {
         mainPanel.add(comboBoxModes);
 
         JLabel labelSound = new JLabel("Has Sound: ");
-        JCheckBox checkBoxSound = new JCheckBox();
+        JCheckBox checkBoxSound = new JCheckBox("",Configurations.hasSound);
         checkBoxSound.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JCheckBox source = (JCheckBox) e.getSource();
-                hasSound = checkBoxSound.isSelected();
+                Configurations.hasSound = checkBoxSound.isSelected();
+
 //                System.out.println(hasSound);
             }
         });
@@ -68,6 +71,14 @@ public class GameSettings {
             @Override
             public void mousePressed(MouseEvent e) {
                 super.mousePressed(e);
+                if(!Configurations.hasSound){
+//                    GameMenu.audioPlayer.stop();
+                    AudioThreadPool.shutdownNow();
+                } else {
+                    AudioThreadPool.init();
+                    GameMenu.audioPlayer = new AudioPlayer("./sounds/menu.wav", 8.5, true);
+                    AudioThreadPool.execute(GameMenu.audioPlayer);
+                }
                 mainFrame.dispose();
             }
         });

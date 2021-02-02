@@ -87,8 +87,10 @@ public class GameLoop implements Runnable {
 		}
 
 		ThreadPool.shutdownNow();
-		AudioThreadPool.shutdown();
-		AudioThreadPool.init();
+		if(Configurations.hasSound) {
+			AudioThreadPool.shutdown();
+			AudioThreadPool.init();
+		}
 
 		int score;
 		if(GameManagement.isEasy){

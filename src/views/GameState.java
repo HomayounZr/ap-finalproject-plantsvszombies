@@ -1,6 +1,7 @@
 /*** In The Name of Allah ***/
 package views;
 
+import appStart.Configurations;
 import appStart.GameManagement;
 import helpers.BufferedImages;
 import helpers.ImageIcons;
@@ -90,6 +91,9 @@ public class GameState {
 		// initializing handlers
 		keyHandler = new KeyHandler();
 		mouseHandler = new MouseHandler();
+
+		if(Configurations.hasSound)
+			AudioThreadPool.execute(new AudioPlayer("./sounds/background.wav",51,true));
 	}
 
 	/**

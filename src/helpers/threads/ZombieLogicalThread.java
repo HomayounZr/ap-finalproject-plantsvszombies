@@ -1,5 +1,6 @@
 package helpers.threads;
 
+import appStart.Configurations;
 import appStart.GameManagement;
 import models.*;
 import views.GameState;
@@ -78,7 +79,8 @@ public class ZombieLogicalThread implements Runnable {
                             plant.decreaseHealth(zombie.getDamage());
                             System.out.println("eating... " + plant.getHealth());
                             if (plant.getHealth() <= 0) {
-                                AudioThreadPool.execute(new AudioPlayer("./sounds/chomp.wav",0.5,false));
+                                if(Configurations.hasSound)
+                                    AudioThreadPool.execute(new AudioPlayer("./sounds/chomp.wav",0.5,false));
                                 plant.closeThread();
                                 plants[zombie.getCoordinate().getAxis_x()][zombie.getCoordinate().getAxis_y()] = null;
                                 break;
@@ -101,7 +103,8 @@ public class ZombieLogicalThread implements Runnable {
                         if(lawnMower.getRow() == zombie.getCoordinate().getAxis_y()){
                             alive = false;
                             lawnMower.activate(state);
-                            AudioThreadPool.execute(new AudioPlayer("./sounds/lamborghini.wav",3,false));
+                            if(Configurations.hasSound)
+                                AudioThreadPool.execute(new AudioPlayer("./sounds/lamborghini.wav",3,false));
                             break;
                         }
                     }
@@ -117,7 +120,7 @@ public class ZombieLogicalThread implements Runnable {
                 zombie.moveOneStateLeft();
             }
 
-            AudioThreadPool.execute(new AudioPlayer("./sounds/chomp.wav",0.5,false));
+//            AudioThreadPool.execute(new AudioPlayer("./sounds/chomp.wav",0.5,false));
 
         } catch (InterruptedException ex){
             ex.printStackTrace();

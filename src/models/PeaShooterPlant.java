@@ -1,7 +1,10 @@
 package models;
 
+import appStart.Configurations;
 import helpers.BufferedImages;
 import helpers.ImageIcons;
+import helpers.threads.AudioPlayer;
+import helpers.threads.AudioThreadPool;
 
 import javax.swing.*;
 
@@ -46,7 +49,7 @@ public class PeaShooterPlant extends Plant {
         // code to generate normal pee
         Bullet bullet = new Bullet(
                 BufferedImages.bullet_normal,
-                35,
+                30,
                 super.getCoordinate(),
                 ImageIcons.bullet_normal,
                 0
@@ -55,6 +58,9 @@ public class PeaShooterPlant extends Plant {
 //        synchronized (bullets){
             bullets.add(bullet);
 //        }
+        if(Configurations.hasSound)
+            AudioThreadPool.execute(new AudioPlayer("./sounds/shoot.wav",2,false));
+
     }
 
 }

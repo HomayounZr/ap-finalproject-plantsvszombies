@@ -25,6 +25,9 @@ public class SkySunGenerator implements Runnable {
                     suns.add(sun);
 //                }
 
+                if(Configurations.hasSound)
+                    AudioThreadPool.execute(new AudioPlayer("./sounds/ting.wav",0.5,false));
+
                 Thread.sleep(Configurations.sunLoadSky * 1000);
 
             }

@@ -1,7 +1,10 @@
 package models;
 
+import appStart.Configurations;
 import helpers.BufferedImages;
 import helpers.ImageIcons;
+import helpers.threads.AudioPlayer;
+import helpers.threads.AudioThreadPool;
 
 import javax.swing.*;
 
@@ -57,6 +60,9 @@ public class SnowPeaShooterPlant extends Plant {
 //        synchronized (bullets){
             bullets.add(bullet);
 //        }
+        if(Configurations.hasSound)
+            AudioThreadPool.execute(new AudioPlayer("./sounds/shoot.wav",2,false));
+
     }
 
 }

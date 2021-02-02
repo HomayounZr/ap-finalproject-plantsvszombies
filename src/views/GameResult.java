@@ -1,5 +1,6 @@
 package views;
 
+import appStart.Configurations;
 import appStart.GameManagement;
 import helpers.threads.AudioPlayer;
 import helpers.threads.AudioThreadPool;
@@ -32,8 +33,10 @@ public class GameResult {
      * @param won Whether He/She Has Lost or Won The Game
      */
     public GameResult(int newScore,boolean won){
-        music = new AudioPlayer("./sounds/game_end.wav",7,true);
-        AudioThreadPool.execute(music);
+        if(Configurations.hasSound) {
+            music = new AudioPlayer("./sounds/game_end.wav", 7, true);
+            AudioThreadPool.execute(music);
+        }
         this.newScore = newScore;
         this.won = won;
         this.user = GameManagement.userController.getUser();
