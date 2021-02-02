@@ -6,6 +6,7 @@ import views.GameState;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ZombieGenerator implements Runnable {
@@ -16,6 +17,7 @@ public class ZombieGenerator implements Runnable {
     private SecureRandom random;
     private GameState state;
     private boolean running;
+    private ArrayList<Integer> validRows;
 
     public ZombieGenerator(CopyOnWriteArrayList<Zombie> zombies,int duration,int count,GameState state){
         this.zombies = zombies;
@@ -34,6 +36,83 @@ public class ZombieGenerator implements Runnable {
         this.count = count;
     }
 
+    private int findValidRows(){
+        validRows = new ArrayList<>();
+        for(LawnMower lawnMower: state.getLawnMowers()){
+            validRows.add(lawnMower.getRow());
+        }
+
+        // find rows with least plant
+        Plant[][] plants = state.getPlants();
+        int minRowIndex = validRows.get(0);
+        int plantsCount = 0;
+        for(int i = 0;i < 9;i++){
+            if(plants[i][minRowIndex] != null)
+                plantsCount++;
+        }
+        Iterator<Integer> it = validRows.iterator();
+        it.next();
+        int i = 1;
+        while(it.hasNext()){
+            int count = 0;
+            if(i >= validRows.size())
+                break;
+            int row = validRows.get(i);
+            for(int j = 0;j < 9;j++){
+                if(plants[j][row] != null){
+                    count++;
+                }
+            }
+            if(count > plantsCount){
+                it.remove();
+            } else {
+                plantsCount = count;
+                minRowIndex = i;
+            }
+            i++;
+        }
+
+        // find row with most zombies
+        int rowIndex = 0;
+        int zombiesCount = 0;
+        for(Zombie zombie: zombies){
+            if(zombie.getCoordinate().getAxis_y() == validRows.get(0)){
+                zombiesCount++;
+            }
+        }
+        it = validRows.iterator();
+        it.next();
+        i = 1;
+        while(it.hasNext()){
+            int count = 0;
+            if(i >= validRows.size())
+                break;
+            for(Zombie zombie: zombies){
+                if(zombie.getCoordinate().getAxis_y() == validRows.get(i)){
+                    count++;
+                }
+            }
+            if(count < zombiesCount){
+                it.remove();
+            } else {
+                zombiesCount = count;
+                rowIndex = i;
+            }
+            i++;
+        }
+
+        int randomRow = random.nextInt(validRows.size());
+        return validRows.get(randomRow);
+    }
+
+    private boolean isValidRow(int _row){
+        for(Integer row: validRows){
+            if(row == _row)
+                return true;
+        }
+        return false;
+    }
+
     @Override
     public void run() {
         try{
@@ -41,7 +120,12 @@ public class ZombieGenerator implements Runnable {
             while(running){
 
                 for(int i = 0;i < count;i++){
-                    int randomRow = random.nextInt(5);
+                    findValidRows();
+//                    int randomRow = random.nextInt(5);
+//                    while(!isValidRow(randomRow)){
+//                        randomRow = random.nextInt(5);
+//                    }
+                    int randomRow = findValidRows();
                     int locationY = 110 + randomRow * 120;
                     Zombie zombie = null;
                     int zombieType = random.nextInt(3);

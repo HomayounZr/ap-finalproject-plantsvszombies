@@ -22,7 +22,7 @@ public class NormalZombie extends Zombie {
                 Configurations.zombieNormalDamage,
                 Configurations.zombieNormalSpeed,
                 ImageIcons.zombie_normal,
-                GifHelper.zombie_normal,
+//                GifHelper.zombie_normal,
                 state
         );
     }

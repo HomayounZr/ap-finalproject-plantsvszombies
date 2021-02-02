@@ -24,7 +24,7 @@ public class ConeHeadZombie extends Zombie {
                 Configurations.zombieConeHeadDamage,
                 Configurations.zombieConeHeadSpeed,
                 ImageIcons.zombie_conehead,
-                GifHelper.zombie_conehead,
+//                GifHelper.zombie_conehead,
                 state
         );
     }

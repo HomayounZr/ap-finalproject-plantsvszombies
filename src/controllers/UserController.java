@@ -2,14 +2,14 @@ package controllers;
 
 import helpers.UserFileHelper;
 import models.BoardItem;
+import models.GameSave;
+import models.GameSaves;
 import models.servermodels.*;
 import models.User;
 import models.servermodels.ChangeUsernameMessage;
 
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import javax.swing.*;
+import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 
@@ -168,6 +168,108 @@ public class UserController {
                 return true;
         } catch (Exception ex){
 
+        }
+        return false;
+    }
+
+    public void getSavesFromServer(){
+        String username = getUser().getUsername();
+        try{
+
+            Socket socket = new Socket("localhost",3000);
+
+            ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+
+            RestMessage request = new RestMessage("getSaves",new StringMessage(username));
+            outputStream.writeObject(request);
+
+            DataInputStream dataInputStream = new DataInputStream(inputStream);
+            byte[] buffer = new byte[4096];
+            BufferedInputStream in = new BufferedInputStream(dataInputStream);
+            BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(new File("./data/serversaves.txt")));
+            while(in.available() > 0){
+                int count = in.read(buffer);
+                out.write(buffer,0,count);
+            }
+            out.flush();
+
+            dataInputStream.close();
+            inputStream.close();
+            outputStream.close();
+            socket.close();
+
+        } catch (Exception ex){
+            ex.printStackTrace();
+        }
+    }
+
+    public boolean saveSavesToServer(GameSave save){
+        getSavesFromServer();
+        try{
+
+            File file = new File("./data/serversaves.txt");
+
+            try{
+                ObjectInputStream saveInputStream = new ObjectInputStream(new FileInputStream(file));
+
+                GameSaves currentSaves = (GameSaves) saveInputStream.readObject();
+                saveInputStream.close();
+                if(currentSaves == null){
+                    currentSaves = new GameSaves();
+                }
+                currentSaves.addNewSave(save);
+//                saveInputStream.close();
+                if(file.exists()){
+                    file.delete();
+                    file.createNewFile();
+                }
+                ObjectOutputStream saveOutputStream = new ObjectOutputStream(new FileOutputStream(file));
+                saveOutputStream.writeObject(currentSaves);
+                saveOutputStream.close();
+            } catch (Exception ex){
+                GameSaves currentSaves = new GameSaves();
+                currentSaves.addNewSave(save);
+                if(file.exists()){
+                    file.delete();
+                    file.createNewFile();
+                }
+                ObjectOutputStream saveOutputStream = new ObjectOutputStream(new FileOutputStream(file));
+                saveOutputStream.writeObject(currentSaves);
+                saveOutputStream.close();
+            }
+
+            Socket socket = new Socket("localhost",3000);
+
+            ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
+            ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
+
+            RestMessage request = new RestMessage("newSave",new StringMessage(getUser().getUsername()));
+            outputStream.writeObject(request);
+
+            BufferedInputStream in = new BufferedInputStream(new FileInputStream(file));
+            BufferedOutputStream out = new BufferedOutputStream(outputStream);
+            byte[] buffer = new byte[4096];
+            while(in.available() > 0){
+                int count = in.read(buffer);
+                out.write(buffer,0,count);
+            }
+//            out.flush();
+//
+//            out.close();
+//            in.close();
+//            inputStream.close();
+//            outputStream.close();
+            socket.close();
+
+            return true;
+
+        } catch (Exception ex){
+//            JOptionPane.showMessageDialog(
+//                    null,
+//                    ex.getMessage()
+//            );
+            ex.printStackTrace();
         }
         return false;
     }

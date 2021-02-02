@@ -25,7 +25,7 @@ public class BucketHeadZombie extends Zombie {
                 Configurations.zombieBucketHeadDamage,
                 Configurations.zombieBucketHeadSpeed,
                 ImageIcons.zombie_buckethead,
-                GifHelper.zombie_buckethead,
+//                GifHelper.zombie_buckethead,
                 state
         );
     }

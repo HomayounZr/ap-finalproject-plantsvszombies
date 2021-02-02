@@ -35,7 +35,7 @@ public abstract class Zombie implements Serializable {
     private transient ZombieLogicalThread logicalThread;
     private transient ZombieGuiThread guiThread;
 
-    private Image imageGif;
+//    private transient Image imageGif;
 
     /**
      * Constructor
@@ -55,7 +55,7 @@ public abstract class Zombie implements Serializable {
                   int damage,
                   double speed,
                   ImageIcon icon,
-                  Image gif,
+//                  Image gif,
                   GameState state){
         this.health = health;
         this.damage = damage;
@@ -63,7 +63,7 @@ public abstract class Zombie implements Serializable {
         this.coordinate = coordinate;
         this.image = image;
         this.imageIcon = icon;
-        this.imageGif = gif;
+//        this.imageGif = gif;
 
         guiThread = new ZombieGuiThread(this);
         ThreadPool.execute(guiThread);
@@ -76,9 +76,9 @@ public abstract class Zombie implements Serializable {
      * method for returning image specially gifs
      * @return Image
      */
-    public Image getImageGif() {
-        return imageGif;
-    }
+//    public Image getImageGif() {
+//        return imageGif;
+//    }
 
     /**
      * A method for Returning the needed Image
@@ -114,6 +114,15 @@ public abstract class Zombie implements Serializable {
 
     public double getSpeed() {
         return speed;
+    }
+
+    /**
+     * set speed to original half when a frozen pee hits it
+     * it multiply it by 2 because speed field is actually the time
+     * that zombie moves a state to the left
+     */
+    public void halfSpeed() {
+        this.speed *= 2;
     }
 
     /**

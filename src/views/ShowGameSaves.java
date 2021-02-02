@@ -1,5 +1,6 @@
 package views;
 
+import appStart.GameManagement;
 import models.GameSave;
 import models.GameSaves;
 
@@ -91,11 +92,10 @@ public class ShowGameSaves {
 
         try{
 
-            File file = new File("./data/gamesaves.txt");
-            if(!file.exists())
-                file.createNewFile();
+            GameManagement.userController.getSavesFromServer();
 
-            ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(file));
+            File serverSaves = new File("./data/serversaves.txt");
+            ObjectInputStream inputStream = new ObjectInputStream(new FileInputStream(serverSaves));
             GameSaves saves = (GameSaves) inputStream.readObject();
             if(saves != null)
                 gameSaves = saves.getGameSaves();

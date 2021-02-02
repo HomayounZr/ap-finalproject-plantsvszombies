@@ -1,5 +1,6 @@
 package helpers.threads;
 
+import appStart.Configurations;
 import appStart.GameManagement;
 import models.Bullet;
 import models.Zombie;
@@ -37,6 +38,12 @@ public class BulletLogicalThread implements Runnable {
                             System.out.println("hit zombie");
 
                             zombie.setHealth(zombie.getHealth() - bullet.getDamage());
+                            // half the speed if a frozen pee hits zombie
+                            if(bullet.getDamage() == 35){
+                                if(zombie.getSpeed() == Configurations.zombieConeHeadSpeed || zombie.getSpeed() == Configurations.zombieNormalSpeed){
+                                    zombie.halfSpeed();
+                                }
+                            }
                             bullets.remove(bullet);
                             if(zombie.getHealth() <= 0){
                                 zombie.stopThreads();

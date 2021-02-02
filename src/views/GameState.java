@@ -1,12 +1,14 @@
 /*** In The Name of Allah ***/
 package views;
 
+import appStart.GameManagement;
 import helpers.BufferedImages;
 import helpers.ImageIcons;
 import helpers.threads.*;
 import models.*;
 import models.enums.PlantType;
 
+import javax.swing.*;
 import java.awt.event.*;
 import java.io.*;
 import java.util.ArrayList;
@@ -522,6 +524,7 @@ public class GameState {
 			outputStream.writeObject(saves);
 
 			outputStream.flush();
+			saveToServer(save);
 
 		} catch (EOFException ex){
 
@@ -537,6 +540,7 @@ public class GameState {
 				outputStream.writeObject(saves);
 
 				outputStream.flush();
+				saveToServer(save);
 			} catch (Exception ex2){
 
 			}
@@ -546,6 +550,29 @@ public class GameState {
 		}
 
 		System.out.println("saved...");
+	}
+
+	private void saveToServer(GameSave save){
+		int result = JOptionPane.showConfirmDialog(
+				null,
+				"Do you wanna save this to server?",
+				"Save to Server",
+				JOptionPane.YES_NO_OPTION
+		);
+		if(result == 1)
+			return;
+
+		if(GameManagement.userController.saveSavesToServer(save)){
+			JOptionPane.showMessageDialog(
+					null,
+					"saved to server"
+			);
+		} else {
+			JOptionPane.showMessageDialog(
+					null,
+					"couldn't save to server try again"
+			);
+		}
 	}
 
 	/**
