@@ -158,13 +158,17 @@ public class GameFrame extends JFrame {
                 i++;
         }
 
-        g.setColor(Color.BLACK);
+        g.setColor(Color.WHITE);
         g.setFont(new Font(null,Font.BOLD,18));
-        g.drawString("" + state.getTotalTimePassed(),500,50);
+        g.drawString("" + state.getTotalTimePassed(),470,50);
+
+        g.setColor(Color.WHITE);
+        g.setFont(new Font(null,Font.BOLD,18));
+        g.drawString("Stage: " + state.getCurrentStage(),470,90);
 
         g.setColor(Color.BLACK);
         g.setFont(new Font(null,Font.BOLD,18));
-        g.drawString("Stage: " + state.getCurrentStage(),500,90);
+        g.drawString("Press ESC for menu",600,60);
     }
 
     /**

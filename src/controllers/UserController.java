@@ -222,16 +222,28 @@ public class UserController {
             RestMessage request = new RestMessage("getSaves",new StringMessage(username));
             outputStream.writeObject(request);
             // reading data from buffer and creating the file
-            DataInputStream dataInputStream = new DataInputStream(inputStream);
-            byte[] buffer = new byte[4096];
-            BufferedInputStream in = new BufferedInputStream(dataInputStream);
-            BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(new File("./data/serversaves.txt")));
-            while(in.available() > 0){
-                int count = in.read(buffer);
-                out.write(buffer,0,count);
-            }
-            out.flush();
+//            DataInputStream dataInputStream = new DataInputStream(inputStream);
+//            byte[] buffer = new byte[4096];
+//            BufferedInputStream in = new BufferedInputStream(new DataInputStream(socket.getInputStream()));
+//            BufferedOutputStream out = new BufferedOutputStream(new FileOutputStream(new File("./data/serversaves.txt")));
+//            System.out.println("" + in.available());
+//            while(in.available() > 0){
+//                int count = in.read(buffer);
+//                out.write(buffer,0,count);
+//                System.out.println("chunk " + count);
+//            }
+//            out.flush();
 
+            DataInputStream in = new DataInputStream(socket.getInputStream());
+            int bytes = 0;
+            long size = in.readLong();
+            byte[] buffer = new byte[4096];
+            FileOutputStream out = new FileOutputStream("./data/serversaves.txt");
+//            System.out.println(size);
+            while(size > 0 && (bytes = in.read(buffer,0, (int)Math.min(buffer.length,size))) != -1){
+                out.write(buffer,0,bytes);
+//                System.out.println("chunk " + bytes);
+            }
 //            dataInputStream.close();
 //            inputStream.close();
 //            outputStream.close();

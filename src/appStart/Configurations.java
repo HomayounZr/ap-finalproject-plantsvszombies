@@ -85,7 +85,7 @@ public class Configurations {
     public static int losingScore = LOSING_EASY;
 
     // to determine game has sound or not
-    public static boolean hasSound = true;
+    public static boolean hasSound = false;
 
     /**
      * Change game mode to easy
@@ -127,7 +127,7 @@ public class Configurations {
         zombieNormalDamage = ZOMBIE_NORMAL_DAMAGE_HARD;
         zombieConeHeadDamage = ZOMBIE_CONEHEAD_DAMAGE_HARD;
         zombieBucketHeadDamage = ZOMBIE_BUCKETHEAD_DAMAGE_HARD;
-        zombieFootballDamage = ZOMBIE_FOOTBALL_DAMAGE_EASY;
+        zombieFootballDamage = ZOMBIE_FOOTBALL_DAMAGE_HARD;
 
         sunLoadSky = SUN_LOAD_SKY_HARD;
 

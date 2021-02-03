@@ -458,6 +458,18 @@ public class GameState {
 		timer.stopThread();
 		while(zombies.size() > 0){
 			// nothing
+
+		}
+		if(lawnMowers.size() == 1){
+			int plantsInRow = 0;
+			for(int i = 0;i < 9;i++){
+				if(plants[i][lawnMowers.get(0).getRow()] != null)
+					plantsInRow++;
+			}
+			if(plantsInRow == 0) {
+				isFinished = true;
+				return;
+			}
 		}
 		if(lawnMowers.size() > 0)
 			isFinished = true;

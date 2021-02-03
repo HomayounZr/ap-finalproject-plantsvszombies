@@ -40,6 +40,7 @@ public class GameMenu {
      * Constructor Of the Class
      */
     public GameMenu(){
+        AudioThreadPool.init();
         // play audio if sound is on
         if(Configurations.hasSound) {
             audioPlayer = new AudioPlayer("./sounds/menu.wav", 8.5, true);
