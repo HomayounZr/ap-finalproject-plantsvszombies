@@ -215,8 +215,16 @@ public abstract class Zombie implements Serializable {
             image = BufferedImages.zombie_normal;
         } else if(this instanceof ConeHeadZombie){
             image = BufferedImages.zombie_conehead;
-        } else {
+            if(this.health <= 200)
+                image = BufferedImages.zombie_normal;
+        } else if(this instanceof BucketHeadZombie){
             image = BufferedImages.zombie_buckethead;
+            if(this.health <= 200)
+                image = BufferedImages.zombie_normal;
+        } else {
+            image = BufferedImages.zombie_football;
+            if(this.health <= 200)
+                image = BufferedImages.zombie_normal;
         }
 
         guiThread = new ZombieGuiThread(this);
